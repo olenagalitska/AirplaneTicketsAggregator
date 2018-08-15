@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template
+from flask import render_template, request
 
 import datetime
 
@@ -56,7 +56,7 @@ def search():
     return render_template('search.html', airports=airports)
 
 
-@app.route('/results')
+@app.route('/results', methods=['POST', 'GET'])
 def results():
     results = [
         {
@@ -84,9 +84,62 @@ def results():
             "price": "50"
         }
     ]
-    return render_template('results.html', results=results)
+    if request.method == 'POST':
+        return render_template('results.html', results=results)
 
 
-@app.route('/profile/<user>')
-def profile(user):
-    return render_template('search.html', user=user)
+@app.route('/profile/<user_id>')
+def profile(user_id):
+    user = {
+        "user_id": user_id,
+        "username": "tsmith",
+        "firstName": "Tom",
+        "lastName": "Smith",
+        "birthDate": datetime.date(1985, 3, 25),
+        "eMail": "tsmith@gmail.com"
+    }
+    return render_template('profile.html', user=user)
+
+
+@app.route('/profile/<user_id>/saved', methods=['POST'])
+def saved(user_id):
+    user = {
+        "user_id": user_id,
+        "username": "tsmith",
+        "firstName": "Tom",
+        "lastName": "Smith",
+        "birthDate": datetime.date(1985, 3, 25),
+        "eMail": "tsmith@gmail.com"
+    }
+    flights = [
+        {
+            "airportA": "KBP",
+            "airportB": "FRA",
+            "airline": "Ryan Air",
+            "date": datetime.datetime(2018, 9, 1, 20, 34),
+            "duration": "3:00",
+            "price": "43"
+        }
+    ]
+    return render_template('saved.html', saved_flights=flights)
+
+
+@app.route('/profile/<user_id>/history', methods=['POST'])
+def history(user_id):
+    user = {
+        "user_id": user_id,
+        "username": "tsmith",
+        "firstName": "Tom",
+        "lastName": "Smith",
+        "birthDate": datetime.date(1985, 3, 25),
+        "eMail": "tsmith@gmail.com"
+    }
+    routes = [
+        {
+            "cityA": "Kyiv",
+            "cityB": "Frankfurt",
+            "date": datetime.date(2018, 9, 1)
+        #     this object should contain all configuration parameters to start new search
+        }
+    ]
+    return render_template('history.html', routes=routes)
