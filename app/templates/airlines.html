@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+{% for airline in airlines %}
+    <div class="row lead">{{ airline.name }}</div>
+    <div class="row">Established in {{ airline.origin }}</div>
+    <div class="row">Works since {{ airline.since }}</div>
+    <div class="row">
+        <div>
+            {{ airline.info }}
+        </div>
+    </div>
+    <br>
+{% endfor %}
+</div>
+{% endblock %}
+
