@@ -8,7 +8,10 @@
             {{ form.hidden_tag() }}
             <div class="d-flex justify-content-center m-3">
                 <div class="col-sm-3">
-                {{ form.login(size=32, placeholder="USERNAME") }}
+                {{ form.username(size=32, placeholder="USERNAME") }}
+                    {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
                 </div>
             </div>
 

@@ -16,9 +16,16 @@
                 {{ form.last_name(size=32, placeholder="LAST NAME") }}
                 </div>
             </div>
+
+              <div class="d-flex justify-content-center m-3">
+                <div class="col-sm-3">
+                {{ form.email(size=32, placeholder="EMAIL") }}
+                </div>
+            </div>
+            <br>
             <div class="d-flex justify-content-center m-3">
                 <div class="col-sm-3">
-                {{ form.login(size=32, placeholder="USERNAME") }}
+                {{ form.username(size=32, placeholder="USERNAME") }}
                 </div>
             </div>
 
@@ -27,12 +34,8 @@
                 {{ form.password(size=32, placeholder="PASSWORD") }}
                 </div>
             </div>
+            <br>
 
-            <div class="d-flex justify-content-center m-3">
-                <div class="col-sm-3">
-                {{ form.email(size=32, placeholder="EMAIL") }}
-                </div>
-            </div>
             <div class="d-flex justify-content-center m-3">
                 {{ form.submit(class="btn btn-dark mb-2") }}
             </div>

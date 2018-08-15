@@ -1,6 +1,5 @@
 from app import app
-
-from flask import render_template, request
+from flask import render_template, request, url_for, redirect
 from app.forms import LoginForm, RegistrationForm
 import datetime
 
@@ -8,14 +7,15 @@ import datetime
 def hello_world():
     return render_template('index.html')
 
-
 @app.route('/contacts')
 def contacts():
     return render_template('contacts.html')
-  
-@app.route('/login')
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        return redirect(url_for('profile/<>'))
     return render_template('login.html', form=form)
 
 @app.route('/signup')
@@ -40,8 +40,8 @@ def airlinesinfo():
         }
     ]
     return render_template('airlines.html', airlines=airlines)
-  
-  @app.route('/search')
+
+@app.route('/search')
 def search():
     airports = [
         {
@@ -73,8 +73,7 @@ def search():
             "country": "Norway",
             "city": "Oslo",
             "airport": "OSL"
-        },
-        {
+        }, {
             "country": "Ukraine",
             "city": "Kyiv",
             "airport": "KBP"
@@ -109,8 +108,7 @@ def results():
             "date": datetime.datetime(2018, 9, 1, 11, 15),
             "duration": "2:45",
             "price": "50"
-        }
-    ]
+        } ]
     if request.method == 'POST':
         return render_template('results.html', results=results)
 

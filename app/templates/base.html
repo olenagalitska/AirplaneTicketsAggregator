@@ -14,26 +14,34 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/search">Search </a>
+              <a class="nav-link" href="{{ url_for('search') }}">Search </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/airlines">Airlines Info</a>
+              <a class="nav-link" href="{{ url_for('airlinesinfo') }}">Airlines Info</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/contacts">Contacts</a>
+              <a class="nav-link" href="{{ url_for('contacts') }}">Contacts</a>
             </li>
           </ul>
           <div class="right-side">
-            <a class="nav-link btn btn-outline-dark authbuttons" href="/login">Sign in</a>
+            <a class="nav-link btn btn-outline-dark authbuttons" href="{{ url_for('login') }}">Sign in</a>
           </div>
           <div class="right-side">
-            <a class="nav-link btn btn-outline-dark authbuttons" href="/signup">Sign up</a>
+            <a class="nav-link btn btn-outline-dark authbuttons" href="{{ url_for('signup') }}">Sign up</a>
           </div>
       </div>
     </nav>
 </div>
     <br>
-
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
     {% block content %}{% endblock %}
 
 
