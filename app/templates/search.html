@@ -6,13 +6,9 @@
             <div class="col-md-4 mb-3">
                 <label for="cityA">City A</label>
                 <select class="form-control" id="cityA" required>
-                    <option>Frankfurt - FRA</option>
-                    <option>Zurich - ZRH</option>
-                    <option>Paris - CDG</option>
-                    <option>Stockholm - ARN</option>
-                    <option>Dublin - DUB</option>
-                    <option>Oslo - OSL</option>
-                    <option>Kyiv - KBP</option>
+                    {% for airport in airports %}
+                        <option>{{ airport.city }} - {{ airport.airport }}</option>
+                    {% endfor %}
                 </select>
                 <div class="valid-feedback">
                     Looks good!
@@ -21,13 +17,9 @@
             <div class="col-md-4 mb-3">
                 <label for="cityB">City B</label>
                 <select class="form-control" id="cityB" required>
-                    <option>Frankfurt - FRA</option>
-                    <option>Zurich - ZRH</option>
-                    <option>Paris - CDG</option>
-                    <option>Stockholm - ARN</option>
-                    <option>Dublin - DUB</option>
-                    <option>Oslo - OSL</option>
-                    <option>Kyiv - KBP</option>
+                    {% for airport in airports %}
+                        <option>{{ airport.city }} - {{ airport.airport }}</option>
+                    {% endfor %}
                 </select>
                 <div class="valid-feedback">
                     Looks good!
