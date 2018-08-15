@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Flight Search</h1>
+    <div>
+        <form class="needs-validation form-card" novalidate
+        action="http://localhost:5000/results" method="post">
+            <div class="col-md-4 mb-3">
+                <label for="cityA">City A</label>
+                <select class="form-control" id="cityA" required>
+                    {% for airport in airports %}
+                        <option>{{ airport.city }} - {{ airport.airport }}</option>
+                    {% endfor %}
+                </select>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="cityB">City B</label>
+                <select class="form-control" id="cityB" required>
+                    {% for airport in airports %}
+                        <option>{{ airport.city }} - {{ airport.airport }}</option>
+                    {% endfor %}
+                </select>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-check form-check-inline">
+                <div class="col-md-6 mb-3">
+                    <label for="departureDate">Departure</label>
+                    <input type="date" class="form-control" id="departureDate" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid date.
+                    </div>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="monthSearch">
+                    <label class="form-check-label" for="monthSearch">
+                        Check whole month
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="passengers">Passengers</label>
+                <div class="form-group row">
+                    <label for="adult" class="col-2 col-form-label">Adult</label>
+                    <div class="col-10">
+                        <input class="form-control" type="number" value="1" id="adult" min="1">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="child" class="col-2 col-form-label">Child</label>
+                    <div class="col-10">
+                        <input class="form-control" type="number" value="0" id="child" min="0">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="teen" class="col-2 col-form-label">Teen</label>
+                    <div class="col-10">
+                        <input class="form-control" type="number" value="0" id="teen" min="0">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="infant" class="col-2 col-form-label">Infant</label>
+                    <div class="col-10">
+                        <input class="form-control" type="number" value="0" id="infant" min="0">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="senior" class="col-2 col-form-label">Senior</label>
+                    <div class="col-10">
+                        <input class="form-control" type="number" value="0" id="senior" min="0">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="fClass">Class</label>
+                <select class="form-control" id="fClass" required>
+                    <option>Economy</option>
+                    <option>Premium Economy</option>
+                    <option>Business</option>
+                    <option>First Class</option>
+                </select>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                Airlines
+                <div class="checkbox">
+                    <label><input type="checkbox" value="" checked> Wizz Air</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="" checked> RyanAir</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="" checked> Ukrainian International Airlines</label>
+                </div>
+            </div>
+
+
+            <button class="btn btn-primary" type="submit" onsubmit="results()">Search</button>
+        </form>
+
+        <script>
+            document.getElementById("departureDate").innerHTML = Date();
+
+            (function () {
+                'use strict';
+                window.addEventListener('load', function () {
+                    var forms = document.getElementsByClassName('needs-validation');
+                    var validation = Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+        </script>
+    </div>
+{% endblock %}

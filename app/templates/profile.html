@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    <div>
+        <h5>
+            {{ user.firstName }} {{ user.lastName }}
+        </h5>
+        <p>{{ user.eMail }}</p>
+    </div>
+
+    <form action="{{ user.user_id }}/saved" method="post">
+        <button name="saved" type="submit">saved flights</button>
+    </form>
+    <form action="{{ user.user_id }}/history" method="post">
+        <button name="history" type="submit">route history</button>
+    </form>
+{% endblock %}
+
