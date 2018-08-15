@@ -8,3 +8,7 @@ def hello_world():
 @app.route('/contacts')
 def contacts():
     return render_template('contacts.html')
+
+@app.route('/search')
+def search():
+    return render_template('search.html')
