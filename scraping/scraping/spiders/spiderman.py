@@ -3,23 +3,25 @@ import scrapy
 class Spiderman(scrapy.Spider):
     name = "spiderman"
     start_urls = [
+        'https://en.wikipedia.org/wiki/Ukraine_International_Airlines',
         'https://en.wikipedia.org/wiki/Wizz_Air',
         'https://en.wikipedia.org/wiki/Ryanair',
-        'https://en.wikipedia.org/wiki/Ukraine_International_Airlines'
     ]
 
     def parse(self, response):
         table = response.css("table.infobox.vcard")[0]
         caption = table.css("caption::text").extract_first()
+        codes = table.css(".nickname::text")
 
-        codes = table.css("td.nickname::text")
+        if (len(codes) == 4):
+            del codes[1]
 
         info = table.css("tbody>tr")
         info = info[4:]
 
         result = """
             <br> 
-            <h3>{0}</h3> <br> 
+            <h3> {0} </h3> <br> 
             
             <table> 
                 <tr> 
