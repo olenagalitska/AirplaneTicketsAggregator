@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for route in routes %}
+        <p>{{ route.cityA }} -----> {{ route.cityB }}</p>
+        <p>{{ route.date }}</p>
+        <button>view results</button>
+        <button>remove</button>
+        <hr>
+    {% endfor %}
+{% endblock %}

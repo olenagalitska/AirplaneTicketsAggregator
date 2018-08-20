@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for result in results %}
+        <p>{{ result.airportA }} -----> {{ result.airportB }}</p>
+        <p>{{ result.airline }}</p>
+        <p>{{ result.date }}</p>
+        <p>{{ result.duration }}</p>
+        <p>{{ result.price }} $</p>
+        <button>save</button>
+        <hr>
+    {% endfor %}
+{% endblock %}
+
