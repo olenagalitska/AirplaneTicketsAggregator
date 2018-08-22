@@ -1,4 +1,4 @@
-from app import app, db
+from app import app, db, arango
 from flask import render_template, request, url_for, redirect, flash
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
@@ -44,8 +44,9 @@ def signup():
         db.session.add(usr)
         try:
             db.session.commit()
-        except exc.SQLAlchemyError:
-            flash("Duplicate username or email!")
+        except exc.SQLAlchemyError as e:
+            # flash("Duplicate username or email!")
+            flash(e.code)
             return redirect(url_for('signup'))
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
@@ -112,8 +113,8 @@ def results():
     wizz_robber = wizzair.WizzairInfoRobber()
     results = wizz_robber.getFlights(form.get('departure'), form.get('arrival'), form.get('date'))
 
-    if request.method == 'POST':
-        return render_template('results.html', results=results)
+    if request.method == 'POST':''
+    return render_template('results.html', results=results)
 
 
 @app.route('/profile')
@@ -166,3 +167,22 @@ def history():
         }
     ]
     return render_template('history.html', routes=routes)
+
+
+@app.route('/arango')
+def index():
+    arango.db.collection('user_activity').insert_many([
+        {'_key': 'Abby', 'age': 22},
+        {'_key': 'John', 'age': 18},
+        {'_key': 'Mary', 'age': 21}
+    ])
+
+    # Execute the query
+    cursor = db.aql.execute(
+        'FOR s IN students FILTER s.age < @value RETURN s',
+        bind_vars={'value': 19}
+    )
+
+    # Iterate through the result cursor
+    # [student['_key'] for student in cursor]
+    return render_template('search.html')
