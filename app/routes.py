@@ -1,4 +1,4 @@
-from app import app, psqldb, arangodb, search_handler
+from app import app, psqldb, search_handler
 from flask import render_template, request, url_for, redirect, flash
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
@@ -6,6 +6,9 @@ from app.models import Users
 from flask_login import current_user, login_user, logout_user, login_required
 from sqlalchemy import exc
 from werkzeug.urls import url_parse
+
+from app import arangodb
+
 
 
 
@@ -177,23 +180,23 @@ def history():
     return render_template('history.html', routes=routes)
 
 
-@app.route('/arango')
-def index():
-    arangodb.db.collection('user_activity').insert_many([
-        {'_key': 'Abby', 'age': 22},
-        {'_key': 'John', 'age': 18},
-        {'_key': 'Mary', 'age': 21}
-    ])
-
-    # Execute the query
-    cursor = arangodb.aql.execute(
-        'FOR s IN students FILTER s.age < @value RETURN s',
-        bind_vars={'value': 19}
-    )
-
-    # Iterate through the result cursor
-    # [student['_key'] for student in cursor]
-    return render_template('search.html')
+# @app.route('/arango')
+# def index():
+#     arangodb.db.collection('user_activity').insert_many([
+#         {'_key': 'Abby', 'age': 22},
+#         {'_key': 'John', 'age': 18},
+#         {'_key': 'Mary', 'age': 21}
+#     ])
+#
+#     # Execute the query
+#     cursor = arangodb.aql.execute(
+#         'FOR s IN students FILTER s.age < @value RETURN s',
+#         bind_vars={'value': 19}
+#     )
+#
+#     # Iterate through the result cursor
+#     # [student['_key'] for student in cursor]
+#     return render_template('search.html')
 
 
 @app.route('/init_sql')
@@ -208,3 +211,34 @@ def trypsql():
     psqldb.session.commit()
     users = psqldb.session.query(Users).all()
     return render_template('list_of_users.html', users=users)
+
+
+@app.route('/test_arangodb')
+def test_arangodb():
+    # python-arango
+    routes_stats = arangodb.collection('routes_stats')
+
+    # routes_stats.add_hash_index(fields=['route_id'], unique=True)
+    routes_stats.insert({'route_id': '2', 'data': "25:08:2018"})
+
+
+
+    # pyArango
+    #
+    # from pyArango.connection import *
+    #
+    #
+    # routes_stats = arangodb["routes_stats"]
+    #
+    # #  cannot find good docs, ide does not see methods of objects while working with pyArango
+
+
+
+    # ArangoPy
+    #
+    # required additional packages and some problems occurs
+
+
+
+
+    return redirect(url_for('login'))

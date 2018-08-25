@@ -6,8 +6,8 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://dj:postgres@localhost:5432/whataflyDB'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    ARANGO_SETTINGS = {'host': 'localhost', 'port': 8529}
-    ARANGO_DB = 'whataflyDB'
+    # ARANGO_SETTINGS = {'host': 'localhost', 'port': 8529}
+    # ARANGO_DB = 'whataflyDB'
 
     DEBUG = True
     TESTING = False
