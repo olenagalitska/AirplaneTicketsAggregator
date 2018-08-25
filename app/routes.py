@@ -1,4 +1,4 @@
-from app import app, db, arango
+from app import app, psqldb, arangodb, search_handler
 from flask import render_template, request, url_for, redirect, flash
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
@@ -6,7 +6,7 @@ from app.models import Users
 from flask_login import current_user, login_user, logout_user, login_required
 from sqlalchemy import exc
 from werkzeug.urls import url_parse
-from app.airlines import wizzair
+
 
 
 @app.route('/logout')
@@ -14,9 +14,11 @@ def logout():
     logout_user()
     return redirect(url_for('search'))
 
+
 @app.route('/contacts')
 def contacts():
     return render_template('contacts.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -24,7 +26,7 @@ def login():
     if form.validate_on_submit():
         usr = Users.query.filter_by(username=form.username.data).first()
         print(usr)
-        if usr is None or not usr.chech_password(form.password.data):
+        if usr is None or not usr.check_password(form.password.data):
             flash("Error occured. Please try again.")
             return redirect(url_for('login'))
         login_user(usr)
@@ -34,26 +36,32 @@ def login():
         return redirect(next_page)
     return render_template('login.html', form=form)
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RegistrationForm()
     if form.validate_on_submit():
-        usr = Users(username=form.username.data, first_name=form.first_name.data,
-                    last_name=form.last_name.data, email=form.email.data, id=form.username.data)
-        usr.set_password(form.password.data),
-        db.session.add(usr)
+        usr = Users(username=form.username.data, password=form.password.data, first_name=form.first_name.data,
+                    last_name=form.last_name.data, email=form.email.data)
         try:
-            db.session.commit()
-        except exc.SQLAlchemyError as e:
+            psqldb.session.add(usr)
+        except:
+            flash("Unable to add user to db")
+
+        try:
+            psqldb.session.commit()
+        except Exception:
             # flash("Duplicate username or email!")
-            flash(e.code)
+            flash("Some error accured")
             return redirect(url_for('signup'))
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
 
+
 @app.route('/airlines')
 def airlinesinfo():
     return render_template('airlines.html')
+
 
 @app.route('/search', methods=['GET', 'POST'])
 @app.route('/', methods=['GET', 'POST'])
@@ -101,8 +109,8 @@ def search():
             "airport": "VIE"
         }
     ]
-    form.departure.choices = [(airport['airport'], airport['city']  + ", " + airport['airport'])for airport in airports]
-    form.arrival.choices = [(airport['airport'], airport['city'] + ", " + airport['airport'])for airport in airports]
+    form.departure.choices = [(airport['airport'], airport['city'] + ", " + airport['airport']) for airport in airports]
+    form.arrival.choices = [(airport['airport'], airport['city'] + ", " + airport['airport']) for airport in airports]
 
     return render_template('search.html', airports=airports, form=form)
 
@@ -110,10 +118,10 @@ def search():
 @app.route('/results', methods=['POST', 'GET'])
 def results():
     form = request.form
-    wizz_robber = wizzair.WizzairInfoRobber()
-    results = wizz_robber.getFlights(form.get('departure'), form.get('arrival'), form.get('date'))
 
-    if request.method == 'POST':''
+    results = search_handler.handle(form)
+
+    if request.method == 'POST': ''
     return render_template('results.html', results=results)
 
 
@@ -163,7 +171,7 @@ def history():
             "cityA": "Kyiv",
             "cityB": "Frankfurt",
             "date": datetime.date(2018, 9, 1)
-        #     this object should contain all configuration parameters to start new search
+            #     this object should contain all configuration parameters to start new search
         }
     ]
     return render_template('history.html', routes=routes)
@@ -171,14 +179,14 @@ def history():
 
 @app.route('/arango')
 def index():
-    arango.db.collection('user_activity').insert_many([
+    arangodb.db.collection('user_activity').insert_many([
         {'_key': 'Abby', 'age': 22},
         {'_key': 'John', 'age': 18},
         {'_key': 'Mary', 'age': 21}
     ])
 
     # Execute the query
-    cursor = db.aql.execute(
+    cursor = arangodb.aql.execute(
         'FOR s IN students FILTER s.age < @value RETURN s',
         bind_vars={'value': 19}
     )
@@ -186,3 +194,17 @@ def index():
     # Iterate through the result cursor
     # [student['_key'] for student in cursor]
     return render_template('search.html')
+
+
+@app.route('/init_sql')
+def trypsql():
+    psqldb.create_all()
+    psqldb.session.commit()
+
+    user1 = Users('user1', 'password', 'user1@example.com', 'user1FName', 'user1LName')
+    user2 = Users('user2', 'password', 'user2@example.com', 'user2FName', 'user2LName')
+    psqldb.session.add(user1)
+    psqldb.session.add(user2)
+    psqldb.session.commit()
+    users = psqldb.session.query(Users).all()
+    return render_template('list_of_users.html', users=users)

@@ -1,0 +1,38 @@
+from app.airlines.wizzair import WizzairInfoRobber
+
+
+class Handler:
+
+    def __init__(self):
+        self.wizzair_info_robber = WizzairInfoRobber()
+
+    # def handle(self, search_data):
+    #
+    #     results = []
+    #
+    #     airlines_icao = search_data.get('airlines')
+    #     for airline_icao in airlines_icao:
+    #         if airline_icao == "WZZ":
+    #             self.wizzair_info_robber.getFlights(
+    #                 results=results,
+    #                 depart=search_data.get('departure'),
+    #                 arrive=search_data.get('arrival'),
+    #                 date=search_data.get('date')
+    #             )
+    #         elif airline_icao == "AUI":
+    #             pass
+    #         elif airline_icao == "RYR":
+    #             pass
+    #     return results
+
+    def handle(self, search_data):
+        results = []
+
+        self.wizzair_info_robber.get_flights(
+            results=results,
+            depart=search_data.get('departure'),
+            arrive=search_data.get('arrival'),
+            date=search_data.get('date')
+        )
+
+        return results
