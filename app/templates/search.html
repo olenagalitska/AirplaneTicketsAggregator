@@ -3,19 +3,19 @@
     <h1>Flight Search</h1>
     <div>
         <form class="needs-validation form-card"
-            action="{{ url_for('results') }}" method="post" >
+              action="{{ url_for('results') }}" method="post">
             <div class="col-md-4 mb-3">
-{#                <label for="cityA">City A</label>#}
-{#                <select class="form-control" id="cityA" required>#}
-{#                    {% for airport in airports %}#}
-{#                        <option>{{ airport.city }} - {{ airport.airport }}</option>#}
-{#                    {% endfor %}#}
-{#                </select>#}
+                {#                <label for="cityA">City A</label>#}
+                {#                <select class="form-control" id="cityA" required>#}
+                {#                    {% for airport in airports %}#}
+                {#                        <option>{{ airport.city }} - {{ airport.airport }}</option>#}
+                {#                    {% endfor %}#}
+                {#                </select>#}
                 {{ form.hidden_tag() }}
                 <div class="d-flex m-3">
                     <div class="col-sm-3">
-                    {{ form.departure.label }}
-                    {{ form.departure(placeholder="City A", class="form-control", id="cityA", style="width: 200px;") }}
+                        {{ form.departure.label }}
+                        {{ form.departure(placeholder="City A", class="form-control", id="cityA", style="width: 200px;") }}
                     </div>
                 </div>
                 <div class="valid-feedback">
@@ -23,16 +23,16 @@
                 </div>
             </div>
             <div class="col-md-4 mb-3">
-{#                <label for="cityB">City B</label>#}
-{#                <select class="form-control" id="cityB" required>#}
-{#                    {% for airport in airports %}#}
-{#                        <option>{{ airport.city }} - {{ airport.airport }}</option>#}
-{#                    {% endfor %}#}
-{#                </select>#}
-                 <div class="d-flex m-3">
+                {#                <label for="cityB">City B</label>#}
+                {#                <select class="form-control" id="cityB" required>#}
+                {#                    {% for airport in airports %}#}
+                {#                        <option>{{ airport.city }} - {{ airport.airport }}</option>#}
+                {#                    {% endfor %}#}
+                {#                </select>#}
+                <div class="d-flex m-3">
                     <div class="col-sm-3">
-                    {{ form.arrival.label }}
-                    {{ form.arrival(placeholder="City B", class="form-control", id="cityB", style="width: 200px;") }}
+                        {{ form.arrival.label }}
+                        {{ form.arrival(placeholder="City B", class="form-control", id="cityB", style="width: 200px;") }}
                     </div>
                 </div>
                 <div class="valid-feedback">
@@ -43,8 +43,8 @@
                 <div class="col-md-6 mb-3">
                     {{ form.date.label }}
                     {{ form.date(id="departureDate", class="form-control", type="date") }}
-{#                    <label for="departureDate">Departure</label>#}
-{#                    <input type="date" class="form-control" id="departureDate" required>#}
+                    {#                    <label for="departureDate">Departure</label>#}
+                    {#                    <input type="date" class="form-control" id="departureDate" required>#}
                     <div class="invalid-feedback">
                         Please provide a valid date.
                     </div>
