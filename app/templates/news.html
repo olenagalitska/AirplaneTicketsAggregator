@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for item in news %}
+        <h1>{{ item.heading }}</h1>
+        <p>{{ item.date }}</p>
+        <a href="{{ item.link }}">Read more...</a>
+        <hr>
+    {% endfor %}
+{% endblock %}

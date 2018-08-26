@@ -2,7 +2,7 @@ import scrapy
 
 
 class WizzNewsSpider(scrapy.Spider):
-    name = "wizz_news"
+    name = "wizzair_news"
     start_urls = [
         'https://wizzair.com/en-gb/information-and-services/about-us/news/#/'
     ]
