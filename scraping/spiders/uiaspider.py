@@ -12,17 +12,9 @@ class WizzNewsSpider(scrapy.Spider):
         links = response.css('div.content div.mt_16 h3 a::attr(href)').extract()[:5]
         dates = response.css('div.content div.mt_32 p b::text').extract()[:5]
 
-        result = """
-        <br>
-        """
+        news = []
 
         for i in range(0, len(headings)):
-            result += "<p>" + headings[i] + "</p>"
-            result += "<a href=https://www.flyuia.com" + links[i] + ">Read more...</a>"
-            result += "<p>" + dates[i] + "</p> <br>"
+            news.append({"heading": headings[i], "link": "https://www.flyuia.com" + links[i], "date": dates[i], "airline": "UIA"})
 
-        print(result)
-
-        filename = '../../../app/templates/uia_news.html'
-        with open(filename, 'a') as f:
-            f.write(result)
+        return news

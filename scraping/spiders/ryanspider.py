@@ -12,18 +12,9 @@ class RyanairNewsSpider(scrapy.Spider):
         links = response.css('div.news-row div.news-excerpt h3 a::attr(href)').extract()[:5]
         dates = response.css('div.news-row div.news-excerpt div.news-date::text').extract()[:5]
 
-
-        result = """
-        <hr>
-        """
+        news = []
 
         for i in range(0, len(headings)):
-            result += "<p>" + headings[i] + "</p>"
-            result += "<a href=" + links[i] + ">Read more...</a>"
-            result += "<p>" + dates[i] + "</p> <hr>"
+            news.append({"heading": headings[i], "link": links[i], "date": dates[i], "airline": "Ryan Air"})
 
-        print(result)
-
-        filename = '../../../app/templates/ryanair_news.html'
-        with open(filename, 'a') as f:
-            f.write(result)
+        return news
