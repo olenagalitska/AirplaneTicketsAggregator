@@ -5,6 +5,8 @@ import json
 class WizzairInfoRobber:
     @staticmethod
     def get_flights(results, depart, arrive, date):
+        print(depart)
+        print(date)
         people = '1'
         data = {"isFlightChange": 'false', "isSeniorOrStudent": 'false',
                 "flightList": [{"departureStation": depart, "arrivalStation": arrive, "departureDate": date}],
@@ -29,5 +31,5 @@ class WizzairInfoRobber:
                         full_price = fare['fullBasePrice']
                         json_flight['price'] = full_price['amount']
                 results.append(json_flight)
-            return results
-        return None
+            return True
+        return False

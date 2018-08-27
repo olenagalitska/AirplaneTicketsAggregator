@@ -1,10 +1,12 @@
 from app.airlines.wizzair import WizzairInfoRobber
+from app.airlines.ryanair import RyanairInfoRobber
 
 
 class Handler:
 
     def __init__(self):
         self.wizzair_info_robber = WizzairInfoRobber()
+        self.ryanair_info_robber = RyanairInfoRobber()
 
     # def handle(self, search_data):
     #
@@ -29,6 +31,13 @@ class Handler:
         results = []
 
         self.wizzair_info_robber.get_flights(
+            results=results,
+            depart=search_data.get('departure'),
+            arrive=search_data.get('arrival'),
+            date=search_data.get('date')
+        )
+
+        self.ryanair_info_robber.get_flights(
             results=results,
             depart=search_data.get('departure'),
             arrive=search_data.get('arrival'),
