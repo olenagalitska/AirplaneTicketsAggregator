@@ -1,4 +1,4 @@
-from app import app, db, arangodb
+from app import app, psqldb, search_handler, arangodb
 from flask import render_template, request, url_for, redirect, flash
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
@@ -6,7 +6,6 @@ from app.models import Users
 from flask_login import current_user, login_user, logout_user, login_required
 from sqlalchemy import exc
 from werkzeug.urls import url_parse
-from app.airlines import wizzair
 import subprocess
 import json, os
 
@@ -28,7 +27,7 @@ def login():
     if form.validate_on_submit():
         usr = Users.query.filter_by(username=form.username.data).first()
         print(usr)
-        if usr is None or not usr.chech_password(form.password.data):
+        if usr is None or not usr.check_password(form.password.data):
             flash("Error occured. Please try again.")
             return redirect(url_for('login'))
         login_user(usr)
@@ -43,15 +42,18 @@ def login():
 def signup():
     form = RegistrationForm()
     if form.validate_on_submit():
-        usr = Users(username=form.username.data, first_name=form.first_name.data,
-                    last_name=form.last_name.data, email=form.email.data, id=form.username.data)
-        usr.set_password(form.password.data),
-        db.session.add(usr)
+        usr = Users(username=form.username.data, password=form.password.data, first_name=form.first_name.data,
+                    last_name=form.last_name.data, email=form.email.data)
         try:
-            db.session.commit()
-        except exc.SQLAlchemyError as e:
+            psqldb.session.add(usr)
+        except:
+            flash("Unable to add user to db")
+
+        try:
+            psqldb.session.commit()
+        except Exception:
             # flash("Duplicate username or email!")
-            flash(e.code)
+            flash("Some error accured")
             return redirect(url_for('signup'))
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
@@ -117,8 +119,8 @@ def search():
 @app.route('/results', methods=['POST', 'GET'])
 def results():
     form = request.form
-    wizz_robber = wizzair.WizzairInfoRobber()
-    results = wizz_robber.getFlights(form.get('departure'), form.get('arrival'), form.get('date'))
+
+    results = search_handler.handle(form)
 
     if request.method == 'POST': ''
     return render_template('results.html', results=results)
@@ -160,30 +162,30 @@ def history():
     return render_template('history.html', routes=routes)
 
 
-@app.route('/arango')
-def arango_test():
-    if arangodb.has_collection('user_activity'):
-        user_activity = arangodb.collection('user_activity')
-    else:
-        user_activity = arangodb.create_collection('user_activity')
-
-    # Add a hash index to the collection.
-    user_activity.add_hash_index(fields=['name'], unique=False)
-    # Truncate the collection.
-    user_activity.truncate()
-
-    # Insert new documents into the collection.
-    user_activity.insert({'name': 'jane', 'age': 19})
-    user_activity.insert({'name': 'josh', 'age': 18})
-    user_activity.insert({'name': 'jake', 'age': 21})
-
-    # Execute an AQL query. This returns a result cursor.
-    cursor = arangodb.aql.execute('FOR doc IN user_activity RETURN doc')
-
-    # Iterate through the cursor to retrieve the documents.
-    student_names = [document['name'] for document in cursor]
-
-    return len(student_names)
+# @app.route('/arango')
+# def arango_test():
+#     if arangodb.has_collection('user_activity'):
+#         user_activity = arangodb.collection('user_activity')
+#     else:
+#         user_activity = arangodb.create_collection('user_activity')
+#
+#     # Add a hash index to the collection.
+#     user_activity.add_hash_index(fields=['name'], unique=False)
+#     # Truncate the collection.
+#     user_activity.truncate()
+#
+#     # Insert new documents into the collection.
+#     user_activity.insert({'name': 'jane', 'age': 19})
+#     user_activity.insert({'name': 'josh', 'age': 18})
+#     user_activity.insert({'name': 'jake', 'age': 21})
+#
+#     # Execute an AQL query. This returns a result cursor.
+#     cursor = arangodb.aql.execute('FOR doc IN user_activity RETURN doc')
+#
+#     # Iterate through the cursor to retrieve the documents.
+#     student_names = [document['name'] for document in cursor]
+#
+#     return len(student_names)
 
 
 @app.route('/news/<airline>')
@@ -214,3 +216,64 @@ def update_news():
         subprocess.check_output(['scrapy', 'crawl', airline + '_news', '-o', filename])
 
     return render_template('airlines.html')
+
+# @app.route('/arango')
+# def index():
+#     arangodb.db.collection('user_activity').insert_many([
+#         {'_key': 'Abby', 'age': 22},
+#         {'_key': 'John', 'age': 18},
+#         {'_key': 'Mary', 'age': 21}
+#     ])
+#
+#     # Execute the query
+#     cursor = arangodb.aql.execute(
+#         'FOR s IN students FILTER s.age < @value RETURN s',
+#         bind_vars={'value': 19}
+#     )
+#
+#     # Iterate through the result cursor
+#     # [student['_key'] for student in cursor]
+#     return render_template('search.html')
+
+
+# @app.route('/init_sql')
+# def trypsql():
+#     psqldb.create_all()
+#     psqldb.session.commit()
+#
+#     user1 = Users('user1', 'password', 'user1@example.com', 'user1FName', 'user1LName')
+#     user2 = Users('user2', 'password', 'user2@example.com', 'user2FName', 'user2LName')
+#     psqldb.session.add(user1)
+#     psqldb.session.add(user2)
+#     psqldb.session.commit()
+#     users = psqldb.session.query(Users).all()
+#     return render_template('list_of_users.html', users=users)
+
+
+# @app.route('/test_arangodb')
+# def test_arangodb():
+#     # python-arango
+#     routes_stats = arangodb.collection('routes_stats')
+#
+#     # routes_stats.add_hash_index(fields=['route_id'], unique=True)
+#     routes_stats.insert({'route_id': '2', 'data': "25:08:2018"})
+
+
+# pyArango
+#
+# from pyArango.connection import *
+#
+#
+# routes_stats = arangodb["routes_stats"]
+#
+# #  cannot find good docs, ide does not see methods of objects while working with pyArango
+
+
+# ArangoPy
+#
+# required additional packages and some problems occurs
+
+#
+#
+#
+# return redirect(url_for('login'))

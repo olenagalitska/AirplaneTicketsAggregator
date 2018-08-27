@@ -1,5 +1,6 @@
 import scrapy
 
+
 class Spiderman(scrapy.Spider):
     name = "spiderman"
     start_urls = [
@@ -47,7 +48,9 @@ class Spiderman(scrapy.Spider):
         if info is not None:
             result += "<table>"
             for row in info:
-                result += "<tr> <td> {0} </td> <td> {1} </td> </tr>".format(row.css("th::text, th>a::text").extract_first(), row.css("td::text, td>div::text, td>a::text").extract_first())
+                result += "<tr> <td> {0} </td> <td> {1} </td> </tr>".format(
+                    row.css("th::text, th>a::text").extract_first(),
+                    row.css("td::text, td>div::text, td>a::text").extract_first())
             result += "</table>"
         result += "<br> <hr>"
 
