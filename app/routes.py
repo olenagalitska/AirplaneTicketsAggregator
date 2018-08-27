@@ -188,11 +188,7 @@ def arango_test():
 
 @app.route('/news/<airline>')
 def news_airline(airline):
-    filename = 'json/news.json'
-
-    os.remove(filename)
-
-    subprocess.check_output(['scrapy', 'crawl', airline + '_news', '-o', filename])
+    filename = 'json/' + airline + '_news.json'
 
     with open(filename) as data_file:
         json_data = data_file.read()
@@ -200,3 +196,21 @@ def news_airline(airline):
     arr = json.loads(json_data)
 
     return render_template("news.html", news=arr)
+
+
+@app.route('/updatenews')
+def update_news():
+    airlines = [
+        'wizzair',
+        'uia',
+        'ryanair'
+    ]
+
+    for airline in airlines:
+        filename = 'json/' + airline + '_news.json'
+
+        os.remove(filename)
+
+        subprocess.check_output(['scrapy', 'crawl', airline + '_news', '-o', filename])
+
+    return render_template('airlines.html')
