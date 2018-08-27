@@ -1,16 +1,19 @@
-.top{
+.top {
     background-color: #e0e0e0;
 
 }
-.authbuttons{
+
+.authbuttons {
     margin-left: 8px;
 }
+
 input {
     background: transparent;
     border: none;
     border-bottom: 1px solid #555555;
     text-align: center;
 }
-input:focus{
+
+input:focus {
     outline: none;
 }
