@@ -4,13 +4,13 @@ import json
 
 class RyanairInfoRobber:
     @staticmethod
-    def get_flights(results, depart, arrive, date):
+    def get_flights(results, depart, arrive, date, adults, children, infants, teens):
         data = {
-            'ADT': '1',
-            'TEEN': '0',
-            'CHD': '0',
-            'INF': '0',
-            'DateOut': '2018 - 10 - 27',
+            'ADT': adults,
+            'TEEN': teens,
+            'CHD': children,
+            'INF': infants,
+            'DateOut': date,
             'Origin': depart,
             'Destination': arrive,
             'FlexDaysOut': '0',         # change to check whole month
@@ -22,28 +22,42 @@ class RyanairInfoRobber:
         r = requests.get(url="https://desktopapps.ryanair.com/v4/en-ie/availability",
                          params=data,
                          headers={"content-type": "application/json;charset=UTF-8"})
+        print(r.status_code)
         if r.status_code == 200:
+            date = date + "T00:00:00.000"
             json_response = json.loads(r.text)
             trips = json_response['trips']
-            print(trips)
             for trip in trips:
                 dates = trip['dates']
-                print(dates)
+                for dat in dates:
+                    if dat['dateOut'] == date:
+                        flights = dat['flights']
+                        if len(flights) > 0:
+                            for flight in flights:
+                                fares = flight['regularFare']
+                                fares = fares['fares']
+                                time_depart = flight['time'][0]
+                                time_arrive = flight['time'][1]
+                                json_flight = {
+                                    'airportA': depart,
+                                    'airportB': arrive,
+                                    'airline': 'Ryanair',
+                                    'dateDeparture':time_depart.split('T')[0],
+                                    'dateArrival': time_arrive.split('T')[0],
+                                    'timeDeparture':time_depart.split('T')[1],
+                                    'timeArrival': time_arrive.split('T')[1]
+                                }
+                                json_fares = []
+                                json_types = []
+                                for fare in fares:
+                                    json_fares.append(fare['amount'])
+                                    json_types.append(fare['type'])
+
+                                json_flight['types'] = json_types
+                                json_flight['fares'] = json_fares
+                                results.append(json_flight)
             # flights = json_response['flights']
             # print(flights)
-            # results = []
-            # for flight in flights:
-            #     json_flight = {
-            #         'airportA': depart,
-            #         'airportB': arrive,
-            #         'airline': 'Wizzair',
-            #         'date': flight['departureDateTime']
-            #     }
-            #     fares = flight['fares']
-            #     for fare in fares:
-            #         if fare['bundle'] == 'BASIC' and not fare['wdc']:
-            #             full_price = fare['fullBasePrice']
-            #             json_flight['price'] = full_price['amount']
-            #     results.append(json_flight)
+
             return True
         return None

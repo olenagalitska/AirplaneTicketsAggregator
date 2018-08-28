@@ -1,13 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container">
     {% for result in results %}
-        <p>{{ result.airportA }} -----> {{ result.airportB }}</p>
-        <p>{{ result.airline }}</p>
-        <p>{{ result.date }}</p>
-        <p>{{ result.duration }}</p>
-        <p>{{ result.price }} $</p>
-        <button>save</button>
+        <div class="row">
+            <div class="col-sm-1 col-xs-2 text-center">{{ result.airportA }}</div>
+            <div class="col-sm-1 col-xs-2 text-center">
+                <img src="/static/img/right-arrow.png">
+            </div>
+            <div class="col-sm-1 col-xs-2 text-center">{{ result.airportB }}</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-1 text-center">{{ result.timeDeparture }}</div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-1 text-center">{{ result.timeArrival }}</div>
+        </div>
+        <div class="row my-2">
+            <div class="col-4">
+                <img class="mr-2" src="/static/img/airplane.png">
+                {{ result.airline }}
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-4">
+                <img class="mr-2" src="/static/img/calendar.png">
+                {{ result.dateDeparture }}
+                {% if not result.dateDeparture ==  result.dateArrival %}
+                <img src="/static/img/right-arrow.png">
+                {{ result.dateArrival }}
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="row">
+            <table class="table">
+                <tr class="table-primary">
+                    {% for type in result.types %}
+                    <td>{{type}}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for fare in result.fares %}
+                    <td>{{fare.amount}}  {{fare.currencyCode}}</td>
+                    {% endfor %}
+                </tr>
+            </table>
+         </div>
+        <button class="btn btn-outline-dark">Save</button>
         <hr>
+    </div>
     {% endfor %}
 {% endblock %}
 

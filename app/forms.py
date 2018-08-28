@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, DateField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, DateField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired, ValidationError, Email
 
 from app.models import Users
@@ -19,20 +19,45 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign Up')
 
+    def validate_username(username):
+        user = Users.query.filter_by(username=username).first()
+        if user is not None:
+            raise ValidationError("Please use a different username.")
+
+    def validate_email(email):
+        user = Users.query.filter_by(email=email).first()
+        if user is not None:
+            raise ValidationError("Such email is already in use.")
+
 
 class SearchForm(FlaskForm):
-    departure = SelectField('City A')
-    arrival = SelectField('City B')
-    date = DateField('Departure Date')
+    departure = SelectField('City A', validators=[DataRequired()])
+    arrival = SelectField('City B', validators=[DataRequired()])
+    date = DateField('Departure Date', validators=[DataRequired()])
+    adults = IntegerField("Adults")
+    teens = IntegerField("Teens")
+    infants = IntegerField("Infants")
+    children = IntegerField("Children")
+    seniors = IntegerField("Seniors")
+
+    def validate_adults(adults):
+        if adults < 0 or adults > 10:
+            raise ValidationError("Please pick the number of adults from 0 to 10")
+
+    def validate_teens(teens):
+        if teens < 0 or teens > 10:
+            raise ValidationError("Please pick the number of teens from 0 to 10")
+
+    def validate_children(children):
+        if children < 0 or children > 10:
+            raise ValidationError("Please pick the number of children from 0 to 10")
+
+    def validate_infants(infants):
+        if infants < 0 or infants > 10:
+            raise ValidationError("Please pick the number of infants from 0 to 10")
+
+    def validate_seniors(seniors):
+        if seniors < 0 or seniors > 10:
+            raise ValidationError("Please pick the number of seniors from 0 to 10")
 
 
-def validate_username(username):
-    user = Users.query.filter_by(username=username).first()
-    if user is not None:
-        raise ValidationError("Please use a different username.")
-
-
-def validate_email(email):
-    user = Users.query.filter_by(email=email).first()
-    if user is not None:
-        raise ValidationError("Such email is already in use.")

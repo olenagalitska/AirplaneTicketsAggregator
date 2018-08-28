@@ -4,7 +4,6 @@ from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
 from app.models import Users
 from flask_login import current_user, login_user, logout_user, login_required
-from sqlalchemy import exc
 from werkzeug.urls import url_parse
 import subprocess
 import json, os
@@ -108,6 +107,10 @@ def search():
             "country": "Austria",
             "city": "Vienna",
             "airport": "VIE"
+        }, {
+            "country": "Germany",
+            "city": "Berlin (Schonefeld)",
+            "airport": "SXF"
         }
     ]
     form.departure.choices = [(airport['airport'], airport['city'] + ", " + airport['airport']) for airport in airports]

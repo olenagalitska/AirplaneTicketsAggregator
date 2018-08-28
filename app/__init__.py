@@ -17,6 +17,7 @@ login = LoginManager(app)
 login.login_view = 'login'
 
 client = ArangoClient(protocol='http', host='localhost', port=8529)
+
 sys_db = client.db('_system', username='root', password='')
 if not sys_db.has_database('whatafly'):
     sys_db.create_database('whatafly')

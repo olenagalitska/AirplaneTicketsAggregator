@@ -34,14 +34,22 @@ class Handler:
             results=results,
             depart=search_data.get('departure'),
             arrive=search_data.get('arrival'),
-            date=search_data.get('date')
+            date=search_data.get('date'),
+            adults=str(int(search_data.get('adults')) + int(search_data.get('seniors')) + int(search_data.get('teens'))),
+            children=str(search_data.get('children')),
+            infants = str(search_data.get('infants'))
         )
 
         self.ryanair_info_robber.get_flights(
             results=results,
             depart=search_data.get('departure'),
             arrive=search_data.get('arrival'),
-            date=search_data.get('date')
+            date=search_data.get('date'),
+            adults=str(int(search_data.get('adults')) + int(search_data.get('seniors'))),
+            children=str(search_data.get('children')),
+            infants=str(search_data.get('infants')),
+            teens=str(search_data.get('teens'))
         )
 
+        print(results)
         return results
