@@ -211,11 +211,12 @@ def update_news():
     for airline in airlines:
         filename = 'json/' + airline + '_news.json'
 
-        os.remove(filename)
+        if os.path.exists(filename):
+            os.remove(filename)
 
         subprocess.check_output(['scrapy', 'crawl', airline + '_news', '-o', filename])
 
-    return render_template('airlines.html')
+    return redirect(url_for('airlinesinfo'))
 
 # @app.route('/arango')
 # def index():
