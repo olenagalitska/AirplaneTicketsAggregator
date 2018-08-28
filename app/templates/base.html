@@ -11,7 +11,8 @@
 
 <body class="backcol">
 <div class="top">
-    <nav class="navbar navbar-expand-lg navbar-light  ">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="{{ url_for('search') }}"><img id="logo" src="../static/airplane.svg"></a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -45,7 +46,9 @@
 </div>
 <br>
 
-{% block content %}{% endblock %}
+<div class="container-fluid">
+    {% block content %}{% endblock %}
+</div>
 
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"

@@ -17,3 +17,17 @@ input {
 input:focus {
     outline: none;
 }
+
+#logo {
+    height: 70px;
+    width: auto;
+}
+
+.search-form-card {
+    width: 100px;
+    text-orientation: initial;
+}
+
+.pass {
+    text-decoration: none;
+}
