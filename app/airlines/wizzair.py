@@ -11,7 +11,8 @@ class WizzairInfoRobber:
         r = requests.post(url="https://be.wizzair.com/8.3.0/Api/search/search",
                           json=data,
                           headers={"content-type": "application/json;charset=UTF-8"})
-        # print(r.text)
+        print(r.status_code)
+        print(r.text)
         if r.status_code == 200:
             json_response = json.loads(r.text)
             flights = json_response['outboundFlights']

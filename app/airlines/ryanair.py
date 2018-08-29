@@ -23,6 +23,7 @@ class RyanairInfoRobber:
                          params=data,
                          headers={"content-type": "application/json;charset=UTF-8"})
         print(r.status_code)
+        print(r.text)
         if r.status_code == 200:
             date = date + "T00:00:00.000"
             json_response = json.loads(r.text)
@@ -50,7 +51,10 @@ class RyanairInfoRobber:
                                 json_fares = []
                                 json_types = []
                                 for fare in fares:
-                                    json_fares.append(fare['amount'])
+                                    fare_and_curr = {}
+                                    fare_and_curr['amount'] = fare['amount']
+                                    fare_and_curr['currencyCode'] = 'EUR'
+                                    json_fares.append(fare_and_curr)
                                     json_types.append(fare['type'])
 
                                 json_flight['types'] = json_types
