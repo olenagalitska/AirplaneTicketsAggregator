@@ -50,9 +50,10 @@ body {
     font-size: 20pt;
 }
 
-.search-form-card {
-    width: 100px;
+#route-card {
+    width: 500px;
     color: #FFCB57;
+    height: 150px;
 }
 
 input {
@@ -78,26 +79,29 @@ input:focus {
 #date-img {
     width: 100px;
     height: auto;
-
-    margin-left: auto;
-    margin-right: auto;
+    margin: 20px;
 }
 
 #date-card {
-    margin-left: 0;
-    border-left: none;
     width: 300px;
     color: #555555;
+    height: 150px;
 }
 
-#route-card {
-    margin-right: 0;
-    border-right-style: dotted;
+#pass-card {
+    height: 150px;
+    width: 100%;
+    padding-right: auto;
+    padding-left: auto;
 }
 
-.city {
+.pass {
     display: inline-block;
 }
+
+/*.city {*/
+/*display: inline-block;*/
+/*}*/
 
 .passenger-img {
     margin-left: 10px;
@@ -107,13 +111,24 @@ input:focus {
 }
 
 #cityB {
-    margin-left: 220px;
+    /*margin-left: 220px;*/
     margin-top: 10px;
     color: #EF5830;
 }
 
 #airlines-card {
     color: #555555;
+    height: 300px;
+    width: 400px;
+}
+
+#airline-img {
+    width: 100px;
+    height: auto;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .profile-card {
@@ -144,7 +159,7 @@ input:focus {
     border-color: #EF5830;
 }
 
-.airline-card>h3 {
+.airline-card > h3 {
     text-align: center;
 }
 
@@ -154,7 +169,7 @@ input:focus {
 
 }
 
-.airline-card>a {
+.airline-card > a {
     text-align: center;
     color: #FFCB57;
     font-size: 16pt;
@@ -168,6 +183,6 @@ input:focus {
     color: #FFCB57;
 }
 
-.airline-news-card>p {
+.airline-news-card > p {
     font-size: 10pt;
 }
