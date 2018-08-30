@@ -1,4 +1,4 @@
-from app import app, psqldb, search_handler, arangodb
+from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines
 from flask import render_template, request, url_for, redirect, flash
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
@@ -7,7 +7,8 @@ from flask_login import current_user, login_user, logout_user, login_required
 from sqlalchemy import exc
 from werkzeug.urls import url_parse
 import subprocess
-import json, os
+import json
+import os
 
 
 @app.route('/logout')
@@ -190,32 +191,53 @@ def history():
 
 @app.route('/news/<airline>')
 def news_airline(airline):
-    filename = 'json/' + airline + '_news.json'
+    # get airlines from DB and check if there is such airline
+    # if airline in airlines
 
-    with open(filename) as data_file:
-        json_data = data_file.read()
+    if airline not in list_of_airlines:
+        # TODO: show error page
+        # pass
+        return redirect(url_for('airlinesinfo'))
+    else:
 
-    arr = json.loads(json_data)
+        airline_data = airlines_data_collection.get(airline)
 
-    return render_template("news.html", news=arr)
+        airline_news_data = airline_data['news']
 
+        news = airline_news_data['v.' + str(airline_news_data['latest_version'])]
 
-@app.route('/updatenews')
-def update_news():
-    airlines = [
-        'wizzair',
-        'uia',
-        'ryanair'
-    ]
+        print('news:')
+        print(news)
 
-    for airline in airlines:
         filename = 'json/' + airline + '_news.json'
 
-        if os.path.exists(filename):
-            os.remove(filename)
+        with open(filename) as data_file:
+            json_data = data_file.read()
 
-        subprocess.check_output(['scrapy', 'crawl', airline + '_news', '-o', filename])
+        arr = json.loads(json_data)
 
+        print('arr:')
+        print(arr)
+
+        return render_template("news.html", news=arr)
+
+
+@app.route('/updateairlinesnews')
+def update_airlines_news():
+    # for airline in airlines:
+    #     filename = 'json/' + airline + '_news.json'
+    #
+    #     if os.path.exists(filename):
+    #         os.remove(filename)
+
+    subprocess.check_output(['scrapy', 'crawl', 'airlines_news_spider'])
+
+    return redirect(url_for('airlinesinfo'))
+
+
+@app.route('/updateairlinesinfo')
+def update_airlines_info():
+    subprocess.check_output(['scrapy', 'crawl', 'airlines_info_spider'])
     return redirect(url_for('airlinesinfo'))
 
 # @app.route('/arango')
@@ -278,3 +300,20 @@ def update_news():
 #
 #
 # return redirect(url_for('login'))
+
+
+# @app.route('/test_update_arango')
+# def test_update_arango():
+#     ryanair_news = airlines_data_collection.get('ryanair')
+#     updated_version = int(ryanair_news.get('updated_version'))
+#     print(updated_version)
+#
+#     updated_version += 1
+#
+#     print(ryanair_news)
+#
+#     ryanair_news['updated_version'] = str(updated_version)
+#
+#     airlines_data_collection.update(ryanair_news)
+#
+#     return redirect(url_for('search'))
