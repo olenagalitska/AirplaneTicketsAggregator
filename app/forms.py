@@ -21,9 +21,9 @@ class RegistrationForm(FlaskForm):
 
 
 class SearchForm(FlaskForm):
-    departure = SelectField('City A')
-    arrival = SelectField('City B')
-    date = DateField('Departure Date')
+    departure = SelectField('FROM')
+    arrival = SelectField('TO')
+    date = DateField('DATE')
 
 
 def validate_username(username):

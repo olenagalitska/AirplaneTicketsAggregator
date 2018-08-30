@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+    <p class="heading"> — your results — </p>
     {% for result in results %}
         <p>{{ result.airportA }} -----> {{ result.airportB }}</p>
         <p>{{ result.airline }}</p>

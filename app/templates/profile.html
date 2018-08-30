@@ -1,17 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-    <div>
-        <h5>
-            {{ user.first_name }} {{ user.last_name }}
-        </h5>
-        <p>{{ user.email }}</p>
+    <p class="heading"> — {{ user.first_name }} {{ user.last_name }} — </p>
+    <p style="text-align:center">{{ user.email }}</p>
+
+    <div class="card-deck">
+        <div class="card profile-card">
+            <p>saved flights</p>
+            <img id="sflight-img" src="../static/saved_flight.svg">
+            <form action="profile/saved" method="post">
+                <button class="btn btn-outline-dark gold-button" name="saved">view</button>
+            </form>
+        </div>
+        <div class="card profile-card">
+            <p>search history</p>
+            <img id="rhist-img" src="../static/route_hist.svg">
+            <form action="profile/history" method="post">
+                <button class="btn btn-outline-dark gold-button" name="history">view</button>
+            </form>
+        </div>
     </div>
 
-    <form action="profile/saved" method="post">
-        <button name="saved" type="submit">saved flights</button>
-    </form>
-    <form action="profile/history" method="post">
-        <button name="history" type="submit">route history</button>
-    </form>
+
 {% endblock %}
 

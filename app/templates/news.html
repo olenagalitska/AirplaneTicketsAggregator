@@ -1,9 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for item in news %}
-        <h1>{{ item.heading }}</h1>
-        <p>{{ item.date }}</p>
-        <a href="{{ item.link }}">Read more...</a>
-        <hr>
-    {% endfor %}
+    <p class="heading"><img src="../static/{{ airline }}.svg"></p>
+
+    <div class="card-columns">
+        {% for item in news %}
+            <div class="card airline-news-card mb-3">
+                <h5><a href="{{ item.link }}">{{ item.heading }}</a></h5>
+                <p>{{ item.date }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}
+
+
+{#{% extends "base.html" %}#}
+{#{% block content %}#}
+{#    <p class="heading"><img src="../static/{{ airline }}.svg"></p>#}
+{##}
+{#    <div class="card-group">#}
+{#        {% for i in range(0, 5) %}#}
+{#            <div class="card airline-news-card mb-3">#}
+{#                <h5><a href="{{ news[i].link }}">{{ news[i].heading }}</a></h5>#}
+{#                <p>{{ news[i].date }}</p>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#    <div class="card-group">#}
+{#        {% for i in range(5, 10) %}#}
+{#            <div class="card airline-news-card mb-3">#}
+{#                <h5><a href="{{ news[i].link }}">{{ news[i].heading }}</a></h5>#}
+{#                <p>{{ news[i].date }}</p>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#{% endblock %}#}

@@ -197,7 +197,7 @@ def news_airline(airline):
 
     arr = json.loads(json_data)
 
-    return render_template("news.html", news=arr)
+    return render_template("news.html", news=arr, airline=airline)
 
 
 @app.route('/updatenews')

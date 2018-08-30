@@ -1,10 +1,58 @@
-.top {
-    background-color: #e0e0e0;
-
+body {
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: #555555;
+    font-size: 15pt;
 }
 
-.authbuttons {
+.top {
+    background-color: white;
+    border-bottom: 0.75px dotted gray;
+    font-size: 15pt;
+}
+
+#logo {
+    height: 40px;
+    width: auto;
+}
+
+.auth-buttons {
     margin-left: 8px;
+}
+
+.gold-button {
+    border-color: #FFCB57;
+    color: #FFCB57;
+}
+
+.gold-button:hover {
+    background-color: #FFCB57;
+    border-color: #FFCB57;
+}
+
+.red-button {
+    border-color: #EF5830;
+    color: #EF5830;
+}
+
+.red-button:hover {
+    background-color: #EF5830;
+    border-color: #EF5830;
+}
+
+.card {
+    padding: 20px;
+}
+
+/*------------------------------------------------------------------------------*/
+
+.heading {
+    text-align: center;
+    font-size: 20pt;
+}
+
+.search-form-card {
+    width: 100px;
+    color: #FFCB57;
 }
 
 input {
@@ -18,16 +66,108 @@ input:focus {
     outline: none;
 }
 
-#logo {
-    height: 70px;
-    width: auto;
-}
-
-.search-form-card {
+#route-img {
     width: 100px;
-    text-orientation: initial;
+    height: auto;
+
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.pass {
-    text-decoration: none;
+#date-img {
+    width: 100px;
+    height: auto;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#date-card {
+    margin-left: 0;
+    border-left: none;
+    width: 300px;
+    color: #555555;
+}
+
+#route-card {
+    margin-right: 0;
+    border-right-style: dotted;
+}
+
+.city {
+    display: inline-block;
+}
+
+.passenger-img {
+    margin-left: 10px;
+
+    width: 50px;
+    height: auto;
+}
+
+#cityB {
+    margin-left: 220px;
+    margin-top: 10px;
+    color: #EF5830;
+}
+
+#airlines-card {
+    color: #555555;
+}
+
+.profile-card {
+    text-align: center;
+
+}
+
+#sflight-img {
+    width: 300px;
+    height: auto;
+
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#rhist-img {
+    width: 300px;
+    height: auto;
+
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.airline-card {
+    border-color: #EF5830;
+}
+
+.airline-card>h3 {
+    text-align: center;
+}
+
+.airline-logo {
+    height: auto;
+    width: 100%;
+
+}
+
+.airline-card>a {
+    text-align: center;
+    color: #FFCB57;
+    font-size: 16pt;
+}
+
+.airline-news-card {
+    border-color: #EF5830;
+}
+
+.airline-news-card a {
+    color: #FFCB57;
+}
+
+.airline-news-card>p {
+    font-size: 10pt;
 }

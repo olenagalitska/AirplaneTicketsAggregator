@@ -1,28 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Flight Search</h1>
+    <p class="heading"> — give a try to whatafly — </p>
+    <br>
     <div>
         <form class="needs-validation form-card"
               action="{{ url_for('results') }}" method="post">
             <div class="card-deck">
-                <div class="card search-form-card">
-                    <div class="col-md-4 mb-3">
+                <div class="card search-form-card" id="route-card">
+                    <div class="city">
                         {{ form.hidden_tag() }}
                         <div class="d-flex m-3">
                             <div class="col-sm-3">
                                 {{ form.departure.label }}
-                                {{ form.departure(placeholder="City A", class="form-control form-control-inline", id="cityA", style="width: 200px;") }}
+                                {{ form.departure(placeholder="City A", class="col-15 form-control form-control-inline selectpicker", id="cityA", style="width: 200px;") }}
                             </div>
                         </div>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="d-flex m-3">
-                            <div class="col-sm-3">
+                    <img src="../static/route.svg" id="route-img">
+                    <div class="city" id="cityB">
+                        <div class="d-flex ">
+                            <div class="">
                                 {{ form.arrival.label }}
-                                {{ form.arrival(placeholder="City B", class="form-control form-control-inline", id="cityB", style="width: 200px;") }}
+                                {{ form.arrival(placeholder="City B", class="form-control form-control-inline", style="width: 200px;") }}
                             </div>
                         </div>
                         <div class="valid-feedback">
@@ -30,10 +32,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="card search-form-card">
+                <div class="card search-form-card" id="date-card">
+                    <img src="../static/calendar.svg" id="date-img">
                     <div class="form-check form-check-inline">
                         <div class="col-md-6 mb-3">
-                            {{ form.date.label }}
+                            {#                            {{ form.date.label }}#}
                             {{ form.date(id="departureDate", class="form-control", type="date") }}
                             <div class="invalid-feedback">
                                 Please provide a valid date.
@@ -42,14 +45,22 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="monthSearch">
                             <label class="form-check-label" for="monthSearch">
-                                Check whole month
+                                FLEXIBLE
                             </label>
                         </div>
                     </div>
                 </div>
-                <div class="card search-form-card">
+                <div class="card search-form-card" id="airlines-card">
                     <div class="col-md-4 mb-3">
-                        Airlines
+                        <img src="../static/airline.svg" id="airline-img">
+{#                        <select class="mdb-select colorful-select dropdown-primary" multiple searchable="Search here..">#}
+{#                            <option value="" disabled selected>Choose your country</option>#}
+{#                            <option value="1">Wizz Air</option>#}
+{#                            <option value="2">RyanAir</option>#}
+{#                            <option value="3">Ukrainian International Airlines</option>#}
+{#                            <option value="4">Poland</option>#}
+{#                            <option value="5">Japan</option>#}
+{#                        </select>#}
                         <div class="checkbox">
                             <label><input type="checkbox" value="" checked> Wizz Air</label>
                         </div>
@@ -63,45 +74,48 @@
                 </div>
             </div>
             <div class="card-deck mt-4">
-                <div class="card search-form-card">
-                    <div class="col-md-4 mb-3">
+                <div class="col-md-4 card search-form-card">
+                    <div class="">
                         <label for="passengers">Passengers</label>
                         <div class="form-group row">
+                            <img class="passenger-img" src="../static/parents.svg">
                             <label for="adult" class="col-2 col-form-label card-text">Adult</label>
-                            <div class="col-10">
+                            <div class="col-3">
                                 <input class="form-control" type="number" value="1" id="adult" min="1">
                             </div>
                         </div>
                         <div class="form-group row">
+                            <img class="passenger-img" src="../static/boy.svg">
                             <label for="child" class="col-2 col-form-label card-text">Child</label>
-                            <div class="col-10">
+                            <div class="col-3">
                                 <input class="form-control" type="number" value="0" id="child" min="0">
                             </div>
                         </div>
                         <div class="form-group row">
+                            <img class="passenger-img" src="../static/girl.svg">
                             <label for="teen" class="col-2 col-form-label card-text">Teen</label>
-                            <div class="col-10">
+                            <div class="col-3">
                                 <input class="form-control" type="number" value="0" id="teen" min="0">
                             </div>
                         </div>
                         <div class="form-group row">
+                            <img class="passenger-img" src="../static/baby.svg">
                             <label for="infant" class="col-2 col-form-label card-text">Infant</label>
-                            <div class="col-10">
+                            <div class="col-3">
                                 <input class="form-control" type="number" value="0" id="infant" min="0">
                             </div>
                         </div>
                         <div class="form-group row">
+                            <img class="passenger-img" src="../static/grandparents.svg">
                             <label for="senior" class="col-2 col-form-label card-text">Senior</label>
-                            <div class="col-10">
+                            <div class="col-3">
                                 <input class="form-control" type="number" value="0" id="senior" min="0">
                             </div>
                         </div>
                     </div>
                 </div>
+                <button class="btn btn-outline-dark gold-button" type="submit" onsubmit="results()">Search</button>
             </div>
-
-
-            <button class="btn btn-primary" type="submit" onsubmit="results()">Search</button>
         </form>
 
         <script>
