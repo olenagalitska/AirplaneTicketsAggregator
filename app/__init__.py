@@ -11,6 +11,8 @@ app.config.from_object(Config)
 
 psqldb = SQLAlchemy(app)
 
+# psqldb.create_all()
+
 migrate = Migrate(app, psqldb)
 
 login = LoginManager(app)
@@ -22,10 +24,10 @@ login.login_view = 'login'
 arangodb_client = ArangoClient(protocol='http', host='localhost', port=8529)
 
 sys_db = arangodb_client.db('_system', username='root', password='')
-if not sys_db.has_database('whataflyDB'):
-    sys_db.create_database('whataflyDB')
+if not sys_db.has_database('whatafly'):
+    sys_db.create_database('whatafly')
 
-arangodb = arangodb_client.db('whataflyDB', username='dj', password='passwordTheChosenOne')
+arangodb = arangodb_client.db('whatafly', username='arango_user', password='mkh8JTbE793kNtXr')
 
 airlines_data_collection = arangodb.collection('airlines_data')
 
