@@ -11,6 +11,7 @@ app.config.from_object(Config)
 
 psqldb = SQLAlchemy(app)
 
+
 migrate = Migrate(app, psqldb)
 
 login = LoginManager(app)
@@ -24,15 +25,17 @@ if not sys_db.has_database('whatafly'):
 
 arangodb = client.db('whatafly', username='root', password='')
 
+
+
 # python-arango
 
-from arango import ArangoClient
-
-# Initialize the client for ArangoDB.
-arango_client = ArangoClient(protocol='http', host='localhost', port=8529)
-
-# Connect to "test" database as root user.
-arangodb = arango_client.db('whataflyDB', username='dj', password='passwordTheChosenOne')
+# from arango import ArangoClient
+#
+# # Initialize the client for ArangoDB.
+# arango_client = ArangoClient(protocol='http', host='localhost', port=8529)
+#
+# # Connect to "test" database as root user.
+# arangodb = arango_client.db('whataflyDB', username='dj', password='passwordTheChosenOne')
 
 
 

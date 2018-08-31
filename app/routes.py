@@ -2,7 +2,7 @@ from app import app, psqldb, search_handler, arangodb
 from flask import render_template, request, url_for, redirect, flash
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
-from app.models import Users
+from app.models import Users, Flight
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
@@ -50,9 +50,10 @@ def signup():
 
         try:
             psqldb.session.commit()
-        except Exception:
+        except Exception as e:
             # flash("Duplicate username or email!")
             flash("Some error accured")
+            print(e)
             return redirect(url_for('signup'))
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
@@ -134,6 +135,12 @@ def results():
 def profile():
     return render_template('profile.html', user=current_user)
 
+@app.route('/save', methods=['POST'])
+def save():
+    print(request.form)
+    return "ok"
+
+
 
 @app.route('/profile/saved', methods=['POST'])
 @login_required
@@ -165,30 +172,30 @@ def history():
     return render_template('history.html', routes=routes)
 
 
-# @app.route('/arango')
-# def arango_test():
-#     if arangodb.has_collection('user_activity'):
-#         user_activity = arangodb.collection('user_activity')
-#     else:
-#         user_activity = arangodb.create_collection('user_activity')
-#
-#     # Add a hash index to the collection.
-#     user_activity.add_hash_index(fields=['name'], unique=False)
-#     # Truncate the collection.
-#     user_activity.truncate()
-#
-#     # Insert new documents into the collection.
-#     user_activity.insert({'name': 'jane', 'age': 19})
-#     user_activity.insert({'name': 'josh', 'age': 18})
-#     user_activity.insert({'name': 'jake', 'age': 21})
-#
-#     # Execute an AQL query. This returns a result cursor.
-#     cursor = arangodb.aql.execute('FOR doc IN user_activity RETURN doc')
-#
-#     # Iterate through the cursor to retrieve the documents.
-#     student_names = [document['name'] for document in cursor]
-#
-#     return len(student_names)
+@app.route('/arango')
+def arango_test():
+    if arangodb.has_collection('user_activity'):
+        user_activity = arangodb.collection('user_activity')
+    else:
+        user_activity = arangodb.create_collection('user_activity')
+
+    # Add a hash index to the collection.
+    user_activity.add_hash_index(fields=['name'], unique=False)
+    # Truncate the collection.
+    user_activity.truncate()
+
+    # Insert new documents into the collection.
+    user_activity.insert({'name': 'jane', 'age': 19})
+    user_activity.insert({'name': 'josh', 'age': 18})
+    user_activity.insert({'name': 'jake', 'age': 21})
+
+    # Execute an AQL query. This returns a result cursor.
+    cursor = arangodb.aql.execute('FOR doc IN user_activity RETURN doc')
+
+    # Iterate through the cursor to retrieve the documents.
+    student_names = [document['name'] for document in cursor]
+
+    return len(student_names)
 
 
 @app.route('/news/<airline>')

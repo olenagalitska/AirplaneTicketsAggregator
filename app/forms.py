@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, DateField, SubmitField, SelectField, IntegerField
+from wtforms import StringField, PasswordField, DateField, SubmitField, SelectField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, ValidationError, Email
 
 from app.models import Users
@@ -19,15 +19,15 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign Up')
 
-    def validate_username(username):
-        user = Users.query.filter_by(username=username).first()
-        if user is not None:
-            raise ValidationError("Please use a different username.")
+def validate_username(username):
+    user = Users.query.filter_by(username=username).first()
+    if user is not None:
+        raise ValidationError("Please use a different username.")
 
-    def validate_email(email):
-        user = Users.query.filter_by(email=email).first()
-        if user is not None:
-            raise ValidationError("Such email is already in use.")
+def validate_email(email):
+    user = Users.query.filter_by(email=email).first()
+    if user is not None:
+        raise ValidationError("Such email is already in use.")
 
 
 class SearchForm(FlaskForm):
@@ -39,6 +39,9 @@ class SearchForm(FlaskForm):
     infants = IntegerField("Infants")
     children = IntegerField("Children")
     seniors = IntegerField("Seniors")
+    wizzair = BooleanField("Wizzair")
+    ryanair = BooleanField("Ryanair")
+    uia = BooleanField("UIA")
 
     def validate_adults(adults):
         if adults < 0 or adults > 10:

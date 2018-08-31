@@ -38,3 +38,24 @@ class Users(psqldb.Model, UserMixin):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+
+class Flight(psqldb.Model):
+    __tablename__ = 'Flights'
+
+    id = psqldb.Column(psqldb.BigInteger, unique=True,  primary_key=True, nullable=False, autoincrement=True)
+    number = psqldb.Column(psqldb.String(64))
+    departure = psqldb.Column(psqldb.String(4))
+    arrival = psqldb.Column(psqldb.String(4))
+    departureTime = psqldb.Column(psqldb.TIMESTAMP)
+    arrivalTime = psqldb.Column(psqldb.TIMESTAMP)
+    airline = psqldb.Column(psqldb.String(256))
+
+    def __init__(self, id, number, departure, arrival, departureTime, arrivalTime, airline):
+        self.id = id
+        self.number = number
+        self.departure = departure
+        self.arrival = arrival
+        self.departureTime = departureTime
+        self.arrivalTime = arrivalTime
+        self.airline = airline

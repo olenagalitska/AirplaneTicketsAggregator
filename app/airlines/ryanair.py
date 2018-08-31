@@ -5,6 +5,7 @@ import json
 class RyanairInfoRobber:
     @staticmethod
     def get_flights(results, depart, arrive, date, adults, children, infants, teens):
+        print(date)
         data = {
             'ADT': adults,
             'TEEN': teens,
@@ -22,16 +23,14 @@ class RyanairInfoRobber:
         r = requests.get(url="https://desktopapps.ryanair.com/v4/en-ie/availability",
                          params=data,
                          headers={"content-type": "application/json;charset=UTF-8"})
-        print(r.status_code)
-        print(r.text)
+        print("ryanair status code = ", r.status_code)
         if r.status_code == 200:
-            date = date + "T00:00:00.000"
             json_response = json.loads(r.text)
             trips = json_response['trips']
             for trip in trips:
                 dates = trip['dates']
                 for dat in dates:
-                    if dat['dateOut'] == date:
+                    if dat['dateOut'] == date + "T00:00:00.000":
                         flights = dat['flights']
                         if len(flights) > 0:
                             for flight in flights:
@@ -46,7 +45,7 @@ class RyanairInfoRobber:
                                     'dateDeparture':time_depart.split('T')[0],
                                     'dateArrival': time_arrive.split('T')[0],
                                     'timeDeparture':time_depart.split('T')[1],
-                                    'timeArrival': time_arrive.split('T')[1]
+                                    'timeArrival': time_arrive.split('T')[1],
                                 }
                                 json_fares = []
                                 json_types = []
@@ -59,9 +58,10 @@ class RyanairInfoRobber:
 
                                 json_flight['types'] = json_types
                                 json_flight['fares'] = json_fares
+                                res_url = 'https://www.ryanair.com/gb/en/booking/home/' + depart \
+                                          + '/' + arrive + '/' + date + '//' + adults +\
+                                          '/' + teens + '/' + children + '/' + infants
+                                json_flight['url'] = res_url
                                 results.append(json_flight)
-            # flights = json_response['flights']
-            # print(flights)
-
             return True
         return None

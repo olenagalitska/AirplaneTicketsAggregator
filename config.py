@@ -3,7 +3,7 @@ import os
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'passwordTheChosenOne'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://dj:postgres@localhost:5432/whataflyDB'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://plane:planekvastaras@localhost:5432/whatafly'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # ARANGO_SETTINGS = {'host': 'localhost', 'port': 8529}

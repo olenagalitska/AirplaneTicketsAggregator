@@ -114,13 +114,16 @@
             <div class="col-md-4 mb-3">
                 Airlines
                 <div class="checkbox">
-                    <label><input type="checkbox" value="" checked> Wizz Air</label>
+                    <!--<label><input type="checkbox" value="" checked> Wizz Air</label>-->
+                    {{form.wizzair(type="checkbox", value="", checked=True)}} {{form.wizzair.label}}
                 </div>
                 <div class="checkbox">
-                    <label><input type="checkbox" value="" checked> RyanAir</label>
+                    <!--<label><input type="checkbox" value="" checked> RyanAir</label>-->
+                    {{form.ryanair(type="checkbox", value="", checked=True)}} {{form.ryanair.label}}
                 </div>
                 <div class="checkbox">
-                    <label><input type="checkbox" value="" checked> Ukrainian International Airlines</label>
+                    <!--<label><input type="checkbox" value="" checked> Ukrainian International Airlines</label>-->
+                    {{form.uia(type="checkbox", value="", checked=True)}} {{form.uia.label}}
                 </div>
             </div>
 
