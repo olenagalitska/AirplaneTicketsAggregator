@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for route in routes %}
-        <p>{{ route.cityA }} -----> {{ route.cityB }}</p>
-        <p>{{ route.date }}</p>
-        <button>view results</button>
-        <button>remove</button>
-        <hr>
-    {% endfor %}
+    <p class="heading"> — route history — </p>
+
+    <div class="card-columns">
+        {% for route in routes %}
+            <div class="card">
+                <p>{{ route.cityA }} -----> {{ route.cityB }}</p>
+                <p>{{ route.date }}</p>
+                <button class="btn btn-outline-dark gold-button" name="history">view results</button>
+                <button class="btn btn-outline-dark red-button" name="history">remove</button>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

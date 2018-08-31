@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for flight in saved_flights %}
-        <p>{{ flight.airportA }} -----> {{ flight.airportB }}</p>
-        <p>{{ flight.airline }}</p>
-        <p>{{ flight.date }}</p>
-        <p>{{ flight.duration }}</p>
-        <p>{{ flight.price }} $</p>
-        <button>remove</button>
-        <hr>
-    {% endfor %}
+    <p class="heading"> — saved flights — </p>
+
+    <div class="card-columns">
+        {% for flight in saved_flights %}
+            <div class="card">
+                <p>{{ flight.airportA }} -----> {{ flight.airportB }}</p>
+                <p>{{ flight.airline }}</p>
+                <p>{{ flight.date }}</p>
+                <p>{{ flight.duration }}</p>
+                <p>{{ flight.price }} $</p>
+                <button class="btn btn-outline-dark red-button" name="history">remove</button>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
