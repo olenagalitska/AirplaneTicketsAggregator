@@ -229,7 +229,7 @@ def news_airline(airline):
         print('arr:')
         print(arr)
 
-        return render_template("news.html", news=arr)
+        return render_template("news.html", news=arr, airline=airline)
 
 
 @app.route('/updateairlinesnews')
