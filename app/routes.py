@@ -137,7 +137,10 @@ def profile():
 
 @app.route('/save', methods=['POST'])
 def save():
-    print(request.form)
+    flight_json = request.form['flight_info']
+    flight = Flight(departure=flight_json['departure'], arrival=flight_json['arrival'],
+                    departureTime=flight_json['departureTime'], arrivalTime=flight_json['arrivalTime'],
+                    airline=flight_json['airline'], number=flight_json['number'])
     return "ok"
 
 
