@@ -2,8 +2,8 @@ import os
 
 
 class Config(object):
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'passwordTheChosenOne'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://helen:postgres@localhost:5432/flights'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'gWfMjs2uXjUd7EeG'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://psql_user:cUgjfhjMuVX4Ydvg@localhost:5432/whatafly'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # ARANGO_SETTINGS = {'host': 'localhost', 'port': 8529}
