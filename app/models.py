@@ -1,12 +1,8 @@
-from app import psqldb
+from app import psqldb, arangodb
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login
 
-
-# from app import app
-# from flask_sqlalchemy import SQLAlchemy
-# psqldb = SQLAlchemy(app)
 
 @login.user_loader
 def load_user(id):

@@ -11,51 +11,86 @@ app.config.from_object(Config)
 
 psqldb = SQLAlchemy(app)
 
+# psqldb.create_all()
 
 migrate = Migrate(app, psqldb)
 
 login = LoginManager(app)
 login.login_view = 'login'
 
-client = ArangoClient(protocol='http', host='localhost', port=8529)
-
-sys_db = client.db('_system', username='root', password='')
-if not sys_db.has_database('whatafly'):
-    sys_db.create_database('whatafly')
-
-arangodb = client.db('whatafly', username='root', password='')
-
-
 
 # python-arango
 
-# from arango import ArangoClient
+# Initialize the client for ArangoDB.
+arangodb_client = ArangoClient(protocol='http', host='localhost', port=8529)
+
+sys_db = arangodb_client.db('_system', username='root', password='')
+if not sys_db.has_database('whatafly'):
+    sys_db.create_database('whatafly')
+
+arangodb = arangodb_client.db('whatafly', username='arango_user', password='mkh8JTbE793kNtXr')
+
+airlines_data_collection = arangodb.collection('airlines_data')
+
+list_of_airlines = []
+
+cursor_list_of_airlines = airlines_data_collection.keys()
+
+print('cursor list of airlines: ')
+for airline in cursor_list_of_airlines:
+    print(airline)
+    list_of_airlines.append(airline)
+
+# start_urls = []
 #
-# # Initialize the client for ArangoDB.
-# arango_client = ArangoClient(protocol='http', host='localhost', port=8529)
+# print('list of airlines: ')
+# for airline in list_of_airlines:
+#     print(airline)
+#     airline_news = airlines_data_collection.get(airline)
+#     print('link:')
+#     link = airline_news.get('news_link')
+#     print(link)
+#     print()
+#     start_urls.append(link)
 #
-# # Connect to "test" database as root user.
-# arangodb = arango_client.db('whataflyDB', username='dj', password='passwordTheChosenOne')
-
-
-
-# pyArango
 #
-# from pyArango.connection import *
-# arangodb_connection = Connection(username="dj", password="passwordTheChosenOne")
-# arangodb = arangodb_connection.databases["whataflyDB"]
-
-
-
-
-# ArangoPy
 #
-# from arangodb.api import Client
+# print('urls:')
+# for url in start_urls:
+#     print(url)
+
+# airline_data = airlines_data_collection.get(airline)
+# airline_news_data = airline_data['news']
+# self.start_urls.append((airline_news_data['links'])['news_link'])
 #
-# client = Client(hostname='localhost')
+#
 
 
-
+# airline_data = airlines_data_collection.get('uia')
+#
+# airline_news_data = airline_data['news']
+#
+# print('airline_news_data: ')
+# print(airline_news_data)
+# print()
+#
+# print('airline_news_data["latest_version"]: ')
+# print(airline_news_data['latest_version'])
+# print()
+#
+# print('airline_news_data["selectors"]: ')
+# print(airline_news_data['selectors'])
+# print()
+#
+#
+# print('news: ')
+# news = airline_news_data['v.' + str(airline_news_data['latest_version'])]
+# print(news)
+# print()
+#
+# print('links:')
+# print(airline_data['links'])
+# print()
 
 
 search_handler = Handler()
