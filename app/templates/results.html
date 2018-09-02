@@ -3,6 +3,9 @@
     <script>
         function save(flight) {
             console.log("in save")
+            console.log(flight)
+            flight = flight.replace(/\'/g, '"');
+            console.log(flight)
             $.post('/save', {
                 flight_info: flight
             }).done(

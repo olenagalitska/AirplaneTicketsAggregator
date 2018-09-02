@@ -34,12 +34,12 @@ airlines_data_collection = arangodb.collection('airlines_data')
 
 list_of_airlines = []
 
-cursor_list_of_airlines = airlines_data_collection.keys()
-
-print('cursor list of airlines: ')
-for airline in cursor_list_of_airlines:
-    print(airline)
-    list_of_airlines.append(airline)
+# cursor_list_of_airlines = airlines_data_collection.keys()
+#
+# print('cursor list of airlines: ')
+# for airline in cursor_list_of_airlines:
+#     print(airline)
+#     list_of_airlines.append(airline)
 
 # start_urls = []
 #

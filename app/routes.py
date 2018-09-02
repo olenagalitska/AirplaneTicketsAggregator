@@ -7,6 +7,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
 import json
+from flask import jsonify
 import os
 
 
@@ -138,11 +139,28 @@ def profile():
 
 @app.route('/save', methods=['POST'])
 def save():
-    flight_json = request.form['flight_info']
-    flight = Flight(departure=flight_json['departure'], arrival=flight_json['arrival'],
-                    departureTime=flight_json['departureTime'], arrivalTime=flight_json['arrivalTime'],
+    flight_json = request.form["flight_info"]
+    flight_json = json.loads(flight_json)
+    flight = Flight(departure=flight_json['airportA'], arrival=flight_json['airportB'],
+                    departureTime=flight_json['dateDeparture'] + 'T' + flight_json['timeDeparture'],
+                    arrivalTime=flight_json['dateArrival'] + 'T' + flight_json['timeArrival'],
                     airline=flight_json['airline'], number=flight_json['number'])
-    return "ok"
+    flight_check = Flight.query.filter_by(departureTime=flight.departureTime, arrivalTime=flight.arrivalTime,
+                                          number=flight.number, airline=flight.airline).first()
+    if flight_check is None:
+        print("not None")
+        try:
+            psqldb.session.add(flight)
+        except:
+            flash("Unable to add user to db")
+            return "fail"
+        try:
+            psqldb.session.commit()
+        except Exception as e:
+            flash("Some error accured")
+            print(e)
+            return "fail"
+    return "success"
 
 
 
