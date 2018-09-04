@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from arango import ArangoClient
 from app.airlines.handler import Handler
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -35,6 +36,8 @@ airlines_data_collection = arangodb.collection('airlines_data')
 list_of_airlines = []
 
 cursor_list_of_airlines = airlines_data_collection.keys()
+
+mail = Mail(app)
 
 print('cursor list of airlines: ')
 for airline in cursor_list_of_airlines:

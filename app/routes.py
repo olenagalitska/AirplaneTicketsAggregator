@@ -1,5 +1,6 @@
-from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines
+from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail
 from flask import render_template, request, url_for, redirect, flash
+from flask_mail import Message
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
 from app.models import Users, Flight
@@ -34,7 +35,13 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('search')
-        return redirect(next_page)
+
+    msg = Message("Hello",
+                  sender="h.galitskaya@gmail.com",
+                  recipients=["h.galitskaya@gmail.com"])
+
+    mail.send(msg)
+
     return render_template('login.html', form=form)
 
 
@@ -136,11 +143,11 @@ def results():
 def profile():
     return render_template('profile.html', user=current_user)
 
+
 @app.route('/save', methods=['POST'])
 def save():
     print(request.form)
     return "ok"
-
 
 
 @app.route('/profile/saved', methods=['POST'])
