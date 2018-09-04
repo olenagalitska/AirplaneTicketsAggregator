@@ -36,10 +36,10 @@ class Users(psqldb.Model, UserMixin):
         return '<User {}>'.format(self.username)
 
 
-class Flight(psqldb.Model):
+class Flights(psqldb.Model):
     __tablename__ = 'Flights'
 
-    id = psqldb.Column(psqldb.BigInteger, unique=True,  primary_key=True, nullable=False, autoincrement=True)
+    id = psqldb.Column(psqldb.BigInteger, unique=True, primary_key=True, nullable=False, autoincrement=True)
     number = psqldb.Column(psqldb.String(64))
     departure = psqldb.Column(psqldb.String(4))
     arrival = psqldb.Column(psqldb.String(4))

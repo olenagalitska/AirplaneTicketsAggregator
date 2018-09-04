@@ -2,7 +2,7 @@ from app import app, psqldb, search_handler, arangodb, airlines_data_collection,
 from flask import render_template, request, url_for, redirect, flash
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
-from app.models import Users, Flight
+from app.models import Users, Flights
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
@@ -62,7 +62,15 @@ def signup():
 
 @app.route('/airlines')
 def airlinesinfo():
-    return render_template('airlines.html')
+    airlines_info = []
+
+    for current_airline in list_of_airlines:
+        current_airline_data = airlines_data_collection.get(current_airline)
+        current_airline_info = current_airline_data.get('info')
+        current_airline_info['airline'] = current_airline
+        airlines_info.append(current_airline_info)
+
+    return render_template('airlines.html', airlines=airlines_info)
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -136,11 +144,11 @@ def results():
 def profile():
     return render_template('profile.html', user=current_user)
 
+
 @app.route('/save', methods=['POST'])
 def save():
     print(request.form)
     return "ok"
-
 
 
 @app.route('/profile/saved', methods=['POST'])
@@ -173,30 +181,30 @@ def history():
     return render_template('history.html', routes=routes)
 
 
-@app.route('/arango')
-def arango_test():
-    if arangodb.has_collection('user_activity'):
-        user_activity = arangodb.collection('user_activity')
-    else:
-        user_activity = arangodb.create_collection('user_activity')
-
-    # Add a hash index to the collection.
-    user_activity.add_hash_index(fields=['name'], unique=False)
-    # Truncate the collection.
-    user_activity.truncate()
-
-    # Insert new documents into the collection.
-    user_activity.insert({'name': 'jane', 'age': 19})
-    user_activity.insert({'name': 'josh', 'age': 18})
-    user_activity.insert({'name': 'jake', 'age': 21})
-
-    # Execute an AQL query. This returns a result cursor.
-    cursor = arangodb.aql.execute('FOR doc IN user_activity RETURN doc')
-
-    # Iterate through the cursor to retrieve the documents.
-    student_names = [document['name'] for document in cursor]
-
-    return len(student_names)
+# @app.route('/arango')
+# def arango_test():
+#     if arangodb.has_collection('user_activity'):
+#         user_activity = arangodb.collection('user_activity')
+#     else:
+#         user_activity = arangodb.create_collection('user_activity')
+#
+#     # Add a hash index to the collection.
+#     user_activity.add_hash_index(fields=['name'], unique=False)
+#     # Truncate the collection.
+#     user_activity.truncate()
+#
+#     # Insert new documents into the collection.
+#     user_activity.insert({'name': 'jane', 'age': 19})
+#     user_activity.insert({'name': 'josh', 'age': 18})
+#     user_activity.insert({'name': 'jake', 'age': 21})
+#
+#     # Execute an AQL query. This returns a result cursor.
+#     cursor = arangodb.aql.execute('FOR doc IN user_activity RETURN doc')
+#
+#     # Iterate through the cursor to retrieve the documents.
+#     student_names = [document['name'] for document in cursor]
+#
+#     return len(student_names)
 
 
 @app.route('/news/<airline>')
@@ -212,24 +220,24 @@ def news_airline(airline):
 
         airline_data = airlines_data_collection.get(airline)
 
-        airline_news_data = airline_data['news']
+        airline_news_data = airline_data['news_data']
 
-        news = airline_news_data['v.' + str(airline_news_data['latest_version'])]
+        news = (airline_news_data['news'])['v.' + str(airline_news_data['latest_version'])]
 
-        print('news:')
+        print('data from db:')
         print(news)
 
-        filename = 'json/' + airline + '_news.json'
+        # filename = 'json/' + airline + '_news.json'
+        #
+        # with open(filename) as data_file:
+        #     json_data = data_file.read()
+        #
+        # arr = json.loads(json_data)
+        #
+        # print('json:')
+        # print(arr)
 
-        with open(filename) as data_file:
-            json_data = data_file.read()
-
-        arr = json.loads(json_data)
-
-        print('arr:')
-        print(arr)
-
-        return render_template("news.html", news=arr, airline=airline)
+        return render_template("news.html", news=news, airline=airline)
 
 
 @app.route('/updateairlinesnews')
@@ -271,14 +279,14 @@ def update_airlines_info():
 
 # @app.route('/init_sql')
 # def trypsql():
-#     psqldb.create_all()
-#     psqldb.session.commit()
+#     # psqldb.create_all()
+#     # psqldb.session.commit()
+#     # user1 = Users('user1', 'password', 'user1@example.com', 'user1FName', 'user1LName')
+#     # user2 = Users('user2', 'password', 'user2@example.com', 'user2FName', 'user2LName')
+#     # psqldb.session.add(user1)
+#     # psqldb.session.add(user2)
+#     # psqldb.session.commit()
 #
-#     user1 = Users('user1', 'password', 'user1@example.com', 'user1FName', 'user1LName')
-#     user2 = Users('user2', 'password', 'user2@example.com', 'user2FName', 'user2LName')
-#     psqldb.session.add(user1)
-#     psqldb.session.add(user2)
-#     psqldb.session.commit()
 #     users = psqldb.session.query(Users).all()
 #     return render_template('list_of_users.html', users=users)
 
