@@ -15,6 +15,7 @@ class Config(object):
     MAIL_USE_SSL = True
     MAIL_USERNAME = 'whatafly2018@gmail.com'
     MAIL_PASSWORD = 'xKygnnDmQRTkKq3h'
+    MAIL_DEFAULT_SENDER = MAIL_USERNAME
 
 
 class ProductionConfig(Config):

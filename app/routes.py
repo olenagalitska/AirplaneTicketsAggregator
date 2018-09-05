@@ -36,12 +36,6 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('search')
 
-    msg = Message("Hello",
-                  sender="h.galitskaya@gmail.com",
-                  recipients=["h.galitskaya@gmail.com"])
-
-    mail.send(msg)
-
     return render_template('login.html', form=form)
 
 
@@ -49,6 +43,7 @@ def login():
 def signup():
     form = RegistrationForm()
     if form.validate_on_submit():
+
         usr = Users(username=form.username.data, password=form.password.data, first_name=form.first_name.data,
                     last_name=form.last_name.data, email=form.email.data)
         try:
@@ -58,12 +53,21 @@ def signup():
 
         try:
             psqldb.session.commit()
+
+            msg_subj = "Hello, " + str(form.first_name.data) + "!"
+            msg = Message(msg_subj, recipients=[form.email.data])
+            msg.html = "<p>welcome to whatafly!</p>" \
+                       "<p>we hope you'll find the best deal with our help</p>" \
+                       "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>"
+
+            mail.send(msg)
         except Exception as e:
             # flash("Duplicate username or email!")
             flash("Some error accured")
             print(e)
             return redirect(url_for('signup'))
         return redirect(url_for('login'))
+
     return render_template('signup.html', form=form)
 
 
