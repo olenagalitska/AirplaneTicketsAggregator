@@ -1,17 +1,21 @@
 from flask import Flask
-
-from app.airlines_news_updater import AirlinesNewsUpdater
-from app.airlines_info_updater import AirlinesInfoUpdater
-from config import Config
+from app.updaters.airlines_news_updater import AirlinesNewsUpdater
+from app.updaters.airlines_info_updater import AirlinesInfoUpdater
+from app.conf.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from arango import ArangoClient
 from app.airlines.handler import Handler
+import logging.config
+import yaml
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
+
+# Initialize PostgreSql database
 psqldb = SQLAlchemy(app)
 
 migrate = Migrate(app, psqldb)
@@ -38,6 +42,23 @@ cursor_list_of_airlines = airlines_data_collection.keys()
 
 for airline in cursor_list_of_airlines:
     list_of_airlines.append(airline)
+
+
+# logging initialization (should be after psqldb init, because it used by logger
+with open('app/conf/logging.yml', 'r') as stream:
+    logging_config = yaml.load(stream)
+logging.config.dictConfig(logging_config)
+
+# create logger
+logger = logging.getLogger('logger')
+
+# example of using logger
+logger.debug('debug message')
+logger.info('info message')
+logger.warn('warn message')
+logger.error('error message')
+logger.critical('critical message')
+
 
 search_handler = Handler()
 

@@ -2,7 +2,7 @@ from app import app, psqldb, search_handler, arangodb, airlines_data_collection,
 from flask import render_template, request, url_for, redirect, flash
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
-from app.models import Users, Flights
+from app.models import User, Flight
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
@@ -25,7 +25,7 @@ def contacts():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        usr = Users.query.filter_by(username=form.username.data).first()
+        usr = User.query.filter_by(username=form.username.data).first()
         print(usr)
         if usr is None or not usr.check_password(form.password.data):
             flash("Error occured. Please try again.")
@@ -42,8 +42,8 @@ def login():
 def signup():
     form = RegistrationForm()
     if form.validate_on_submit():
-        usr = Users(username=form.username.data, password=form.password.data, first_name=form.first_name.data,
-                    last_name=form.last_name.data, email=form.email.data)
+        usr = User(username=form.username.data, password=form.password.data, first_name=form.first_name.data,
+                   last_name=form.last_name.data, email=form.email.data)
         try:
             psqldb.session.add(usr)
         except:
@@ -279,13 +279,13 @@ def update_airlines_info():
 
 # @app.route('/init_sql')
 # def trypsql():
-#     # psqldb.create_all()
-#     # psqldb.session.commit()
-#     # user1 = Users('user1', 'password', 'user1@example.com', 'user1FName', 'user1LName')
-#     # user2 = Users('user2', 'password', 'user2@example.com', 'user2FName', 'user2LName')
-#     # psqldb.session.add(user1)
-#     # psqldb.session.add(user2)
-#     # psqldb.session.commit()
+    # psqldb.create_all()
+    # psqldb.session.commit()
+    # user1 = User('user1', 'password', 'user1@example.com', 'user1FName', 'user1LName')
+    # user2 = User('user2', 'password', 'user2@example.com', 'user2FName', 'user2LName')
+    # psqldb.session.add(user1)
+    # psqldb.session.add(user2)
+    # psqldb.session.commit()
 #
 #     users = psqldb.session.query(Users).all()
 #     return render_template('list_of_users.html', users=users)
@@ -335,3 +335,5 @@ def update_airlines_info():
 #     airlines_data_collection.update(ryanair_news)
 #
 #     return redirect(url_for('search'))
+
+

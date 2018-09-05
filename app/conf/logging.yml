@@ -1,0 +1,26 @@
+version: 1
+formatters:
+  simple:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+    stream: ext://sys.stdout
+  file:
+    class: logging.handlers.RotatingFileHandler
+    formatter: simple
+    filename: app/logs/logs.log
+    level: DEBUG
+    maxBytes: 4294967296
+    backupCount: 3
+  db:
+    class: app.PsqlLogHandler.PsqlLogHandler
+    formatter: simple
+    level: DEBUG
+loggers:
+  logger:
+    level: DEBUG
+    handlers: [file, console, db] # (? remove console)
+    propagate: no
