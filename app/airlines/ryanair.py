@@ -20,6 +20,7 @@ class RyanairInfoRobber:
             'ToUs': 'AGREED',
             'exists': 'false'
         }
+        print(data.get("DateOut"))
         r = requests.get(url="https://desktopapps.ryanair.com/v4/en-ie/availability",
                          params=data,
                          headers={"content-type": "application/json;charset=UTF-8"})

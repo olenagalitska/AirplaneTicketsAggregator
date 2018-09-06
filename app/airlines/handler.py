@@ -27,11 +27,9 @@ class Handler:
     #             pass
     #     return results
 
-    def handle(self, search_data):
+    def handle_form(self, search_data):
         results = []
-        print("=======")
-        print(search_data.get('wizzair'))
-        print(search_data.get('ryanair'))
+
         if not search_data.get('wizzair') is None:
             print("coming for wizz")
             self.wizzair_info_robber.get_flights(
@@ -46,6 +44,7 @@ class Handler:
             )
         if not search_data.get('ryanair') is None:
             print("coming for ryan")
+
             self.ryanair_info_robber.get_flights(
                 results=results,
                 depart=search_data.get('departure'),
@@ -55,6 +54,39 @@ class Handler:
                 children=str(search_data.get('children')),
                 infants=str(search_data.get('infants')),
                 teens=str(search_data.get('teens'))
+            )
+
+        print(results)
+        return results
+
+    def handle(self, search_data):
+        results = []
+
+        if search_data.wizzair:
+            print("coming for wizz")
+            self.wizzair_info_robber.get_flights(
+                results=results,
+                depart=search_data.departure,
+                arrive=search_data.arrival,
+                date=search_data.date,
+                adults=str(
+                    int(search_data.adults) + int(search_data.seniors) + int(search_data.teens)),
+                children=str(search_data.children),
+                infants=str(search_data.infants)
+            )
+        if search_data.ryanair:
+            print("coming for ryan")
+            print(search_data)
+
+            self.ryanair_info_robber.get_flights(
+                results=results,
+                depart=search_data.departure,
+                arrive=search_data.arrival,
+                date=search_data.date,
+                adults=str(int(search_data.adults) + int(search_data.seniors)),
+                children=str(search_data.children),
+                infants=str(search_data.infants),
+                teens=str(search_data.teens)
             )
 
         print(results)

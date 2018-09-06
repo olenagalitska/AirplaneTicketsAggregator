@@ -1,4 +1,4 @@
-from app import psqldb, arangodb
+from app import psqldb
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login

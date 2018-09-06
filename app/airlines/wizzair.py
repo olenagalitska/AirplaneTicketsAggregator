@@ -10,7 +10,7 @@ class WizzairInfoRobber:
                 "adultCount": adults, "childCount": children, "infantCount": infants, "wdc": 'true'}
         r = requests.post(url="https://be.wizzair.com/8.3.0/Api/search/search",
                           json=data,
-                          headers={"content-type": "application/json;charset=UTF-8"})
+                          headers={"content-type": 'application/json;charset=UTF-8'})
         print(" wizzair status code = ", r.status_code)
         if r.status_code == 200:
             json_response = json.loads(r.text)

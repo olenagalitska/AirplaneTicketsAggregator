@@ -1,8 +1,8 @@
-from app import search_handler, arangodb, psqldb
-import threading
-import time
-from app.models import Flight
-from app.mail_sender import MailSender
+# from app import search_handler, arangodb, psqldb
+# import threading
+# import time
+# from app.models import Flight
+# from app.mail_sender import MailSender
 
 
 class FlightsUpdater(threading.Thread):
@@ -41,7 +41,7 @@ class FlightsUpdater(threading.Thread):
                         search_data.ryanair = True
                     if flight.airline == 'uia':
                         search_data.uia = True
-                result = search_handler.handle(search_data)[0]
+                result = search_handler.handle_form(search_data)[0]
 
                 if result.fares.ADT != flight.price:
                     print("Update Found!")
