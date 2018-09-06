@@ -1,7 +1,7 @@
+from app import search_handler, arangodb, psqldb
 import threading
 import time
-from app import search_handler, arangodb, psqldb
-from app.models import Users, Flight
+from app.models import Flight
 from app.mail_sender import MailSender
 
 
@@ -44,11 +44,12 @@ class FlightsUpdater(threading.Thread):
                 result = search_handler.handle(search_data)[0]
 
                 if result.fares.ADT != flight.price:
+                    print("Update Found!")
                     old_price = flight.price
                     flight.price = result.fares.ADT
                     psqldb.session.commit()
 
-                    MailSender.send_update(flight.id, old_price, flight.price)
+                    MailSender.send_update(flight.id, old_price)
 
         time.sleep(60 * 60)
 

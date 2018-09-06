@@ -7,12 +7,10 @@ from arango import ArangoClient
 from app.airlines.handler import Handler
 from flask_mail import Mail
 
-from app.flights_updater import FlightsUpdater
-from app import routes
-
 
 app = Flask(__name__)
 app.config.from_object(Config)
+from app.flights_updater import FlightsUpdater
 
 psqldb = SQLAlchemy(app)
 
@@ -104,6 +102,9 @@ search_handler = Handler()
 
 flights_updater = FlightsUpdater("Flights Updater")
 flights_updater.start()
+
+
+from app import routes
 
 if __name__ == '__main__':
     app.run(debug=True)

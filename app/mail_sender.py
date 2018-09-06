@@ -1,12 +1,26 @@
-from app import Mail
+from app import mail, arangodb
+from app.models import Users, Flight
+from flask_mail import Message
+
 
 class MailSender():
 
-    def send_update(self, flight_id, old_price, new_price):
-        msg_subj = "Hello, " + str(form.first_name.data) + "!"
-        msg = Message(msg_subj, recipients=[form.email.data])
-        msg.html = "<p>welcome to whatafly!</p>" \
-                   "<p>we hope you'll find the best deal with our help</p>" \
-                   "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>"
+    def send_update(self, flight_id, old_price):
+        saved_flights = arangodb.collection('saved_flights')
+        users = saved_flights['users']
+
+        recipients = []
+        for user_id in users:
+            user = Users.query.get(user_id)
+            recipients.push(user.email)
+
+        flight = Flight.query.get(flight_id)
+        msg_subj = "Price for your flight has changed!"
+        msg = Message(msg_subj, recipients=recipients)
+        msg.html = "<p>" + flight.departure + "---->" + flight.arrival + "</p>" \
+                "<p>" + flight.airline + "</p>" \
+                "<p>" + flight.departureTime + " - " + flight.arrivalTime + "</p>" \
+                 "<p> Old price: " + old_price + "</p>" \
+                 "<p> New price: " + flight.price + "</p>"
 
         mail.send(msg)
