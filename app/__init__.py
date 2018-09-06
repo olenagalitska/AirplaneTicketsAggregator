@@ -7,6 +7,10 @@ from arango import ArangoClient
 from app.airlines.handler import Handler
 from flask_mail import Mail
 
+from app.flights_updater import FlightsUpdater
+from app import routes
+
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
@@ -26,6 +30,7 @@ login.login_view = 'login'
 arangodb_client = ArangoClient(protocol='http', host='localhost', port=8529)
 
 sys_db = arangodb_client.db('_system', username='root', password='')
+mail = Mail(app)
 if not sys_db.has_database('whatafly'):
     sys_db.create_database('whatafly')
 
@@ -37,11 +42,9 @@ list_of_airlines = []
 
 cursor_list_of_airlines = airlines_data_collection.keys()
 
-mail = Mail(app)
-
-print('cursor list of airlines: ')
+# print('cursor list of airlines: ')
 for airline in cursor_list_of_airlines:
-    print(airline)
+    # print(airline)
     list_of_airlines.append(airline)
 
 # start_urls = []
@@ -98,7 +101,9 @@ for airline in cursor_list_of_airlines:
 
 search_handler = Handler()
 
-from app import routes
+
+flights_updater = FlightsUpdater("Flights Updater")
+flights_updater.start()
 
 if __name__ == '__main__':
     app.run(debug=True)

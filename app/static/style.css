@@ -186,3 +186,18 @@ input:focus {
 .airline-news-card > p {
     font-size: 10pt;
 }
+
+#error-page {
+    text-align: center;
+    margin-top: 200px;
+    color: #EF5830;
+}
+
+#error-page img {
+    width: 200px;
+    height: auto;
+}
+
+#error-page a {
+    color: #FFCB57;
+}

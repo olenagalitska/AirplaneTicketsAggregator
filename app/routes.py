@@ -124,6 +124,16 @@ def search():
             "country": "Germany",
             "city": "Berlin (Schonefeld)",
             "airport": "SXF"
+        },
+        {
+            "country": "Cyprus",
+            "city": "Larnaca",
+            "airport": "LCA"
+        },
+        {
+            "country": "Ukraine",
+            "city": "Kyiv",
+            "airport": "IEV"
         }
     ]
     form.departure.choices = [(airport['airport'], airport['city'] + ", " + airport['airport']) for airport in airports]
@@ -157,16 +167,29 @@ def save():
 @app.route('/profile/saved', methods=['POST'])
 @login_required
 def saved():
-    flights = [
-        {
-            "airportA": "KBP",
-            "airportB": "FRA",
-            "airline": "Ryan Air",
-            "date": datetime.datetime(2018, 9, 1, 20, 34),
-            "duration": "3:00",
-            "price": "43"
-        }
-    ]
+    user_activity = arangodb.collection('user_activity')
+
+    user_id = current_user.get_id()
+    print(user_id)
+    user_data = user_activity.get(str(user_id))
+    print(user_data)
+    flights = []
+
+    for flight_id in user_data['saved_flights']:
+        flight = Flight.query.get(flight_id)
+        flights.append(flight)
+
+    # flights = [
+    #     {
+    #         "airportA": "KBP",
+    #         "airportB": "FRA",s
+    #         "airline": "Ryan Air",
+    #         "date": datetime.datetime(2018, 9, 1, 20, 34),
+    #         "duration": "3:00",
+    #         "price": "43"
+    #     }
+    # ]
+
     return render_template('saved.html', saved_flights=flights)
 
 
@@ -260,6 +283,12 @@ def update_airlines_news():
 def update_airlines_info():
     subprocess.check_output(['scrapy', 'crawl', 'airlines_info_spider'])
     return redirect(url_for('airlinesinfo'))
+
+# ---------------------------------------------------------------------------------
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 # @app.route('/arango')
 # def index():

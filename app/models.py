@@ -29,6 +29,10 @@ class Users(psqldb.Model, UserMixin):
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
+    def get_id(self):
+        """Return the email address to satisfy Flask-Login's requirements."""
+        return self.id
+
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
@@ -37,7 +41,7 @@ class Users(psqldb.Model, UserMixin):
 
 
 class Flight(psqldb.Model):
-    __tablename__ = 'Flights'
+    __tablename__ = 'flights'
 
     id = psqldb.Column(psqldb.BigInteger, unique=True,  primary_key=True, nullable=False, autoincrement=True)
     number = psqldb.Column(psqldb.String(64))
@@ -46,8 +50,9 @@ class Flight(psqldb.Model):
     departureTime = psqldb.Column(psqldb.TIMESTAMP)
     arrivalTime = psqldb.Column(psqldb.TIMESTAMP)
     airline = psqldb.Column(psqldb.String(256))
+    price = psqldb.Column(psqldb.Float)
 
-    def __init__(self, id, number, departure, arrival, departureTime, arrivalTime, airline):
+    def __init__(self, id, number, departure, arrival, departureTime, arrivalTime, airline, price):
         self.id = id
         self.number = number
         self.departure = departure
@@ -55,3 +60,4 @@ class Flight(psqldb.Model):
         self.departureTime = departureTime
         self.arrivalTime = arrivalTime
         self.airline = airline
+        self.price = price

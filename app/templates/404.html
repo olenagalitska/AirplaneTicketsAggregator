@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{#{% block title %}Page Not Found{% endblock %}#}
+{% block content %}
+    <div id="error-page">
+        <h1><b>BOOM!</b></h1>
+        <p>What you were looking for is just not here.</p>
+        <img src="../static/bomb.svg">
+{#        <p><a href="{{ url_for('search') }}">go somewhere nice</a></p>#}
+    </div>
+{% endblock %}
