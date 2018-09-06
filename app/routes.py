@@ -7,8 +7,6 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
 import json
-from flask import jsonify
-import os
 
 
 @app.route('/logout')
@@ -139,27 +137,51 @@ def profile():
 
 @app.route('/save', methods=['POST'])
 def save():
-    flight_json = request.form["flight_info"]
-    flight_json = json.loads(flight_json)
-    flight = Flight(departure=flight_json['airportA'], arrival=flight_json['airportB'],
-                    departureTime=flight_json['dateDeparture'] + 'T' + flight_json['timeDeparture'],
-                    arrivalTime=flight_json['dateArrival'] + 'T' + flight_json['timeArrival'],
-                    airline=flight_json['airline'], number=flight_json['number'])
-    flight_check = Flight.query.filter_by(departureTime=flight.departureTime, arrivalTime=flight.arrivalTime,
-                                          number=flight.number, airline=flight.airline).first()
-    if flight_check is None:
-        print("not None")
-        try:
-            psqldb.session.add(flight)
-        except:
-            flash("Unable to add user to db")
-            return "fail"
-        try:
-            psqldb.session.commit()
-        except Exception as e:
-            flash("Some error accured")
-            print(e)
-            return "fail"
+    if not current_user.is_anonymous:
+        flight_json = request.form["flight_info"]
+        flight_json = json.loads(flight_json)
+        flight = Flight(departure=flight_json['airportA'], arrival=flight_json['airportB'],
+                        departureTime=flight_json['dateDeparture'] + 'T' + flight_json['timeDeparture'],
+                        arrivalTime=flight_json['dateArrival'] + 'T' + flight_json['timeArrival'],
+                        airline=flight_json['airline'], number=flight_json['number'])
+        flight_check = Flight.query.filter_by(departureTime=flight.departureTime, arrivalTime=flight.arrivalTime,
+                                              number=flight.number, airline=flight.airline).first()
+        if flight_check is None:
+            print("not None")
+            try:
+                psqldb.session.add(flight)
+            except:
+                flash("Unable to add user to db")
+                return "fail"
+            try:
+                psqldb.session.commit()
+                # to get generted id of just inserted
+                flight_check = Flight.query.filter_by(departureTime=flight.departureTime,
+                                                      arrivalTime=flight.arrivalTime,
+                                                      number=flight.number, airline=flight.airline).first()
+            except Exception as e:
+                flash("Some error accured")
+                print(e)
+                return "fail"
+
+        if arangodb.has_collection('user_activity'):
+            user_activity = arangodb.collection('user_activity')
+        else:
+            user_activity = arangodb.create_collection('user_activity')
+
+        if user_activity.get(str(current_user.id)) is None:
+            activity = {'_key' : str(current_user.id), 'flights' : [flight_check.id], 'searches': []}
+            user_activity.insert(activity)
+        else:
+            activity = user_activity.get(str(current_user.id))
+            list_of_flights = activity['flights']
+            list_of_flights.append(flight.id)
+            activity['flights'] = list_of_flights
+            user_activity.update(activity)
+
+    else:
+        return redirect(url_for('login'))
+
     return "success"
 
 
