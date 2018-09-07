@@ -8,7 +8,7 @@ class WizzairInfoRobber:
         data = {"isFlightChange": 'false', "isSeniorOrStudent": 'false',
                 "flightList": [{"departureStation": depart, "arrivalStation": arrive, "departureDate": date}],
                 "adultCount": adults, "childCount": children, "infantCount": infants, "wdc": 'true'}
-        r = requests.post(url="https://be.wizzair.com/8.3.0/Api/search/search",
+        r = requests.post(url="https://be.wizzair.com/8.3.1/Api/search/search",
                           json=data,
                           headers={"content-type": 'application/json;charset=UTF-8'})
         print(" wizzair status code = ", r.status_code)

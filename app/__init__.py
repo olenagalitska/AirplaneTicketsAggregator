@@ -45,8 +45,8 @@ for airline in cursor_list_of_airlines:
 
 search_handler = Handler()
 from app import routes
-flights_updater = routes.FlightsUpdater("Flights Updater")
-flights_updater.start()
+# flights_updater = routes.FlightsUpdater("Flights Updater")
+# flights_updater.start()
 
 
 

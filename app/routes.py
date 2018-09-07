@@ -298,85 +298,6 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 
-# @app.route('/arango')
-# def index():
-#     arangodb.db.collection('user_activity').insert_many([
-#         {'_key': 'Abby', 'age': 22},
-#         {'_key': 'John', 'age': 18},
-#         {'_key': 'Mary', 'age': 21}
-#     ])
-#
-#     # Execute the query
-#     cursor = arangodb.aql.execute(
-#         'FOR s IN students FILTER s.age < @value RETURN s',
-#         bind_vars={'value': 19}
-#     )
-#
-#     # Iterate through the result cursor
-#     # [student['_key'] for student in cursor]
-#     return render_template('search.html')
-
-
-# @app.route('/init_sql')
-# def trypsql():
-#     psqldb.create_all()
-#     psqldb.session.commit()
-#
-#     user1 = Users('user1', 'password', 'user1@example.com', 'user1FName', 'user1LName')
-#     user2 = Users('user2', 'password', 'user2@example.com', 'user2FName', 'user2LName')
-#     psqldb.session.add(user1)
-#     psqldb.session.add(user2)
-#     psqldb.session.commit()
-#     users = psqldb.session.query(Users).all()
-#     return render_template('list_of_users.html', users=users)
-
-
-# @app.route('/test_arangodb')
-# def test_arangodb():
-#     # python-arango
-#     routes_stats = arangodb.collection('routes_stats')
-#
-#     # routes_stats.add_hash_index(fields=['route_id'], unique=True)
-#     routes_stats.insert({'route_id': '2', 'data': "25:08:2018"})
-
-
-# pyArango
-#
-# from pyArango.connection import *
-#
-#
-# routes_stats = arangodb["routes_stats"]
-#
-# #  cannot find good docs, ide does not see methods of objects while working with pyArango
-
-
-# ArangoPy
-#
-# required additional packages and some problems occurs
-
-#
-#
-#
-# return redirect(url_for('login'))
-
-
-# @app.route('/test_update_arango')
-# def test_update_arango():
-#     ryanair_news = airlines_data_collection.get('ryanair')
-#     updated_version = int(ryanair_news.get('updated_version'))
-#     print(updated_version)
-#
-#     updated_version += 1
-#
-#     print(ryanair_news)
-#
-#     ryanair_news['updated_version'] = str(updated_version)
-#
-#     airlines_data_collection.update(ryanair_news)
-#
-#     return redirect(url_for('search'))
-
-
 class FlightsUpdater(threading.Thread):
 
     def __init__(self, name):
@@ -386,7 +307,7 @@ class FlightsUpdater(threading.Thread):
         self.isWorking = True
 
     def run(self):
-        # time.sleep(30)
+        time.sleep(30)
         print('Flights Updater started')
         while self.isWorking:
             saved_flights = arangodb.collection('saved_flights')
