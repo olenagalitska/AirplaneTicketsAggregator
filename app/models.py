@@ -2,14 +2,16 @@ from app import psqldb
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login
+from sqlalchemy.types import DateTime, Integer, String
+from sqlalchemy.sql import func
 
 
 @login.user_loader
 def load_user(id):
-    return Users.query.get(id)
+    return User.query.get(id)
 
 
-class Users(psqldb.Model, UserMixin):
+class User(psqldb.Model, UserMixin):
     __tablename__ = 'Users'
 
     id = psqldb.Column(psqldb.Integer, unique=True, primary_key=True, nullable=False, autoincrement=True)
@@ -40,10 +42,30 @@ class Users(psqldb.Model, UserMixin):
         return '<User {}>'.format(self.username)
 
 
+class Log(psqldb.Model):
+    __tablename__ = 'Logs'
+    id = psqldb.Column(Integer, primary_key=True)  # auto incrementing
+    logger = psqldb.Column(String)  # the name of the logger
+    level = psqldb.Column(String)  # info, debug, or error?
+    msg = psqldb.Column(String)  # any custom log you may have included
+    created_at = psqldb.Column(DateTime, default=func.now())  # the current timestamp
+
+    def __init__(self, logger=None, level=None, msg=None):
+        self.logger = logger
+        self.level = level
+        self.msg = msg
+
+    def __unicode__(self):
+        return self.__repr__()
+
+    def __repr__(self):
+        return "<Log: %s - %s>" % (self.created_at.strftime('%m/%d/%Y-%H:%M:%S'), self.msg[:50])
+
+
 class Flight(psqldb.Model):
     __tablename__ = 'flights'
 
-    id = psqldb.Column(psqldb.BigInteger, unique=True,  primary_key=True, nullable=False, autoincrement=True)
+    id = psqldb.Column(psqldb.BigInteger, unique=True, primary_key=True, nullable=False, autoincrement=True)
     number = psqldb.Column(psqldb.String(64))
     departure = psqldb.Column(psqldb.String(4))
     arrival = psqldb.Column(psqldb.String(4))
