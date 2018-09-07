@@ -40,29 +40,30 @@ class RyanairInfoRobber:
                                 time_depart = flight['time'][0]
                                 time_arrive = flight['time'][1]
                                 json_flight = {
-                                    'airportA': depart,
-                                    'airportB': arrive,
-                                    'airline': 'Ryanair',
-                                    'dateDeparture':time_depart.split('T')[0],
-                                    'dateArrival': time_arrive.split('T')[0],
-                                    'timeDeparture':time_depart.split('T')[1],
-                                    'timeArrival': time_arrive.split('T')[1],
+                                    "airportA": depart,
+                                    "airportB": arrive,
+                                    "airline": 'Ryanair',
+                                    "dateDeparture":time_depart.split('T')[0],
+                                    "dateArrival": time_arrive.split('T')[0],
+                                    "timeDeparture":time_depart.split('T')[1],
+                                    "timeArrival": time_arrive.split('T')[1],
+                                    "number": flight['flightNumber']
                                 }
                                 json_fares = []
                                 json_types = []
                                 for fare in fares:
                                     fare_and_curr = {}
-                                    fare_and_curr['amount'] = fare['amount']
-                                    fare_and_curr['currencyCode'] = 'EUR'
+                                    fare_and_curr["amount"] = fare['amount']
+                                    fare_and_curr["currencyCode"] = 'EUR'
                                     json_fares.append(fare_and_curr)
                                     json_types.append(fare['type'])
 
-                                json_flight['types'] = json_types
-                                json_flight['fares'] = json_fares
+                                json_flight["types"] = json_types
+                                json_flight["fares"] = json_fares
                                 res_url = 'https://www.ryanair.com/gb/en/booking/home/' + depart \
                                           + '/' + arrive + '/' + date + '//' + adults +\
                                           '/' + teens + '/' + children + '/' + infants
-                                json_flight['url'] = res_url
+                                json_flight["url"] = res_url
                                 results.append(json_flight)
             return True
         return None

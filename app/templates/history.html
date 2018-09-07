@@ -1,14 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
+ <script>
+        function remove(key) {
+            // flight = flight.replace(/\'/g, '"');
+            console.log(key)
+            $.post('/remove_history', {
+                key_to_remove: key
+            }).done(
+                function (response) {
+                    console.log(response);
+                    button = document.getElementById(key);
+                    button.innerText = "removed";
+                }
+            ).fail(function () {
+                console.log("fail");
+            });
+
+        }
+    </script>
     <p class="heading"> — route history — </p>
 
     <div class="card-columns">
         {% for route in routes %}
             <div class="card">
-                <p>{{ route.cityA }} -----> {{ route.cityB }}</p>
+                <p>{{ route.departure }} -----> {{ route.arrival }}</p>
                 <p>{{ route.date }}</p>
                 <button class="btn btn-outline-dark gold-button" name="history">view results</button>
-                <button class="btn btn-outline-dark red-button" name="history">remove</button>
+                <button class="btn btn-outline-dark red-button" id="{{route._key}}" name="history" onclick='remove("{{ route._key }}")'>remove</button>
             </div>
         {% endfor %}
     </div>
