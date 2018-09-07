@@ -10,6 +10,13 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
 
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = 'whatafly2018@gmail.com'
+    MAIL_PASSWORD = 'xKygnnDmQRTkKq3h'
+    MAIL_DEFAULT_SENDER = MAIL_USERNAME
+
 
 class ProductionConfig(Config):
     DEBUG = False

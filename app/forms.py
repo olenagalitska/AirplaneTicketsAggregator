@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, DateField, SubmitField, SelectField, IntegerField, BooleanField
-from wtforms.validators import DataRequired, ValidationError, Email
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 
-from app.models import Users
+from app.models import User
 
 
 class LoginForm(FlaskForm):
@@ -17,15 +17,16 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
+    password_repeat = PasswordField('Password Repeat', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
     submit = SubmitField('Sign Up')
 
 def validate_username(username):
-    user = Users.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username).first()
     if user is not None:
         raise ValidationError("Please use a different username.")
 
 def validate_email(email):
-    user = Users.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first()
     if user is not None:
         raise ValidationError("Such email is already in use.")
 
@@ -62,5 +63,7 @@ class SearchForm(FlaskForm):
     def validate_seniors(seniors):
         if seniors < 0 or seniors > 10:
             raise ValidationError("Please pick the number of seniors from 0 to 10")
+
+
 
 
