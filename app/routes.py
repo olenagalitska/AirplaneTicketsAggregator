@@ -258,31 +258,6 @@ def history():
     return render_template('history.html', routes=list_of_searches)
 
 
-@app.route('/arango')
-def arango_test():
-    if arangodb.has_collection('user_activity'):
-        user_activity = arangodb.collection('user_activity')
-    else:
-        user_activity = arangodb.create_collection('user_activity')
-
-    # Add a hash index to the collection.
-    user_activity.add_hash_index(fields=['name'], unique=False)
-    # Truncate the collection.
-    user_activity.truncate()
-
-    # Insert new documents into the collection.
-    user_activity.insert({'name': 'jane', 'age': 19})
-    user_activity.insert({'name': 'josh', 'age': 18})
-    user_activity.insert({'name': 'jake', 'age': 21})
-
-    # Execute an AQL query. This returns a result cursor.
-    cursor = arangodb.aql.execute('FOR doc IN user_activity RETURN doc')
-
-    # Iterate through the cursor to retrieve the documents.
-    student_names = [document['name'] for document in cursor]
-
-    return len(student_names)
-
 
 @app.route('/news/<airline>')
 def news_airline(airline):
@@ -335,80 +310,22 @@ def update_airlines_info():
     subprocess.check_output(['scrapy', 'crawl', 'airlines_info_spider'])
     return redirect(url_for('airlinesinfo'))
 
-# @app.route('/arango')
-# def index():
-#     arangodb.db.collection('user_activity').insert_many([
-#         {'_key': 'Abby', 'age': 22},
-#         {'_key': 'John', 'age': 18},
-#         {'_key': 'Mary', 'age': 21}
-#     ])
-#
-#     # Execute the query
-#     cursor = arangodb.aql.execute(
-#         'FOR s IN students FILTER s.age < @value RETURN s',
-#         bind_vars={'value': 19}
-#     )
-#
-#     # Iterate through the result cursor
-#     # [student['_key'] for student in cursor]
-#     return render_template('search.html')
+@app.route('/remove_history', methods=['POST', 'GET'])
+def remove_history():
+    print(request.form)
+    key = request.form["key_to_remove"]
+    user_activity = arangodb.collection('user_activity')
+    # history_flights = arangodb.collection('history')
+    user_document = user_activity.get(str(current_user.id))
+    search_ids = user_document['searches']
+    for id in search_ids:
+        if id == key:
+            search_ids.remove(id)
+            break;
+    user_document['searches'] = search_ids
+    user_activity.update(user_document)
+    return "ok"
 
 
-# @app.route('/init_sql')
-# def trypsql():
-#     psqldb.create_all()
-#     psqldb.session.commit()
-#
-#     user1 = Users('user1', 'password', 'user1@example.com', 'user1FName', 'user1LName')
-#     user2 = Users('user2', 'password', 'user2@example.com', 'user2FName', 'user2LName')
-#     psqldb.session.add(user1)
-#     psqldb.session.add(user2)
-#     psqldb.session.commit()
-#     users = psqldb.session.query(Users).all()
-#     return render_template('list_of_users.html', users=users)
 
-
-# @app.route('/test_arangodb')
-# def test_arangodb():
-#     # python-arango
-#     routes_stats = arangodb.collection('routes_stats')
-#
-#     # routes_stats.add_hash_index(fields=['route_id'], unique=True)
-#     routes_stats.insert({'route_id': '2', 'data': "25:08:2018"})
-
-
-# pyArango
-#
-# from pyArango.connection import *
-#
-#
-# routes_stats = arangodb["routes_stats"]
-#
-# #  cannot find good docs, ide does not see methods of objects while working with pyArango
-
-
-# ArangoPy
-#
-# required additional packages and some problems occurs
-
-#
-#
-#
-# return redirect(url_for('login'))
-
-
-# @app.route('/test_update_arango')
-# def test_update_arango():
-#     ryanair_news = airlines_data_collection.get('ryanair')
-#     updated_version = int(ryanair_news.get('updated_version'))
-#     print(updated_version)
-#
-#     updated_version += 1
-#
-#     print(ryanair_news)
-#
-#     ryanair_news['updated_version'] = str(updated_version)
-#
-#     airlines_data_collection.update(ryanair_news)
-#
-#     return redirect(url_for('search'))
+    # TODO remove from history if everyone removes ?

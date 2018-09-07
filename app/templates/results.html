@@ -2,11 +2,8 @@
 {% block content %}
     <script>
         function save(flight) {
-            console.log("in save")
-            console.log(flight)
             flight = flight.replace(/\'/g, '"');
-            console.log(flight)
-            $.post('/save', {
+            $.post('/remove_history', {
                 flight_info: flight
             }).done(
                 function (response) {
