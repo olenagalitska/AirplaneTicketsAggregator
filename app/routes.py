@@ -123,6 +123,8 @@ def search():
 @app.route('/results', methods=['POST', 'GET'])
 def results():
     form = request.form
+    key = form.get('departure') + form.get('arrival') + form.get('date') + form.get('adults') + form.get('teens') + \
+          form.get('seniors') + form.get('infants') + form.get('children')
 
     search = {"departure" : form.get('departure'),
               "arrival" : form.get('arrival'),
@@ -132,7 +134,8 @@ def results():
               "seniors" : int(form.get('seniors')),
               "infants" : int(form.get('infants')),
               "children": int(form.get('children')),
-              "airlines" : []
+              "airlines" : [],
+              "_key" : key
               }
     if not form.get('wizzair') is None:
         search['airlines'].append('wizzair')
@@ -149,20 +152,22 @@ def results():
             history = arangodb.collection('history')
         else:
             history = arangodb.create_collection('history')
-        search_found = history.get(search)
+        search_found = history.get(key)
         if search_found is None:
             history.insert(search)
-            search_found = history.get(search)
-        id = search_found._key
+
         if arangodb.has_collection('user_activity'):
             user_activity = arangodb.collection('user_activity')
         else:
             user_activity = arangodb.create_collection('user_activity')
 
+        user_document = user_activity.get(str(current_user.id))
+        list_of_searches = user_document['searches']
+        list_of_searches.append(key)
+        user_document['searches'] = list_of_searches
+        user_activity.update(user_document)
 
-
-
-    results = search_handler.handle(form)
+    results = search_handler.handle(search)
 
     if request.method == 'POST': ''
     return render_template('results.html', results=results)
@@ -241,15 +246,16 @@ def saved():
 @app.route('/profile/history', methods=['POST'])
 @login_required
 def history():
-    routes = [
-        {
-            "cityA": "Kyiv",
-            "cityB": "Frankfurt",
-            "date": datetime.date(2018, 9, 1)
-            #     this object should contain all configuration parameters to start new search
-        }
-    ]
-    return render_template('history.html', routes=routes)
+    if arangodb.has_collection('user_activity'):
+        user_activity = arangodb.collection('user_activity')
+        history_flights = arangodb.collection('history')
+        user_document = user_activity.get(str(current_user.id))
+        search_ids = user_document['searches']
+        list_of_searches = []
+        for id in search_ids:
+            search = history_flights.get(id)
+            list_of_searches.append(search)
+    return render_template('history.html', routes=list_of_searches)
 
 
 @app.route('/arango')
