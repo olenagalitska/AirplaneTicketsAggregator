@@ -18,7 +18,7 @@
 
         }
     </script>
-
+<div class="container">
     <p class="heading"> — your results — </p>
     {% for result in results %}
         <div class="row">
@@ -69,8 +69,8 @@
         <button class="btn btn-outline-dark" onclick='save("{{ result }}")'>Save</button>
         <!--<a href="javascript:save('{{result}}');">Save</a>-->
         <hr>
-        </div>
-    {% endfor %}
 
+    {% endfor %}
+</div>
 {% endblock %}
 

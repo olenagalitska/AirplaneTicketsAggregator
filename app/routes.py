@@ -124,6 +124,44 @@ def search():
 def results():
     form = request.form
 
+    search = {"departure" : form.get('departure'),
+              "arrival" : form.get('arrival'),
+              "date" : form.get('date'),
+              "adults" : int(form.get('adults')),
+              "teens" : int(form.get('teens')),
+              "seniors" : int(form.get('seniors')),
+              "infants" : int(form.get('infants')),
+              "children": int(form.get('children')),
+              "airlines" : []
+              }
+    if not form.get('wizzair') is None:
+        search['airlines'].append('wizzair')
+
+    if not form.get('ryanair') is None:
+        search['airlines'].append('ryanair')
+
+    if not form.get('uia') is None:
+        search['airlines'].append('uia')
+
+    print(search)
+    if not current_user.is_anonymous:
+        if arangodb.has_collection('history'):
+            history = arangodb.collection('history')
+        else:
+            history = arangodb.create_collection('history')
+        search_found = history.get(search)
+        if search_found is None:
+            history.insert(search)
+            search_found = history.get(search)
+        id = search_found._key
+        if arangodb.has_collection('user_activity'):
+            user_activity = arangodb.collection('user_activity')
+        else:
+            user_activity = arangodb.create_collection('user_activity')
+
+
+
+
     results = search_handler.handle(form)
 
     if request.method == 'POST': ''
@@ -189,17 +227,15 @@ def save():
 @app.route('/profile/saved', methods=['POST'])
 @login_required
 def saved():
-    flights = [
-        {
-            "airportA": "KBP",
-            "airportB": "FRA",
-            "airline": "Ryan Air",
-            "date": datetime.datetime(2018, 9, 1, 20, 34),
-            "duration": "3:00",
-            "price": "43"
-        }
-    ]
-    return render_template('saved.html', saved_flights=flights)
+    if arangodb.has_collection('user_activity'):
+        user_activity = arangodb.collection('user_activity')
+        user_document = user_activity.get(str(current_user.id))
+        flights_ids = user_document['flights']
+        list_of_flights = []
+        for id in flights_ids:
+            flight = Flight.query.filter_by(id=id).first()
+            list_of_flights.append(flight)
+    return render_template('saved.html', saved_flights=list_of_flights)
 
 
 @app.route('/profile/history', methods=['POST'])
