@@ -63,7 +63,7 @@ class Log(psqldb.Model):
 
 
 class Flight(psqldb.Model):
-    __tablename__ = 'Flights'
+    __tablename__ = 'flights'
 
     id = psqldb.Column(psqldb.BigInteger, unique=True, primary_key=True, nullable=False, autoincrement=True)
     number = psqldb.Column(psqldb.String(64))

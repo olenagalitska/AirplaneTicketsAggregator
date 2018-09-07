@@ -36,7 +36,7 @@ def login():
         usr = User.query.filter_by(username=form.username.data).first()
 
         print(usr)
-        if usr is None or not usr.check_password(form.password):
+        if usr is None or not usr.check_password(form.password.data):
             flash("Error occured. Please try again.")
             return redirect(url_for('login'))
         login_user(usr)
@@ -198,13 +198,14 @@ def results():
         else:
             user_activity = arangodb.create_collection('user_activity')
 
+        # TODO: create document
         user_document = user_activity.get(str(current_user.id))
         list_of_searches = user_document['searches']
         list_of_searches.append(key)
         user_document['searches'] = list_of_searches
         user_activity.update(user_document)
 
-    results = search_handler.handle(search)
+    results = search_handler.handle_form(search)
 
     if request.method == 'POST': ''
     return render_template('results.html', results=results)
@@ -224,7 +225,7 @@ def save():
         flight = Flight(departure=flight_json['airportA'], arrival=flight_json['airportB'],
                         departureTime=flight_json['dateDeparture'] + 'T' + flight_json['timeDeparture'],
                         arrivalTime=flight_json['dateArrival'] + 'T' + flight_json['timeArrival'],
-                        airline=flight_json['airline'], number=flight_json['number'])
+                        airline=flight_json['airline'], number=flight_json['number'], price=((flight_json['fares'])[0])['amount'])
         flight_check = Flight.query.filter_by(departureTime=flight.departureTime, arrivalTime=flight.arrivalTime,
                                               number=flight.number, airline=flight.airline).first()
         if flight_check is None:

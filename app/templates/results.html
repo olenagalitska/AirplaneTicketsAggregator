@@ -3,7 +3,7 @@
     <script>
         function save(flight) {
             flight = flight.replace(/\'/g, '"');
-            $.post('/remove_history', {
+            $.post('/save', {
                 flight_info: flight
             }).done(
                 function (response) {
