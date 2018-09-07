@@ -67,11 +67,11 @@ logger = logging.getLogger('logger')
 
 search_handler = Handler()
 
-airlines_news_updater = AirlinesNewsUpdater("Airlines News Updater")
-airlines_news_updater.start()
-
-airlines_info_updater = AirlinesInfoUpdater("Airlines Info Updater")
-airlines_info_updater.start()
+# airlines_news_updater = AirlinesNewsUpdater("Airlines News Updater")
+# airlines_news_updater.start()
+#
+# airlines_info_updater = AirlinesInfoUpdater("Airlines Info Updater")
+# airlines_info_updater.start()
 
 from app import routes
 # flights_updater = routes.FlightsUpdater("Flights Updater")

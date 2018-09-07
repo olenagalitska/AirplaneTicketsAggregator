@@ -1,5 +1,5 @@
 from app import app, mail, arangodb
-from app.models import Users, Flight
+from app.models import User, Flight
 from flask_mail import Message
 
 
@@ -15,7 +15,7 @@ class MailSender():
 
         recipients = []
         for user_id in users:
-            user = Users.query.get(user_id)
+            user = User.query.get(user_id)
             recipients.append(user.email)
 
         flight = Flight.query.get(flight_id)
