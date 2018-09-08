@@ -10,6 +10,15 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign In')
 
+def validate_username(form, username):
+    user = User.query.filter_by(username=username.data).first()
+    if user is not None:
+        raise ValidationError("Please use a different username.")
+
+def validate_email(form, email):
+    user = User.query.filter_by(email=email.data).first()
+    if user is not None:
+        raise ValidationError("Such email is already in use.")
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('First name', validators=[DataRequired()])
@@ -19,16 +28,6 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password_repeat = PasswordField('Password Repeat', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
     submit = SubmitField('Sign Up')
-
-def validate_username(username):
-    user = User.query.filter_by(username=username).first()
-    if user is not None:
-        raise ValidationError("Please use a different username.")
-
-def validate_email(email):
-    user = User.query.filter_by(email=email).first()
-    if user is not None:
-        raise ValidationError("Such email is already in use.")
 
 
 class SearchForm(FlaskForm):

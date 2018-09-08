@@ -30,6 +30,8 @@ def contacts():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if not current_user.is_anonymous:
+        return redirect(url_for('profile'))
     form = LoginForm()
     if form.validate_on_submit():
 
@@ -43,7 +45,7 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('search')
-
+        return redirect(next_page)
     return render_template('login.html', form=form)
 
 
@@ -61,18 +63,27 @@ def signup():
         try:
             psqldb.session.commit()
 
-            msg_subj = "Hello, " + str(form.first_name.data) + "!"
-            msg = Message(msg_subj, recipients=[form.email.data])
-            msg.html = "<p>welcome to whatafly!</p>" \
-                       "<p>we hope you'll find the best deal with our help</p>" \
-                       "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>"
-
-            mail.send(msg)
         except Exception as e:
-            # flash("Duplicate username or email!")
             flash("Some error accured")
             print(e)
             return redirect(url_for('signup'))
+
+        msg_subj = "Hello, " + str(form.first_name.data) + "!"
+        msg = Message(msg_subj, recipients=[form.email.data])
+        msg.html = "<p>welcome to whatafly!</p>" \
+                   "<p>we hope you'll find the best deal with our help</p>" \
+                   "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>"
+
+        mail.send(msg)
+
+        user = User.query.filter_by(username=form.username.data).first()
+        if arangodb.has_collection('user_activity'):
+            user_activity = arangodb.collection('user_activity')
+        else:
+            user_activity = arangodb.create_collection('user_activity')
+        activity = {'_key': str(user.id), 'flights': [], 'searches': []}
+        user_activity.insert(activity)
+
         return redirect(url_for('login'))
 
     return render_template('signup.html', form=form)
@@ -193,17 +204,22 @@ def results():
         if search_found is None:
             history.insert(search)
 
-        if arangodb.has_collection('user_activity'):
-            user_activity = arangodb.collection('user_activity')
-        else:
-            user_activity = arangodb.create_collection('user_activity')
 
-        # TODO: create document
+        user_activity = arangodb.collection('user_activity')
+
         user_document = user_activity.get(str(current_user.id))
         list_of_searches = user_document['searches']
-        list_of_searches.append(key)
-        user_document['searches'] = list_of_searches
-        user_activity.update(user_document)
+        already_in_history = False
+
+        # check if already in user's history
+        for user_search in list_of_searches:
+            if user_search == key:
+                already_in_history = True
+                break
+        if not already_in_history:
+            list_of_searches.append(key)
+            user_document['searches'] = list_of_searches
+            user_activity.update(user_document)
 
     results = search_handler.handle_form(search)
 
@@ -246,10 +262,7 @@ def save():
                 print(e)
                 return "fail"
 
-        if arangodb.has_collection('user_activity'):
-            user_activity = arangodb.collection('user_activity')
-        else:
-            user_activity = arangodb.create_collection('user_activity')
+        user_activity = arangodb.create_collection('user_activity')
 
         if user_activity.get(str(current_user.id)) is None:
             activity = {'_key' : str(current_user.id), 'flights' : [flight_check.id], 'searches': []}
@@ -267,32 +280,30 @@ def save():
     return "success"
 
 
-@app.route('/profile/saved', methods=['POST'])
+@app.route('/profile/saved', methods=['POST', 'GET'])
 @login_required
 def saved():
-    if arangodb.has_collection('user_activity'):
-        user_activity = arangodb.collection('user_activity')
-        user_document = user_activity.get(str(current_user.id))
-        flights_ids = user_document['flights']
-        list_of_flights = []
-        for id in flights_ids:
-            flight = Flight.query.filter_by(id=id).first()
-            list_of_flights.append(flight)
+    user_activity = arangodb.collection('user_activity')
+    user_document = user_activity.get(str(current_user.id))
+    flights_ids = user_document['flights']
+    list_of_flights = []
+    for id in flights_ids:
+        flight = Flight.query.filter_by(id=id).first()
+        list_of_flights.append(flight)
     return render_template('saved.html', saved_flights=list_of_flights)
 
 
-@app.route('/profile/history', methods=['POST'])
+@app.route('/profile/history', methods=['POST', 'GET'])
 @login_required
 def history():
-    if arangodb.has_collection('user_activity'):
-        user_activity = arangodb.collection('user_activity')
-        history_flights = arangodb.collection('history')
-        user_document = user_activity.get(str(current_user.id))
-        search_ids = user_document['searches']
-        list_of_searches = []
-        for id in search_ids:
-            search = history_flights.get(id)
-            list_of_searches.append(search)
+    user_activity = arangodb.collection('user_activity')
+    history_flights = arangodb.collection('history')
+    user_document = user_activity.get(str(current_user.id))
+    search_ids = user_document['searches']
+    list_of_searches = []
+    for id in search_ids:
+        search = history_flights.get(id)
+        list_of_searches.append(search)
     return render_template('history.html', routes=list_of_searches)
 
 
