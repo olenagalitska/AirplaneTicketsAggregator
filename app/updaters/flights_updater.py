@@ -1,8 +1,10 @@
-from app import search_handler, arangodb, psqldb
 import threading
 import time
+
+from app import app, arangodb, psqldb, search_handler
 from app.models import Flight
 from app.mail_sender import MailSender
+from app.search_req import SearchRequest
 
 
 class FlightsUpdater(threading.Thread):
@@ -14,7 +16,6 @@ class FlightsUpdater(threading.Thread):
         self.isWorking = True
 
     def run(self):
-        time.sleep(30)
         print('Flights Updater started')
         while self.isWorking:
             saved_flights = arangodb.collection('saved_flights')
@@ -52,8 +53,7 @@ class FlightsUpdater(threading.Thread):
                             flight.price = result.get("fares")[0].get("amount")
                             psqldb.session.commit()
 
-                            mail_sender = MailSender()
-                            mail_sender.send_update(flight_id=flight.id, old_price=old_price)
+                            MailSender.send_update(flight_id=flight.id, old_price=old_price)
 
             time.sleep(60 * 60)
 
