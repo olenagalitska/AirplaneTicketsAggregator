@@ -1,11 +1,13 @@
-from app import app, mail, arangodb
-from app.models import User, Flight
 from flask_mail import Message
 
+from app import app, mail, arangodb
+from app.models import User, Flight
 
-class MailSender():
 
-    def send_update(self, flight_id, old_price):
+class MailSender:
+
+    @staticmethod
+    def send_update(flight_id, old_price):
         saved_flights = arangodb.collection('saved_flights')
 
         users = []
