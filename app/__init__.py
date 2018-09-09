@@ -9,6 +9,7 @@ from arango import ArangoClient
 from app.airlines.handler import Handler
 
 from flask_mail import Mail
+from flask_babel import Babel
 
 # from app.flights_updater import FlightsUpdater
 
@@ -19,6 +20,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 mail = Mail(app)
+babel = Babel(app)
 
 # Initialize PostgreSql database
 psqldb = SQLAlchemy(app)
@@ -67,19 +69,19 @@ start_urls = []
 
 print('list of airlines: ')
 for airline in list_of_airlines:
-    print(airline)
+    # print(airline)
     airline_news = airlines_data_collection.get(airline)
-    print('link:')
+    # print('link:')
     link = airline_news.get('news_link')
-    print(link)
-    print()
+    # print(link)
+    # print()
     start_urls.append(link)
 
 
 
-print('urls:')
-for url in start_urls:
-    print(url)
+# print('urls:')
+# for url in start_urls:
+    # print(url)
 
 airline_data = airlines_data_collection.get(airline)
 airline_news_data = airline_data['news']
@@ -92,27 +94,27 @@ airline_data = airlines_data_collection.get('uia')
 
 airline_news_data = airline_data['news']
 
-print('airline_news_data: ')
-print(airline_news_data)
-print()
-
-print('airline_news_data["latest_version"]: ')
-print(airline_news_data['latest_version'])
-print()
-
-print('airline_news_data["selectors"]: ')
-print(airline_news_data['selectors'])
-print()
-
-
-print('news: ')
+# print('airline_news_data: ')
+# print(airline_news_data)
+# print()
+#
+# print('airline_news_data["latest_version"]: ')
+# print(airline_news_data['latest_version'])
+# print()
+#
+# print('airline_news_data["selectors"]: ')
+# print(airline_news_data['selectors'])
+# print()
+#
+#
+# print('news: ')
 news = airline_news_data['v.' + str(airline_news_data['latest_version'])]
-print(news)
-print()
-
-print('links:')
-print(airline_data['links'])
-print()
+# print(news)
+# print()
+#
+# print('links:')
+# print(airline_data['links'])
+# print()
 
 search_handler = Handler()
 

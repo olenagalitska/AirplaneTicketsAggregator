@@ -17,6 +17,9 @@ class Config(object):
     MAIL_PASSWORD = 'xKygnnDmQRTkKq3h'
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
 
+    LANGUAGES = ['en', 'ukr']
+    BABEL_TRANSLATION_DIRECTORIES = '../translations'
+
 
 class ProductionConfig(Config):
     DEBUG = False

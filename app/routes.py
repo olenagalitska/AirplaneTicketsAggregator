@@ -1,20 +1,27 @@
-from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail
+from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail, babel
 from flask import render_template, request, url_for, redirect, flash
 from flask_mail import Message
 from app.forms import LoginForm, RegistrationForm, SearchForm
-import datetime
+# import datetime
 from app.models import User, Flight, Airport
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
 import json
+from flask_babel import lazy_gettext as _l
 
 from app.search_req import SearchRequest
-import os
+# import os
 
 import threading
 import time
 from app.mail_sender import MailSender
+
+
+@babel.localeselector
+def get_locale():
+    # return request.accept_languages.best_match(app.config['LANGUAGES'])
+    return 'ukr'
 
 
 @app.route('/logout')
@@ -39,7 +46,7 @@ def login():
 
         print(usr)
         if usr is None or not usr.check_password(form.password.data):
-            flash("Error occured. Please try again.")
+            flash(_("Error occured. Please try again."))
             return redirect(url_for('login'))
         login_user(usr)
         next_page = request.args.get('next')
