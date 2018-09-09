@@ -88,7 +88,7 @@ class Airport(psqldb.Model):
     __tablename__ = 'Airports'
 
     id = psqldb.Column(psqldb.BigInteger, unique=True, primary_key=True, nullable=False, autoincrement=True)
-    code = psqldb.Column(psqldb.String(64))
+    code = psqldb.Column(psqldb.String(64), unique=True, nullable=False)
     country = psqldb.Column(psqldb.String(256))
     city = psqldb.Column(psqldb.String(256))
 

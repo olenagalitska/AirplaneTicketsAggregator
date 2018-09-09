@@ -3,7 +3,7 @@ from flask import render_template, request, url_for, redirect, flash
 from flask_mail import Message
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
-from app.models import User, Flight
+from app.models import User, Flight, Airport
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
@@ -108,62 +108,10 @@ def search():
     form = SearchForm()
     print('search')
 
-    airports = [
-        {
-            "country": "Germany",
-            "city": "Frankfurt",
-            "airport": "FRA"
-        },
-        {
-            "country": "Switzerland",
-            "city": "Zurich",
-            "airport": "ZRH"
-        },
-        {
-            "country": "France",
-            "city": "Paris",
-            "airport": "DDG"
-        },
-        {
-            "country": "Sweden",
-            "city": "Stockholm",
-            "airport": "NYO"
-        },
-        {
-            "country": "Ireland",
-            "city": "Dublin",
-            "airport": "DUB"
-        },
-        {
-            "country": "Norway",
-            "city": "Oslo",
-            "airport": "OSL"
-        }, {
-            "country": "Ukraine",
-            "city": "Kyiv",
-            "airport": "KBP"
-        }, {
-            "country": "Austria",
-            "city": "Vienna",
-            "airport": "VIE"
-        }, {
-            "country": "Germany",
-            "city": "Berlin (Schonefeld)",
-            "airport": "SXF"
-        },
-        {
-            "country": "Cyprus",
-            "city": "Larnaca",
-            "airport": "LCA"
-        },
-        {
-            "country": "Ukraine",
-            "city": "Kyiv",
-            "airport": "IEV"
-        }
-    ]
-    form.departure.choices = [(airport['airport'], airport['city'] + ", " + airport['airport']) for airport in airports]
-    form.arrival.choices = [(airport['airport'], airport['city'] + ", " + airport['airport']) for airport in airports]
+    airports = Airport.query.order_by("country").all()
+    print(airports)
+    form.departure.choices = [(airport.code, airport.city + " - " + airport.code + " (" + airport.country + ")") for airport in airports]
+    form.arrival.choices = [(airport.code, airport.city)  for airport in airports]
 
     return render_template('search.html', airports=airports, form=form)
 
