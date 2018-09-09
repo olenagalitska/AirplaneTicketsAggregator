@@ -8,7 +8,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
 import json
-from flask_babel import lazy_gettext as _l
+from flask_babel import lazy_gettext as _l, gettext, get_translations
 
 from app.search_req import SearchRequest
 # import os
@@ -20,8 +20,10 @@ from app.mail_sender import MailSender
 
 @babel.localeselector
 def get_locale():
-    # return request.accept_languages.best_match(app.config['LANGUAGES'])
-    return 'ukr'
+    # translations = [str(translation) for translation in babel.list_translations()]
+    # print(translations)
+    # return request.accept_languages.best_match(translations)
+    return 'ru'
 
 
 @app.route('/logout')
@@ -46,7 +48,7 @@ def login():
 
         print(usr)
         if usr is None or not usr.check_password(form.password.data):
-            flash(_("Error occured. Please try again."))
+            flash(gettext("Error occured. Please try again."))
             return redirect(url_for('login'))
         login_user(usr)
         next_page = request.args.get('next')
