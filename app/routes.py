@@ -111,7 +111,7 @@ def search():
     airports = Airport.query.order_by("country").all()
     print(airports)
     form.departure.choices = [(airport.code, airport.city + " - " + airport.code + " (" + airport.country + ")") for airport in airports]
-    form.arrival.choices = [(airport.code, airport.city)  for airport in airports]
+    form.arrival.choices = [(airport.code, airport.city + " - " + airport.code + " (" + airport.country + ")")  for airport in airports]
 
     return render_template('search.html', airports=airports, form=form)
 
