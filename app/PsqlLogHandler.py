@@ -1,4 +1,5 @@
 import logging.handlers
+
 from app import psqldb
 from app.models import Log
 
