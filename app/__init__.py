@@ -81,6 +81,8 @@ for url in start_urls:
 
 search_handler = Handler()
 
+from app import routes
+
 updaters_starter = UpdaterStarter("Updater Starter")
 updaters_starter.start()
 
