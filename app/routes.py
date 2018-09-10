@@ -13,6 +13,7 @@ from app.search_req import SearchRequest
 from app.dbmanager.saved_flights_manager import SavedFlightsManager
 from app.dbmanager.user_activity_manager import UserActivityManager
 from app.dbmanager.history_manager import HistoryManager
+from app.dbmanager.airlines_manager import AirlinesManager
 
 import threading
 import time
@@ -224,8 +225,10 @@ def save():
                         airline=flight_json['airline'], number=flight_json['number'], price=((flight_json['fares'])[0])['amount'])
         flight_check = Flight.query.filter_by(departureTime=flight.departureTime, arrivalTime=flight.arrivalTime,
                                               number=flight.number, airline=flight.airline).first()
+
+        airlinesManager = AirlinesManager()
+        airlinesManager.increase_count(flight_json['airline'], flight_json['dateArrival'])
         if flight_check is None:
-            print("not None")
             try:
                 psqldb.session.add(flight)
             except:
