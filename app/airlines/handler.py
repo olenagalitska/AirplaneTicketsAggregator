@@ -27,10 +27,10 @@ class Handler:
     #             pass
     #     return results
 
-    def handle_form(self, search_data):
+    def handle_form(self, search_data, airlines):
         results = []
 
-        for airline in search_data["airlines"]:
+        for airline in airlines:
 
             if airline == 'wizzair':
                 print("coming for wizz")
