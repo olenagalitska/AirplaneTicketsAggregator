@@ -27,6 +27,13 @@
                     <a class="nav-link" href="{{ url_for('contacts') }}">{{ _("Contacts") }}</a>
                 </li>
             </ul>
+{#            <div class="right-side">#}
+{#                <select class="selectpicker" data-width="fit">#}
+{#                    <option data-content='<span class="flag-icon flag-icon-us"></span> English'><a href="{{ url_for('set_language', language="en") }}">English</a></option>#}
+{#                    <option data-content='<span class="flag-icon flag-icon-mx"></span> Русский'><a href="{{ url_for('set_language', language="ru") }}">Русский</a></option>#}
+{#                    <option data-content='<span class="flag-icon flag-icon-mx"></span> Deutsch'><a href="{{ url_for('set_language', language="de") }}">Deutsch</a></option>#}
+{#                </select>#}
+{#            </div>#}
             {% if current_user.is_anonymous %}
                 <div class="right-side">
                     <a class="nav-link btn btn-outline-dark auth-buttons gold-button" href="{{ url_for('login') }}">{{ _("Sign
@@ -44,7 +51,8 @@
 
                 </div>
                 <div class="right-side">
-                    <a class="nav-link btn btn-outline-dark auth-buttons red-button" href="{{ url_for('logout') }}">{{ _("Logout") }}</a>
+                    <a class="nav-link btn btn-outline-dark auth-buttons red-button"
+                       href="{{ url_for('logout') }}">{{ _("Logout") }}</a>
                 </div>
             {% endif %}
         </div>

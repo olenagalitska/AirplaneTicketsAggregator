@@ -12,12 +12,26 @@ import threading
 import time
 from app.mail_sender import MailSender
 from flask_babel import _
+from flask import session
 
 
 @babel.localeselector
 def get_locale():
-    translations = [str(translation) for translation in babel.list_translations()]
-    return request.accept_languages.best_match(translations)
+    # try:
+    #     language = session['language']
+    #     print(language)
+    # except KeyError:
+    #     language = None
+    # if language is not None:
+    #     return language
+    return request.accept_languages.best_match(['ru', 'en', 'de'])
+
+
+# @app.route('/language/<language>')
+# def set_language(language=None):
+#     session['language'] = language
+#     get_locale()
+#     return redirect(url_for('search'))
 
 
 @app.route('/logout')
@@ -74,8 +88,8 @@ def signup():
         msg_subj = "_(Hello), " + str(form.first_name.data) + "!"
         msg = Message(msg_subj, recipients=[form.email.data])
         msg.html = _("<p>welcome to whatafly!</p>" \
-                   "<p>we hope you'll find the best deal with our help</p>" \
-                   "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>")
+                     "<p>we hope you'll find the best deal with our help</p>" \
+                     "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>")
 
         mail.send(msg)
 
