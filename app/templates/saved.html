@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <p class="heading"> — saved flights — </p>
+    <p class="heading"> — {{ _("saved flights") }} — </p>
 
     <div class="container">
         {% for flight in saved_flights %}
@@ -26,8 +26,9 @@
                 </div>
             </div>
             <div class="row my-2">
-                <button class="btn btn-outline-dark">Price Stats</button>
+                <button class="btn btn-outline-dark">{{ _("price stats") }}</button>
             </div>
+            <hr>
 
 
         {% endfor %}

@@ -10,13 +10,13 @@
         {% endif %}
     {% endwith %}
     <div class="d-flex justify-content-center">
-        <p class="heading  text-uppercase">Sign up</p>
+        <p class="heading  text-uppercase">{{ _("Sign up") }}</p>
     </div>
     <form method="post">
         {{ form.hidden_tag() }}
         <div class="d-flex justify-content-center m-3">
             <div class="col-sm-3">
-                {{ form.first_name(size=32, placeholder="FIRST NAME") }}
+                {{ form.first_name(size=32, placeholder=_("FIRST NAME")) }}
             </div>
         </div>
 
@@ -28,7 +28,7 @@
 
         <div class="d-flex justify-content-center m-3">
             <div class="col-sm-3">
-                {{ form.last_name(size=32, placeholder="LAST NAME") }}
+                {{ form.last_name(size=32, placeholder=_("LAST NAME")) }}
             </div>
         </div>
 
@@ -40,7 +40,7 @@
 
         <div class="d-flex justify-content-center m-3">
             <div class="col-sm-3">
-                {{ form.email(size=32, placeholder="EMAIL") }}
+                {{ form.email(size=32, placeholder=_("EMAIL")) }}
             </div>
         </div>
         <div class="d-flex justify-content-center m-3">
@@ -51,7 +51,7 @@
         <br>
         <div class="d-flex justify-content-center m-3">
             <div class="col-sm-3">
-                {{ form.username(size=32, placeholder="USERNAME") }}
+                {{ form.username(size=32, placeholder=_("USERNAME")) }}
             </div>
         </div>
 
@@ -63,12 +63,12 @@
 
         <div class="d-flex justify-content-center m-3">
             <div class="col-sm-3">
-                {{ form.password(size=32, placeholder="PASSWORD") }}
+                {{ form.password(size=32, placeholder=_("PASSWORD")) }}
             </div>
         </div>
         <div class="d-flex justify-content-center m-3">
             <div class="col-sm-3">
-                {{ form.password_repeat(size=32, placeholder="REPEAT PASSWORD") }}
+                {{ form.password_repeat(size=32, placeholder=_("REPEAT PASSWORD")) }}
             </div>
         </div>
 

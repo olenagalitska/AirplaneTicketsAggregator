@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <p class="heading"> — our airlines — </p>
+    <p class="heading"> — {{ _("our airlines") }} — </p>
 
     <div class="card-columns">
         {% for item in airlines %}
@@ -8,7 +8,7 @@
                 <img src="../static/{{ item.airline }}.svg" class="airline-logo">
                 <br>
                 <h3> "{{ item.caption }}" </h3>
-                <a class="link" href="news/{{ item.airline }}">READ NEWS</a><br>
+                <a class="link" href="news/{{ item.airline }}">{{ _("READ NEWS") }}</a><br>
 
                 <table>
                     <tr>
@@ -22,17 +22,17 @@
                     </tr>
 
                     <tr>
-                        <th> Callsign</th>
+                        <th> {{ _("Callsign") }}</th>
                         <td> &emsp; {{ item.callsign }} </td>
                     </tr>
 
                     <tr>
-                        <th> Founded</th>
+                        <th> {{ _("Founded") }}</th>
                         <td> &emsp; {{ item.founded }} </td>
                     </tr>
 
                     <tr>
-                        <th> Website</th>
+                        <th> {{ _("Website") }}</th>
                         <td> &emsp; {{ item.url }} </td>
                     </tr>
                 </table>

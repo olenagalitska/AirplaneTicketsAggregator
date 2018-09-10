@@ -2,28 +2,22 @@ from app import app, psqldb, search_handler, arangodb, airlines_data_collection,
 from flask import render_template, request, url_for, redirect, flash
 from flask_mail import Message
 from app.forms import LoginForm, RegistrationForm, SearchForm
-# import datetime
 from app.models import User, Flight, Airport
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
 import json
-from flask_babel import lazy_gettext as _l, gettext, get_translations
-
 from app.search_req import SearchRequest
-# import os
-
 import threading
 import time
 from app.mail_sender import MailSender
+from flask_babel import _
 
 
 @babel.localeselector
 def get_locale():
-    # translations = [str(translation) for translation in babel.list_translations()]
-    # print(translations)
-    # return request.accept_languages.best_match(translations)
-    return 'ru'
+    translations = [str(translation) for translation in babel.list_translations()]
+    return request.accept_languages.best_match(translations)
 
 
 @app.route('/logout')
@@ -48,7 +42,7 @@ def login():
 
         print(usr)
         if usr is None or not usr.check_password(form.password.data):
-            flash(gettext("Error occured. Please try again."))
+            flash(_("Error occured. Please try again."))
             return redirect(url_for('login'))
         login_user(usr)
         next_page = request.args.get('next')
@@ -67,21 +61,21 @@ def signup():
         try:
             psqldb.session.add(usr)
         except:
-            flash("Unable to add user to db")
+            flash(_("Unable to add user to db"))
 
         try:
             psqldb.session.commit()
 
         except Exception as e:
-            flash("Some error accured")
+            flash("_(Some error accured)")
             print(e)
             return redirect(url_for('signup'))
 
-        msg_subj = "Hello, " + str(form.first_name.data) + "!"
+        msg_subj = "_(Hello), " + str(form.first_name.data) + "!"
         msg = Message(msg_subj, recipients=[form.email.data])
-        msg.html = "<p>welcome to whatafly!</p>" \
+        msg.html = _("<p>welcome to whatafly!</p>" \
                    "<p>we hope you'll find the best deal with our help</p>" \
-                   "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>"
+                   "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>")
 
         mail.send(msg)
 
@@ -119,8 +113,10 @@ def search():
 
     airports = Airport.query.order_by("country").all()
     print(airports)
-    form.departure.choices = [(airport.code, airport.city + " - " + airport.code + " (" + airport.country + ")") for airport in airports]
-    form.arrival.choices = [(airport.code, airport.city + " - " + airport.code + " (" + airport.country + ")")  for airport in airports]
+    form.departure.choices = [(airport.code, airport.city + " - " + airport.code + " (" + airport.country + ")") for
+                              airport in airports]
+    form.arrival.choices = [(airport.code, airport.city + " - " + airport.code + " (" + airport.country + ")") for
+                            airport in airports]
 
     return render_template('search.html', airports=airports, form=form)
 
@@ -131,16 +127,16 @@ def results():
     key = form.get('departure') + form.get('arrival') + form.get('date') + form.get('adults') + form.get('teens') + \
           form.get('seniors') + form.get('infants') + form.get('children')
 
-    search = {"departure" : form.get('departure'),
-              "arrival" : form.get('arrival'),
-              "date" : form.get('date'),
-              "adults" : int(form.get('adults')),
-              "teens" : int(form.get('teens')),
-              "seniors" : int(form.get('seniors')),
-              "infants" : int(form.get('infants')),
+    search = {"departure": form.get('departure'),
+              "arrival": form.get('arrival'),
+              "date": form.get('date'),
+              "adults": int(form.get('adults')),
+              "teens": int(form.get('teens')),
+              "seniors": int(form.get('seniors')),
+              "infants": int(form.get('infants')),
               "children": int(form.get('children')),
-              "airlines" : [],
-              "_key" : key
+              "airlines": [],
+              "_key": key
               }
     if not form.get('wizzair') is None:
         search['airlines'].append('wizzair')
@@ -160,7 +156,6 @@ def results():
         search_found = history.get(key)
         if search_found is None:
             history.insert(search)
-
 
         user_activity = arangodb.collection('user_activity')
 
@@ -198,7 +193,8 @@ def save():
         flight = Flight(departure=flight_json['airportA'], arrival=flight_json['airportB'],
                         departureTime=flight_json['dateDeparture'] + 'T' + flight_json['timeDeparture'],
                         arrivalTime=flight_json['dateArrival'] + 'T' + flight_json['timeArrival'],
-                        airline=flight_json['airline'], number=flight_json['number'], price=((flight_json['fares'])[0])['amount'])
+                        airline=flight_json['airline'], number=flight_json['number'],
+                        price=((flight_json['fares'])[0])['amount'])
         flight_check = Flight.query.filter_by(departureTime=flight.departureTime, arrivalTime=flight.arrivalTime,
                                               number=flight.number, airline=flight.airline).first()
         if flight_check is None:
@@ -206,7 +202,7 @@ def save():
             try:
                 psqldb.session.add(flight)
             except:
-                flash("Unable to add user to db")
+                flash(_("Unable to add user to db"))
                 return "fail"
             try:
                 psqldb.session.commit()
@@ -215,14 +211,14 @@ def save():
                                                       arrivalTime=flight.arrivalTime,
                                                       number=flight.number, airline=flight.airline).first()
             except Exception as e:
-                flash("Some error accured")
+                flash(_("Some error accured"))
                 print(e)
                 return "fail"
 
         user_activity = arangodb.create_collection('user_activity')
 
         if user_activity.get(str(current_user.id)) is None:
-            activity = {'_key' : str(current_user.id), 'flights' : [flight_check.id], 'searches': []}
+            activity = {'_key': str(current_user.id), 'flights': [flight_check.id], 'searches': []}
             user_activity.insert(activity)
         else:
             activity = user_activity.get(str(current_user.id))
@@ -242,7 +238,7 @@ def save():
 def saved():
     user_activity = arangodb.collection('user_activity')
     user_document = user_activity.get(str(current_user.id))
-    flights_ids = user_document['flights']
+    flights_ids = user_document['saved_flights']
     list_of_flights = []
     for id in flights_ids:
         flight = Flight.query.filter_by(id=id).first()
@@ -283,28 +279,11 @@ def news_airline(airline):
 
         print('data from db:')
         print(news)
-
-        # filename = 'json/' + airline + '_news.json'
-        #
-        # with open(filename) as data_file:
-        #     json_data = data_file.read()
-        #
-        # arr = json.loads(json_data)
-        #
-        # print('json:')
-        # print(arr)
-
         return render_template("news.html", news=news, airline=airline)
 
 
 @app.route('/updateairlinesnews')
 def update_airlines_news():
-    # for airline in airlines:
-    #     filename = 'json/' + airline + '_news.json'
-    #
-    #     if os.path.exists(filename):
-    #         os.remove(filename)
-
     subprocess.check_output(['scrapy', 'crawl', 'airlines_news_spider'])
 
     return redirect(url_for('airlinesinfo'))
@@ -395,7 +374,5 @@ def remove_history():
     user_document['searches'] = search_ids
     user_activity.update(user_document)
     return "ok"
-
-
 
     # TODO remove from history if everyone removes ?
