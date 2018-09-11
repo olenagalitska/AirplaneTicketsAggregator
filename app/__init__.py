@@ -98,9 +98,10 @@ from app import routes
 # flights_updater = routes.FlightsUpdater("Flights Updater")
 # flights_updater.start()
 
-# from app.airlines_stats_fields_creater import AirlinesStatsFieldsCreater
-# airlines_stats_field_creater = AirlinesStatsFieldsCreater("Airlines Stats Fields Creater")
-# airlines_stats_field_creater.start()
+from app.stats_fields_creater import StatsFieldsCreater
+stats_field_creater = StatsFieldsCreater("Stats Fields Creater")
+stats_field_creater.start()
+
 
 
 if __name__ == '__main__':

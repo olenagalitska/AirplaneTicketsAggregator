@@ -82,3 +82,17 @@ class Flight(psqldb.Model):
         self.arrivalTime = arrivalTime
         self.airline = airline
         self.price = price
+
+
+class Airport(psqldb.Model):
+    __tablename__ = 'Airports'
+
+    id = psqldb.Column(psqldb.BigInteger, unique=True, primary_key=True, nullable=False, autoincrement=True)
+    code = psqldb.Column(psqldb.String(64), unique=True, nullable=False)
+    country = psqldb.Column(psqldb.String(256))
+    city = psqldb.Column(psqldb.String(256))
+
+    def __init__(self, code, country, city):
+        self.code = code
+        self.country = country
+        self.city = city
