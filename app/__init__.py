@@ -8,6 +8,8 @@ from flask_login import LoginManager
 from arango import ArangoClient
 from app.airlines.handler import Handler
 
+
+
 from flask_mail import Mail
 
 # from app.flights_updater import FlightsUpdater
@@ -40,6 +42,9 @@ if not sys_db.has_database('whatafly'):
 arangodb = arangodb_client.db('whatafly', username='arango_user', password='mkh8JTbE793kNtXr')
 
 airlines_data_collection = arangodb.collection('airlines_data')
+# history_collection = arangodb.collection('history')
+# user_activity_collectino = arangodb.collection('user_activity')
+# saved_flights_collection = arangodb.collection('saved_flights')
 
 list_of_airlines = []
 
@@ -93,6 +98,9 @@ from app import routes
 # flights_updater = routes.FlightsUpdater("Flights Updater")
 # flights_updater.start()
 
+# from app.airlines_stats_fields_creater import AirlinesStatsFieldsCreater
+# airlines_stats_field_creater = AirlinesStatsFieldsCreater("Airlines Stats Fields Creater")
+# airlines_stats_field_creater.start()
 
 
 if __name__ == '__main__':
