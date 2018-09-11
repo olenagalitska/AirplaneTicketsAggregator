@@ -68,51 +68,18 @@ start_urls = []
 print('list of airlines: ')
 for airline in list_of_airlines:
     print(airline)
-    airline_news = airlines_data_collection.get(airline)
+    airline_data = airlines_data_collection.get(airline)
+    airline_links = airline_data['links']
     print('link:')
-    link = airline_news.get('news_link')
+    link = airline_links['news_link']
     print(link)
     print()
     start_urls.append(link)
-
-
 
 print('urls:')
 for url in start_urls:
     print(url)
 
-airline_data = airlines_data_collection.get(airline)
-airline_news_data = airline_data['news']
-# self.start_urls.append((airline_news_data['links'])['news_link'])
-
-
-
-
-airline_data = airlines_data_collection.get('uia')
-
-airline_news_data = airline_data['news']
-
-print('airline_news_data: ')
-print(airline_news_data)
-print()
-
-print('airline_news_data["latest_version"]: ')
-print(airline_news_data['latest_version'])
-print()
-
-print('airline_news_data["selectors"]: ')
-print(airline_news_data['selectors'])
-print()
-
-
-print('news: ')
-news = airline_news_data['v.' + str(airline_news_data['latest_version'])]
-print(news)
-print()
-
-print('links:')
-print(airline_data['links'])
-print()
 
 search_handler = Handler()
 
