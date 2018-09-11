@@ -22,6 +22,9 @@ class AirlinesInfoSpider(scrapy.Spider):
 
         airline_data = airlines_data_collection.get(current_airline)
 
+        if 'info' not in airline_data:
+            airline_data['info'] = {}
+
         airline_info_data = airline_data['info']
 
         table = response.css("table.infobox.vcard")[0]
