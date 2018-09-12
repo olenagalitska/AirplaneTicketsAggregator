@@ -12,11 +12,12 @@ class AirlinesManager:
                 year = "year_" + date_parts[0]
                 month = int(date_parts[1])
                 stats = airline_data['stats']
-                year_object = stats[year]
-                if year_object is None:
+                if not year in stats:
                     stats[year] = {"counters" : [0] * 12}
+                    airline_data['stats'] = stats
                     airlines.update(airline_data)
-                    year_object = stats[year]
+
+                year_object = (airline_data['stats'])[year]
                 months = year_object['counters']
                 months[month - 1] = months[month - 1] + 1
                 year_object['counters'] = months
