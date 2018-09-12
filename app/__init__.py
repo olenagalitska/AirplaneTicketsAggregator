@@ -98,9 +98,9 @@ from app import routes
 # flights_updater = routes.FlightsUpdater("Flights Updater")
 # flights_updater.start()
 
-from app.stats_fields_creater import StatsFieldsCreater
-stats_field_creater = StatsFieldsCreater("Stats Fields Creater")
-stats_field_creater.start()
+# from app.stats_fields_creater import StatsFieldsCreater
+# stats_field_creater = StatsFieldsCreater("Stats Fields Creater")
+# stats_field_creater.start()
 
 
 

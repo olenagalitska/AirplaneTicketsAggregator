@@ -39,6 +39,7 @@ class AirlinesManager:
 
             year = "year_" + date_parts[0]
             month = int(date_parts[1])
+            # TODO: check if data has fields stats and so on
             stats = airline_data['stats']
             year_object = stats[year]
             months = year_object['counters']

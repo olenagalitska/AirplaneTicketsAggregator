@@ -1,9 +1,11 @@
 from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail
 from flask import render_template, request, url_for, redirect, flash
 from flask_mail import Message
+
+from app.dbmanager.destinations_stats_manager import DestinationsStatsManager
 from app.forms import LoginForm, RegistrationForm, SearchForm
 import datetime
-from app.models import User, Flight
+from app.models import User, Flight, Airport
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 import subprocess
@@ -82,7 +84,6 @@ def signup():
         user = User.query.filter_by(username=form.username.data).first()
         userActivityManager = UserActivityManager()
         userActivityManager.init_user(user.id)
-
 
         return redirect(url_for('login'))
 
@@ -174,18 +175,37 @@ def results():
     key = form.get('departure') + form.get('arrival') + form.get('date') + form.get('adults') + form.get('teens') + \
           form.get('seniors') + form.get('infants') + form.get('children')
 
-    search = {"departure" : form.get('departure'),
-              "arrival" : form.get('arrival'),
-              "date" : form.get('date'),
-              "adults" : int(form.get('adults')),
-              "teens" : int(form.get('teens')),
-              "seniors" : int(form.get('seniors')),
-              "infants" : int(form.get('infants')),
+    search = {"departure": form.get('departure'),
+              "arrival": form.get('arrival'),
+              "date": form.get('date'),
+              "adults": int(form.get('adults')),
+              "teens": int(form.get('teens')),
+              "seniors": int(form.get('seniors')),
+              "infants": int(form.get('infants')),
               "children": int(form.get('children')),
-              "_key" : key
+              "_key": key
               }
 
-    airlines= []
+    airports = Airport.query.order_by("code").all()
+
+    dest_airport_code = form.get('arrival')
+    date = form.get('date')
+
+    print(dest_airport_code)
+    print(date)
+
+
+    for airport in airports:
+        if airport.code == dest_airport_code:
+            dest_airport = airport
+            break
+
+
+    print(dest_airport.city)
+    destination_stats_manager = DestinationsStatsManager()
+    destination_stats_manager.increase_counter(dest_airport, date)
+
+    airlines = []
     if not form.get('wizzair') is None:
         airlines.append('wizzair')
 
@@ -222,7 +242,8 @@ def save():
         flight = Flight(departure=flight_json['airportA'], arrival=flight_json['airportB'],
                         departureTime=flight_json['dateDeparture'] + 'T' + flight_json['timeDeparture'],
                         arrivalTime=flight_json['dateArrival'] + 'T' + flight_json['timeArrival'],
-                        airline=flight_json['airline'], number=flight_json['number'], price=((flight_json['fares'])[0])['amount'])
+                        airline=flight_json['airline'], number=flight_json['number'],
+                        price=((flight_json['fares'])[0])['amount'])
         flight_check = Flight.query.filter_by(departureTime=flight.departureTime, arrivalTime=flight.arrivalTime,
                                               number=flight.number, airline=flight.airline).first()
 
@@ -334,6 +355,7 @@ def remove_history():
     historyManager.remove_history(key, current_user.id)
     return "ok"
 
+
 # ---------------------------------------------------------------------------------
 
 
@@ -396,6 +418,5 @@ class FlightsUpdater(threading.Thread):
 
     def stop(self):
         self.isWorking = False
-
 
     # TODO remove from history if everyone removes ?

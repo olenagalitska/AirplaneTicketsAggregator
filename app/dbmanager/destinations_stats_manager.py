@@ -28,3 +28,26 @@ class DestinationsStatsManager:
                 if str(airport.city) not in country:
                     country[str(airport.city)] = city
                     destinations_stats_collection.update(country)
+
+    def increase_counter(self, airport, date):
+        destinations_stats_collection = arangodb.collection('destinations_stats')
+
+        # TODO: check in psql if there is such airport
+        airports = Airport.query.order_by("country").all()
+        if airport in airports:
+            if airport.country in destinations_stats_collection:
+                country = destinations_stats_collection.get(str(airport.country))
+                if airport.city in country:
+                    city = country[str(airport.city)]
+                    date_parts = date.split('-')
+                    year = "year_" + date_parts[0]
+                    month = int(date_parts[1])
+                    if year in city:
+                        year_object = city[year]
+
+                        months = year_object['counters']
+                        months[month - 1] += 1
+                        year_object['counters'] = months
+                        city[year] = year_object
+                        country[str(airport.city)] = city
+                        destinations_stats_collection.update(country)
