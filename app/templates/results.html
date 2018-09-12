@@ -8,6 +8,10 @@
             }).done(
                 function (response) {
                     console.log(response);
+                    flight_obj = JSON.parse(flight);
+                    button = document.getElementById(flight_obj.number);
+                    button.innerText = "Saved";
+                    button.disabled = true;
                 }
             ).fail(function () {
                 console.log("fail");
@@ -63,7 +67,7 @@
         </div>
         <a href="{{ result.url }}" target="_blank">Buy a ticket</a>
 
-        <button class="btn btn-outline-dark" onclick='save("{{ result }}")'>Save</button>
+        <button class="btn btn-outline-dark mx-2" id="{{ result.number }}" onclick='save("{{ result }}")'>Save</button>
         <!--<a href="javascript:save('{{result}}');">Save</a>-->
         <hr>
 
