@@ -1,5 +1,6 @@
 from app import arangodb
 from app.models import Flight
+from app.dbmanager.saved_flights_manager import SavedFlightsManager
 
 
 class UserActivityManager:
@@ -12,9 +13,18 @@ class UserActivityManager:
         user_activity_collection = arangodb.collection('user_activity')
         activity = user_activity_collection.get(str(user_id))
         list_of_flights = activity['flights']
-        list_of_flights.append(flight_id)
-        activity['flights'] = list_of_flights
-        user_activity_collection.update(activity)
+
+        already_in_flights = False
+        for flight in list_of_flights:
+            if flight == flight_id:
+                already_in_flights = True
+                break
+        if not already_in_flights:
+            list_of_flights.append(flight_id)
+            activity['flights'] = list_of_flights
+            user_activity.update(activity)
+            savedFlightsManager = SavedFlightsManager()
+            savedFlightsManager.add_saved_flight(flight_id, user_id)
 
     def insert_search(self, key, user_id):
         user_activity_collection = arangodb.collection('user_activity')
