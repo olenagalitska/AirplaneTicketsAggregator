@@ -2,8 +2,6 @@ from app import arangodb
 
 class AirlinesManager:
     def increase_count(self, airline, date):
-        print("in increase")
-        print(date)
         airlines = arangodb.collection('airlines_data')
         if airlines.has(airline.lower()):
             airline_data = airlines.get(airline.lower())
