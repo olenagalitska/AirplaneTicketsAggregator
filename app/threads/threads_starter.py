@@ -27,7 +27,7 @@ class ThreadsStarter(threading.Thread):
         # airlines_info_updater = AirlinesInfoUpdater("Airlines Info Updater")
         # airlines_info_updater.start()
 
-        # flights_updater = FlightsUpdater("Flights Updater")
-        # flights_updater.start()
+        flights_updater = FlightsUpdater("Flights Updater")
+        flights_updater.start()
 
 

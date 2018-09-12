@@ -71,18 +71,18 @@ start_urls = []
 
 print('list of airlines: ')
 for airline in list_of_airlines:
-    print(airline)
+    # print(airline)
     airline_data = airlines_data_collection.get(airline)
     airline_links = airline_data['links']
-    print('link:')
+    # print('link:')
     link = airline_links['news_link']
-    print(link)
-    print()
+    # print(link)
+    # print()
     start_urls.append(link)
 
-print('urls:')
-for url in start_urls:
-    print(url)
+# print('urls:')
+# for url in start_urls:
+#     print(url)
 
 search_handler = Handler()
 
@@ -90,8 +90,8 @@ search_handler = Handler()
 from app import routes
 
 
-# threads_starter = ThreadsStarter("Updater Starter")
-# threads_starter.start()
+threads_starter = ThreadsStarter("Updater Starter")
+threads_starter.start()
 
 if __name__ == '__main__':
     app.run(debug=True)

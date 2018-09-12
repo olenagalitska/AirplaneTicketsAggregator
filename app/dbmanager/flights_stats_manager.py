@@ -2,24 +2,20 @@ from app import arangodb
 
 
 class FlightsStatsManager:
-    def init_flight(self, flight_id, user_id):
 
-        saved_flights = arangodb.collection('saved_flights')
-        # if not saved_flights.has(str(flight_id)):
-        # first user who saved the flight
-        flight = {"_key": str(flight_id), 'flight_id': flight_id, "users": [user_id]}
-        saved_flights.insert(flight)
+    @staticmethod
+    def get_stats_for(flight_id):
+        flights_stats_collection = arangodb.collection('flights_stats')
+        document = flights_stats_collection.get(str(flight_id))
+        n = len(document.prices)
+        return document.prices[n-1]
 
-    def add_saved_flight(self, flight_id, user_id):
-        saved_flights = arangodb.collection('saved_flights')
-        if not saved_flights.has(str(flight_id)):
-            self.init_flight(flight_id, user_id)
-        else:
-            saved_flight = saved_flights.get(str(flight_id))
-            users = saved_flight['users']
 
-            # надо ли?
-            if user_id not in users:
-                users.append(user_id)
-                saved_flight['users'] = users
-                saved_flights.update(saved_flight)
+    @staticmethod
+    def update_stats(flight_id, updated_fares):
+        flights_stats_collection = arangodb.collection('flights_stats')
+        document = flights_stats_collection.get(str(flight_id))
+        prices = document['prices']
+        prices.append(updated_fares)
+        document['prices'] = prices
+        flights_stats_collection.update(document)

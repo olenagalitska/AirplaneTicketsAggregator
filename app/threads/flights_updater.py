@@ -1,10 +1,13 @@
 import threading
 import time
+import datetime
 
 from app import app, arangodb, psqldb, search_handler
 from app.models import Flight
 from app.mail_sender import MailSender
 from app.search_req import SearchRequest
+
+from app.dbmanager.flights_stats_manager import FlightsStatsManager
 
 
 class FlightsUpdater(threading.Thread):
@@ -14,6 +17,14 @@ class FlightsUpdater(threading.Thread):
 
         self.name = name
         self.isWorking = True
+
+    def needs_update(self, fares_in_db, current_fares):
+        result = False
+        for i in range(0, len(current_fares)):
+            if current_fares[i].amount != fares_in_db[i].amount:
+                result = True
+
+        return result
 
     def run(self):
         print('Flights Updater started')
@@ -26,38 +37,39 @@ class FlightsUpdater(threading.Thread):
                 flight = Flight.query.get(saved_flight["flight_id"])
                 flights.append(flight)
 
+            print(flights)
+
             for flight in flights:
 
-                with app.test_request_context():
-                    search_data = SearchRequest(flight.departure, flight.arrival, str(flight.departureTime.date()),
-                                                1, 0, 0, 0, 0, False, False, False)
+                # with app.test_request_context():
+                search_data = SearchRequest(flight.departure, flight.arrival, str(flight.departureTime.date()),
+                                            1, 0, 0, 0, 0, False, False, False)
 
-                    if flight.airline == 'ryanair':
-                        search_data.ryanair = True
-                    else:
-                        if flight.airline == 'wizzair':
-                            search_data.wizzair = True
-                        if flight.airline == 'uia':
-                            search_data.uia = True
+                if flight.airline == 'ryanair':
+                    search_data.ryanair = True
+                else:
+                    if flight.airline == 'wizzair':
+                        search_data.wizzair = True
+                    if flight.airline == 'uia':
+                        search_data.uia = True
 
-                    # print("r: " + search_data.get('ryanair'))
-                    search_results = search_handler.handle(search_data)
-                    if len(search_results) > 0:
-                        result = search_results[0]
-                        fares = result.get("fares")
+                # print("r: " + search_data.get('ryanair'))
+                search_results = search_handler.handle(search_data)
+                print(search_results)
+            if len(search_results) > 0:
+                result = search_results[0]
+                current_fares = result.get("fares")
 
+                in_db = FlightsStatsManager.get_stats_for(flight.id)
 
+                if self.needs_update(in_db.fares, current_fares):
+                    FlightsStatsManager.update_stats(flight.id,
+                                                     {'date': str(datetime.date.today()), 'fares': current_fares})
+                    print("Update Found!")
 
-                        print(flight.price)
-                        if result.get("fares")[0].get("amount") != flight.price:
-                            print("Update Found!")
-                            old_price = flight.price
-                            flight.price = result.get("fares")[0].get("amount")
-                            psqldb.session.commit()
+                    MailSender.send_update(flight_id=flight.id, fares=current_fares)
 
-                            MailSender.send_update(flight_id=flight.id, old_price=old_price)
-
-            time.sleep(60 * 60)
+        time.sleep(60 * 60)
 
     def stop(self):
         self.isWorking = False

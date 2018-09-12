@@ -13,6 +13,7 @@ from app.dbmanager.user_activity_manager import UserActivityManager
 from app.dbmanager.history_manager import HistoryManager
 from app.dbmanager.airlines_manager import AirlinesManager
 from app.dbmanager.destinations_stats_manager import DestinationsStatsManager
+from app.dbmanager.flights_stats_manager import FlightsStatsManager
 import subprocess
 import json
 

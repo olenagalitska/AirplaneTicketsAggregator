@@ -7,7 +7,7 @@ from app.models import User, Flight
 class MailSender:
 
     @staticmethod
-    def send_update(flight_id, old_price):
+    def send_update(flight_id, current_fares):
         saved_flights = arangodb.collection('saved_flights')
 
         users = []
@@ -26,8 +26,11 @@ class MailSender:
             msg = Message(msg_subj, recipients=recipients)
             msg.html = "<p>" + flight.departure + "---->" + flight.arrival + "</p>" \
                     "<p>" + flight.airline + "</p>" \
-                    "<p>" + str(flight.departureTime) + " - " + str(flight.arrivalTime) + "</p>" \
-                     "<p> Old price: " + str(old_price) + "</p>" \
-                     "<p> New price: " + str(flight.price) + "</p>"
+                    "<p>" + str(flight.departureTime) + " - " + str(flight.arrivalTime) + "</p>"
+
+            msg.html += "<p> Current fares:"
+            for fare in current_fares:
+                msg.html += fare.amount + " " + fare.currencyCode
+            msg.html += "</p>"
 
             mail.send(msg)
