@@ -69,7 +69,7 @@ logger = logging.getLogger('logger')
 
 start_urls = []
 
-print('list of airlines: ')
+# print('list of airlines: ')
 for airline in list_of_airlines:
     # print(airline)
     airline_data = airlines_data_collection.get(airline)

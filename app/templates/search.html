@@ -116,7 +116,7 @@
                         {{ form.uia(type="checkbox", value="", checked=True) }} {{ form.uia.label }}
                     </div>
                 </div>
-                <button id="search-btn" class="btn btn-outline-dark gold-button" type="submit" onsubmit="results()">
+                <button id="search-btn" class="btn btn-outline-dark gold-button" type="submit">
                     {{ _("Search") }}
                 </button>
             </div>
@@ -135,14 +135,14 @@
                                 event.preventDefault();
                                 event.stopPropagation();
                             }
-                            form.classList.add('was-validated');
                             move();
+                            form.classList.add('was-validated');
                         }, false);
                     });
                 }, false);
             })();
 
-            function move() {
+            function moveProgressBar() {
                 var button = document.getElementById("search-btn")
                 button.disabled = true;
                 var elem = document.getElementById("myBar");
