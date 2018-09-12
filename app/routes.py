@@ -21,7 +21,9 @@ from flask_babel import _
 
 @babel.localeselector
 def get_locale():
-    return request.accept_languages.best_match(['ru', 'en', 'de'])
+    # return request.accept_languages.best_match(['ru', 'en', 'de'])
+    return 'ru'
+
 
 @app.route('/logout')
 def logout():
@@ -97,6 +99,7 @@ def airlinesinfo():
 
     for current_airline in list_of_airlines:
         current_airline_data = airlines_data_collection.get(current_airline)
+        print(current_airline_data)
         current_airline_info = current_airline_data.get('info')
         current_airline_info['airline'] = current_airline
         airlines_info.append(current_airline_info)
@@ -222,8 +225,11 @@ def save():
                 return "fail"
 
         # add flight id to user saved flights
-        userActivityManager = UserActivityManager()
-        userActivityManager.insert_flight(flight_check.id, current_user.id)
+        user_activity_manager = UserActivityManager()
+        user_activity_manager.insert_flight(flight_check.id, current_user.id)
+
+        saved_flight_manager = SavedFlightsManager()
+        saved_flight_manager.add_saved_flight(flight_check.id, current_user.id)
 
     else:
         return redirect(url_for('login'))

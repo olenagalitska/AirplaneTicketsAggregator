@@ -17,6 +17,9 @@ class SavedFlightsManager:
         else:
             saved_flight = saved_flights.get(str(flight_id))
             users = saved_flight['users']
-            users.append(user_id)
-            saved_flight['users'] = users
-            saved_flights.update(saved_flight)
+
+            # надо ли?
+            if user_id not in users:
+                users.append(user_id)
+                saved_flight['users'] = users
+                saved_flights.update(saved_flight)

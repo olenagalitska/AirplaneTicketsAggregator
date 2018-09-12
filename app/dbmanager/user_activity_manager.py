@@ -21,7 +21,7 @@ class UserActivityManager:
                 break
         if not already_in_flights:
             list_of_flights.append(flight_id)
-            activity['savedflights'] = list_of_flights
+            activity['saved_flights'] = list_of_flights
             user_activity_collection.update(activity)
             savedFlightsManager = SavedFlightsManager()
             savedFlightsManager.add_saved_flight(flight_id, user_id)
