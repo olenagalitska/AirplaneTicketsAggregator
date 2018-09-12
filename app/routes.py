@@ -1,3 +1,4 @@
+import requests
 from flask import render_template, request, url_for, redirect, flash
 from flask_mail import Message
 
@@ -14,6 +15,7 @@ from app.dbmanager.history_manager import HistoryManager
 from app.dbmanager.airlines_manager import AirlinesManager
 from app.dbmanager.destinations_stats_manager import DestinationsStatsManager
 from app.dbmanager.flights_stats_manager import FlightsStatsManager
+from app.search_req import SearchRequest
 import subprocess
 import json
 
@@ -179,7 +181,7 @@ def results():
 
     results = search_handler.handle_form(search, airlines)
 
-    if request.method == 'POST': ''
+    # if request.method == 'POST': ''
     return render_template('results.html', results=results)
 
 
@@ -295,6 +297,22 @@ def remove_history():
     historyManager = HistoryManager()
     historyManager.remove_history(key, current_user.id)
     return "ok"
+
+
+# TODO: add progressbar here
+@app.route('/show_results', methods=['POST', 'GET'])
+def show_results():
+    key = request.form["key"]
+    historyManager = HistoryManager()
+    document = historyManager.get_history(key)
+
+    search_data = SearchRequest(str(document['departure']), str(document['arrival']), str(document['date']),
+                                int(document['adults']), int(document['seniors']), int(document['teens']),
+                                int(document['children']), int(document['infants']), True, True, True)
+
+    results = search_handler.handle(search_data, list_of_airlines)
+    return 'ok'
+
 
 # ---------------------------------------------------------------------------------
 

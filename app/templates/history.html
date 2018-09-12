@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
- <script>
+    <script>
         function remove(key) {
             // flight = flight.replace(/\'/g, '"');
             console.log(key)
@@ -16,7 +16,19 @@
             ).fail(function () {
                 console.log("fail");
             });
+        }
 
+        function show_results(key) {
+            $.post('/show_results', {
+                key: key
+            }).done(
+                function (response) {
+                    console.log(response);
+
+                }
+            ).fail(function () {
+                console.log("fail");
+            });
         }
     </script>
     <p class="heading"> — {{ _("route history") }} — </p>
@@ -26,8 +38,10 @@
             <div class="card">
                 <p>{{ route.departure }} -----> {{ route.arrival }}</p>
                 <p>{{ route.date }}</p>
-                <button class="btn btn-outline-dark gold-button" name="history">{{ _("view results") }}</button>
-                <button class="btn btn-outline-dark red-button" id="{{route._key}}" name="history" onclick='remove("{{ route._key }}")'>{{ _("remove") }}</button>
+                <button class="btn btn-outline-dark gold-button" name="history"
+                        onclick='show_results("{{ route._key }}")'>{{ _("view results") }}</button>
+                <button class="btn btn-outline-dark red-button" id="{{ route._key }}" name="history"
+                        onclick='remove("{{ route._key }}")'>{{ _("remove") }}</button>
             </div>
         {% endfor %}
     </div>

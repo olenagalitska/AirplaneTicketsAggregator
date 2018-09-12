@@ -60,10 +60,10 @@ class Handler:
         print(results)
         return results
 
-    def handle(self, search_data):
+    def handle(self, search_data, airlines):
         results = []
 
-        if search_data.wizzair:
+        if "wizzair" in airlines:
             print("coming for wizz")
             self.wizzair_info_robber.get_flights(
                 results=results,
@@ -75,7 +75,7 @@ class Handler:
                 children=str(search_data.children),
                 infants=str(search_data.infants)
             )
-        if search_data.ryanair:
+        if "ryanair" in airlines:
             print("coming for ryan")
             print(search_data)
 

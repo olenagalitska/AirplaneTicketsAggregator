@@ -43,17 +43,18 @@ class FlightsUpdater(threading.Thread):
 
                 # with app.test_request_context():
                 search_data = SearchRequest(flight.departure, flight.arrival, str(flight.departureTime.date()),
-                                            1, 0, 0, 0, 0, False, False, False)
+                                            1, 0, 0, 0, 0)
 
+                airlines = []
                 if flight.airline == 'Ryanair':
-                    search_data.ryanair = True
+                    airlines.append = 'ryanair'
                 else:
                     if flight.airline == 'Wizzair':
-                        search_data.wizzair = True
-                    if flight.airline == 'uia':
-                        search_data.uia = True
+                        airlines.append = 'wizzair'
+                    # if flight.airline == 'UIA':
+                    #     airlines.append = 'uia'
 
-                search_results = search_handler.handle(search_data)
+                search_results = search_handler.handle(search_data, airlines)
                 if len(search_results) > 0:
                     result = search_results[0]
                     current_fares = result.get("fares")

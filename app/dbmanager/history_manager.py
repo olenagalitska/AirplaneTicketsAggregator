@@ -19,3 +19,9 @@ class HistoryManager:
                 break
         user_document['searches'] = search_ids
         user_activity_collection.update(user_document)
+
+    def get_history(self, key):
+        history_collection = arangodb.collection('history')
+        search_found = history_collection.get(key)
+        return search_found
+
