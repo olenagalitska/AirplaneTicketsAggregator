@@ -12,7 +12,7 @@ import yaml
 
 from app.conf.config import Config
 from app.airlines.handler import Handler
-from app.threads.updaters_starter import ThreadsStarter
+from app.threads.threads_starter import ThreadsStarter
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -90,8 +90,8 @@ search_handler = Handler()
 from app import routes
 
 
-# updaters_starter = ThreadsStarter("Updater Starter")
-# updaters_starter.start()
+# threads_starter = ThreadsStarter("Updater Starter")
+# threads_starter.start()
 
 if __name__ == '__main__':
     app.run(debug=True)

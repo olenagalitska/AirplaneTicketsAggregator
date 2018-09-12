@@ -19,12 +19,13 @@ class DestinationsStatsManager:
         city = {curr_year: counters, next_year: counters}
 
         for airport in airports:
-            if not destinations_stats_collection.has(str(airport.country)):
+            country_key = str(airport.country).replace(' ', '_')
+            if not destinations_stats_collection.has(country_key):
 
-                country = {'_key': str(airport.country), str(airport.city): city}
+                country = {'_key': country_key, str(airport.city): city}
                 destinations_stats_collection.insert(country)
             else:
-                country = destinations_stats_collection.get(str(airport.country))
+                country = destinations_stats_collection.get(country_key)
                 if str(airport.city) not in country:
                     country[str(airport.city)] = city
                     destinations_stats_collection.update(country)
@@ -35,8 +36,11 @@ class DestinationsStatsManager:
         # TODO: check in psql if there is such airport
         airports = Airport.query.order_by("country").all()
         if airport in airports:
-            if airport.country in destinations_stats_collection:
-                country = destinations_stats_collection.get(str(airport.country))
+            country_key = str(airport.country).replace(' ', '_')
+            print(country_key)
+
+            if country_key in destinations_stats_collection:
+                country = destinations_stats_collection.get(country_key)
                 if airport.city in country:
                     city = country[str(airport.city)]
                     date_parts = date.split('-')

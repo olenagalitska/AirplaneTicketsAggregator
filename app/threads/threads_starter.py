@@ -21,13 +21,13 @@ class ThreadsStarter(threading.Thread):
         stats_field_creater = StatsFieldsCreater("Stats Fields Creater")
         stats_field_creater.start()
 
-        airlines_news_updater = AirlinesNewsUpdater("Airlines News Updater")
-        airlines_news_updater.start()
-
-        airlines_info_updater = AirlinesInfoUpdater("Airlines Info Updater")
-        airlines_info_updater.start()
-
-        flights_updater = FlightsUpdater("Flights Updater")
-        flights_updater.start()
+        # airlines_news_updater = AirlinesNewsUpdater("Airlines News Updater")
+        # airlines_news_updater.start()
+        #
+        # airlines_info_updater = AirlinesInfoUpdater("Airlines Info Updater")
+        # airlines_info_updater.start()
+        #
+        # flights_updater = FlightsUpdater("Flights Updater")
+        # flights_updater.start()
 
 

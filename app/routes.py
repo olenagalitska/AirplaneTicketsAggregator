@@ -154,7 +154,7 @@ def results():
     if dest_airport is not None:
         print(dest_airport.city)
         destination_stats_manager = DestinationsStatsManager()
-        destination_stats_manager.increase_counter(dest_airport, date)
+        # destination_stats_manager.increase_counter(dest_airport, date)
 
     airlines = []
     if not form.get('wizzair') is None:
