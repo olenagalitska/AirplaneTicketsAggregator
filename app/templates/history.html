@@ -11,6 +11,7 @@
                     console.log(response);
                     button = document.getElementById(key);
                     button.innerText = "removed";
+                    button.disabled = true;
                 }
             ).fail(function () {
                 console.log("fail");

@@ -12,4 +12,4 @@ class SearchRequest:
         self.wizzair = wizzair
         self.ryanair = ryanair
         self.uia = uia
-        #TODO: array for airlines!!!
+        # TODO: array for airlines!!!

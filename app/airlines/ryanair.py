@@ -14,7 +14,7 @@ class RyanairInfoRobber:
             'DateOut': date,
             'Origin': depart,
             'Destination': arrive,
-            'FlexDaysOut': '0',         # change to check whole month
+            'FlexDaysOut': '0',  # change to check whole month
             'IncludeConnectingFlights': 'false',
             'RoundTrip': 'false',
             'ToUs': 'AGREED',
@@ -43,16 +43,16 @@ class RyanairInfoRobber:
                                     "airportA": depart,
                                     "airportB": arrive,
                                     "airline": 'Ryanair',
-                                    "dateDeparture":time_depart.split('T')[0],
+                                    "dateDeparture": time_depart.split('T')[0],
                                     "dateArrival": time_arrive.split('T')[0],
-                                    "timeDeparture":time_depart.split('T')[1],
+                                    "timeDeparture": time_depart.split('T')[1],
                                     "timeArrival": time_arrive.split('T')[1],
                                     "number": flight['flightNumber']
                                 }
                                 json_fares = []
                                 json_types = []
                                 for fare in fares:
-                                    fare_and_curr = {}
+                                    fare_and_curr = dict()
                                     fare_and_curr["amount"] = fare['amount']
                                     fare_and_curr["currencyCode"] = 'EUR'
                                     json_fares.append(fare_and_curr)
@@ -61,7 +61,7 @@ class RyanairInfoRobber:
                                 json_flight["types"] = json_types
                                 json_flight["fares"] = json_fares
                                 res_url = 'https://www.ryanair.com/gb/en/booking/home/' + depart \
-                                          + '/' + arrive + '/' + date + '//' + adults +\
+                                          + '/' + arrive + '/' + date + '//' + adults + \
                                           '/' + teens + '/' + children + '/' + infants
                                 json_flight["url"] = res_url
                                 results.append(json_flight)

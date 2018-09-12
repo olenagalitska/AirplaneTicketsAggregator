@@ -1,9 +1,11 @@
-from app import psqldb
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import login
+
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from sqlalchemy.types import DateTime, Integer, String
 from sqlalchemy.sql import func
+
+from app import psqldb, login
 
 
 @login.user_loader
@@ -63,7 +65,7 @@ class Log(psqldb.Model):
 
 
 class Flight(psqldb.Model):
-    __tablename__ = 'flights'
+    __tablename__ = 'Flights'
 
     id = psqldb.Column(psqldb.BigInteger, unique=True, primary_key=True, nullable=False, autoincrement=True)
     number = psqldb.Column(psqldb.String(64))
@@ -82,3 +84,17 @@ class Flight(psqldb.Model):
         self.arrivalTime = arrivalTime
         self.airline = airline
         self.price = price
+
+
+class Airport(psqldb.Model):
+    __tablename__ = 'Airports'
+
+    id = psqldb.Column(psqldb.BigInteger, unique=True, primary_key=True, nullable=False, autoincrement=True)
+    code = psqldb.Column(psqldb.String(64), unique=True, nullable=False)
+    country = psqldb.Column(psqldb.String(256))
+    city = psqldb.Column(psqldb.String(256))
+
+    def __init__(self, code, country, city):
+        self.code = code
+        self.country = country
+        self.city = city

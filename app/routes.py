@@ -1,20 +1,21 @@
-from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail
-from flask import render_template, request, url_for, redirect, flash
-from flask_mail import Message
-from app.forms import LoginForm, RegistrationForm, SearchForm
-import datetime
-from app.models import User, Flight
-from flask_login import current_user, login_user, logout_user, login_required
-from werkzeug.urls import url_parse
 import subprocess
 import json
 
-from app.search_req import SearchRequest
-import os
+from flask import render_template, request, url_for, redirect, flash
+from flask_mail import Message
+from flask_login import current_user, login_user, logout_user, login_required
 
-import threading
-import time
-from app.mail_sender import MailSender
+from werkzeug.urls import url_parse
+
+from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail
+from app.models import User, Flight, Airport
+from app.forms import LoginForm, RegistrationForm, SearchForm
+from app.search_req import SearchRequest
+from app.dbmanager.saved_flights_manager import SavedFlightsManager
+from app.dbmanager.user_activity_manager import UserActivityManager
+from app.dbmanager.history_manager import HistoryManager
+from app.dbmanager.airlines_manager import AirlinesManager
+from app.dbmanager.destinations_stats_manager import DestinationsStatsManager
 
 
 @app.route('/logout')
@@ -77,12 +78,8 @@ def signup():
         mail.send(msg)
 
         user = User.query.filter_by(username=form.username.data).first()
-        if arangodb.has_collection('user_activity'):
-            user_activity = arangodb.collection('user_activity')
-        else:
-            user_activity = arangodb.create_collection('user_activity')
-        activity = {'_key': str(user.id), 'flights': [], 'searches': []}
-        user_activity.insert(activity)
+        userActivityManager = UserActivityManager()
+        userActivityManager.init_user(user.id)
 
         return redirect(url_for('login'))
 
@@ -174,54 +171,54 @@ def results():
     key = form.get('departure') + form.get('arrival') + form.get('date') + form.get('adults') + form.get('teens') + \
           form.get('seniors') + form.get('infants') + form.get('children')
 
-    search = {"departure" : form.get('departure'),
-              "arrival" : form.get('arrival'),
-              "date" : form.get('date'),
-              "adults" : int(form.get('adults')),
-              "teens" : int(form.get('teens')),
-              "seniors" : int(form.get('seniors')),
-              "infants" : int(form.get('infants')),
+    search = {"departure": form.get('departure'),
+              "arrival": form.get('arrival'),
+              "date": form.get('date'),
+              "adults": int(form.get('adults')),
+              "teens": int(form.get('teens')),
+              "seniors": int(form.get('seniors')),
+              "infants": int(form.get('infants')),
               "children": int(form.get('children')),
-              "airlines" : [],
-              "_key" : key
+              "_key": key
               }
+
+    # TODO: fix this
+    airports = Airport.query.order_by("code").all()
+
+    dest_airport_code = form.get('arrival')
+    date = form.get('date')
+
+    print(dest_airport_code)
+    print(date)
+
+    for airport in airports:
+        if airport.code == dest_airport_code:
+            dest_airport = airport
+            break
+
+    if dest_airport is not None:
+        print(dest_airport.city)
+        destination_stats_manager = DestinationsStatsManager()
+        destination_stats_manager.increase_counter(dest_airport, date)
+
+    airlines = []
     if not form.get('wizzair') is None:
-        search['airlines'].append('wizzair')
+        airlines.append('wizzair')
 
     if not form.get('ryanair') is None:
-        search['airlines'].append('ryanair')
+        airlines.append('ryanair')
 
     if not form.get('uia') is None:
-        search['airlines'].append('uia')
+        airlines.append('uia')
 
-    print(search)
     if not current_user.is_anonymous:
-        if arangodb.has_collection('history'):
-            history = arangodb.collection('history')
-        else:
-            history = arangodb.create_collection('history')
-        search_found = history.get(key)
-        if search_found is None:
-            history.insert(search)
+        historyManager = HistoryManager()
+        historyManager.insert_history(key, search)
 
+        userActivityManager = UserActivityManager()
+        userActivityManager.insert_search(key, current_user.id)
 
-        user_activity = arangodb.collection('user_activity')
-
-        user_document = user_activity.get(str(current_user.id))
-        list_of_searches = user_document['searches']
-        already_in_history = False
-
-        # check if already in user's history
-        for user_search in list_of_searches:
-            if user_search == key:
-                already_in_history = True
-                break
-        if not already_in_history:
-            list_of_searches.append(key)
-            user_document['searches'] = list_of_searches
-            user_activity.update(user_document)
-
-    results = search_handler.handle_form(search)
+    results = search_handler.handle_form(search, airlines)
 
     if request.method == 'POST': ''
     return render_template('results.html', results=results)
@@ -241,11 +238,14 @@ def save():
         flight = Flight(departure=flight_json['airportA'], arrival=flight_json['airportB'],
                         departureTime=flight_json['dateDeparture'] + 'T' + flight_json['timeDeparture'],
                         arrivalTime=flight_json['dateArrival'] + 'T' + flight_json['timeArrival'],
-                        airline=flight_json['airline'], number=flight_json['number'], price=((flight_json['fares'])[0])['amount'])
+                        airline=flight_json['airline'], number=flight_json['number'],
+                        price=((flight_json['fares'])[0])['amount'])
         flight_check = Flight.query.filter_by(departureTime=flight.departureTime, arrivalTime=flight.arrivalTime,
                                               number=flight.number, airline=flight.airline).first()
+
+        airlinesManager = AirlinesManager()
+        airlinesManager.increase_count(flight_json['airline'], flight_json['dateArrival'])
         if flight_check is None:
-            print("not None")
             try:
                 psqldb.session.add(flight)
             except:
@@ -257,22 +257,19 @@ def save():
                 flight_check = Flight.query.filter_by(departureTime=flight.departureTime,
                                                       arrivalTime=flight.arrivalTime,
                                                       number=flight.number, airline=flight.airline).first()
+                # init saved_flights table for newly added flight
+                saved_flight_manager = SavedFlightsManager()
+                saved_flight_manager.init_flight(flight_check.id, current_user.id)
+
             except Exception as e:
                 flash("Some error accured")
                 print(e)
                 return "fail"
 
-        user_activity = arangodb.create_collection('user_activity')
+        # add flight id to user saved flights
+        userActivityManager = UserActivityManager()
+        userActivityManager.insert_flight(flight_check.id, current_user.id)
 
-        if user_activity.get(str(current_user.id)) is None:
-            activity = {'_key' : str(current_user.id), 'flights' : [flight_check.id], 'searches': []}
-            user_activity.insert(activity)
-        else:
-            activity = user_activity.get(str(current_user.id))
-            list_of_flights = activity['flights']
-            list_of_flights.append(flight.id)
-            activity['flights'] = list_of_flights
-            user_activity.update(activity)
 
     else:
         return redirect(url_for('login'))
@@ -283,27 +280,16 @@ def save():
 @app.route('/profile/saved', methods=['POST', 'GET'])
 @login_required
 def saved():
-    user_activity = arangodb.collection('user_activity')
-    user_document = user_activity.get(str(current_user.id))
-    flights_ids = user_document['flights']
-    list_of_flights = []
-    for id in flights_ids:
-        flight = Flight.query.filter_by(id=id).first()
-        list_of_flights.append(flight)
+    userActivityManager = UserActivityManager()
+    list_of_flights = userActivityManager.get_saved_flights(current_user.id)
     return render_template('saved.html', saved_flights=list_of_flights)
 
 
 @app.route('/profile/history', methods=['POST', 'GET'])
 @login_required
 def history():
-    user_activity = arangodb.collection('user_activity')
-    history_flights = arangodb.collection('history')
-    user_document = user_activity.get(str(current_user.id))
-    search_ids = user_document['searches']
-    list_of_searches = []
-    for id in search_ids:
-        search = history_flights.get(id)
-        list_of_searches.append(search)
+    userActivityManager = UserActivityManager()
+    list_of_searches = userActivityManager.get_user_history(current_user.id)
     return render_template('history.html', routes=list_of_searches)
 
 
@@ -359,86 +345,19 @@ def update_airlines_info():
     return redirect(url_for('airlinesinfo'))
 
 
+@app.route('/remove_history', methods=['POST', 'GET'])
+def remove_history():
+    key = request.form["key_to_remove"]
+    historyManager = HistoryManager()
+    historyManager.remove_history(key, current_user.id)
+    return "ok"
+
+
 # ---------------------------------------------------------------------------------
 
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
-
-class FlightsUpdater(threading.Thread):
-
-    def __init__(self, name):
-        threading.Thread.__init__(self)
-
-        self.name = name
-        self.isWorking = True
-
-    def run(self):
-        time.sleep(30)
-        print('Flights Updater started')
-        while self.isWorking:
-            saved_flights = arangodb.collection('saved_flights')
-            flights = []
-            print(saved_flights)
-
-            for saved_flight in saved_flights:
-                flight = Flight.query.get(saved_flight["flight_id"])
-                flights.append(flight)
-
-            for flight in flights:
-
-                with app.test_request_context():
-                    search_data = SearchRequest(flight.departure, flight.arrival, str(flight.departureTime.date()),
-                                                1, 0, 0, 0, 0, False, False, False)
-
-                    if flight.airline == 'ryanair':
-                        search_data.ryanair = True
-                    else:
-                        if flight.airline == 'wizzair':
-                            search_data.wizzair = True
-                        if flight.airline == 'uia':
-                            search_data.uia = True
-
-                    # print("r: " + search_data.get('ryanair'))
-                    search_results = search_handler.handle(search_data)
-                    if len(search_results) > 0:
-                        result = search_results[0]
-                        result.get("fares")[0].get("amount")
-
-                        print(flight.price)
-                        if result.get("fares")[0].get("amount") != flight.price:
-                            print("Update Found!")
-                            old_price = flight.price
-                            flight.price = result.get("fares")[0].get("amount")
-                            psqldb.session.commit()
-
-                            mail_sender = MailSender()
-                            mail_sender.send_update(flight_id=flight.id, old_price=old_price)
-
-            time.sleep(60 * 60)
-
-    def stop(self):
-        self.isWorking = False
-
-
-@app.route('/remove_history', methods=['POST', 'GET'])
-def remove_history():
-    print(request.form)
-    key = request.form["key_to_remove"]
-    user_activity = arangodb.collection('user_activity')
-    # history_flights = arangodb.collection('history')
-    user_document = user_activity.get(str(current_user.id))
-    search_ids = user_document['searches']
-    for id in search_ids:
-        if id == key:
-            search_ids.remove(id)
-            break;
-    user_document['searches'] = search_ids
-    user_activity.update(user_document)
-    return "ok"
-
-
 
     # TODO remove from history if everyone removes ?
