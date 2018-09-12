@@ -54,6 +54,7 @@ body {
     width: 500px;
     color: #FFCB57;
     height: 150px;
+    padding-left: 0px;
 }
 
 input {

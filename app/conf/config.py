@@ -17,6 +17,8 @@ class Config(object):
     MAIL_PASSWORD = 'xKygnnDmQRTkKq3h'
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
 
+    LANGUAGES = ['en', 'ru', 'de']
+
 
 class ProductionConfig(Config):
     DEBUG = False

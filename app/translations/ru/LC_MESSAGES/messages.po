@@ -1,0 +1,264 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-09-10 19:36+0300\n"
+"PO-Revision-Date: 2018-09-09 18:29+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: app/forms.py:12
+msgid "Sign In"
+msgstr "Войти"
+
+#: app/forms.py:17
+msgid "Please use a different username."
+msgstr "Пожалуйста, используйте другое имя пользователя."
+
+#: app/forms.py:22
+msgid "Such email is already in use."
+msgstr "Этот почтовый ящик уже используется."
+
+#: app/forms.py:30
+msgid "Passwords must match"
+msgstr "Пароли должны совпадать."
+
+#: app/forms.py:31
+msgid "Sign Up"
+msgstr "Зарегистрироваться"
+
+#: app/forms.py:49
+msgid "Please pick the number of adults from 0 to 10"
+msgstr "Пожалуйста, выберите количество взрослых от 0 до 10."
+
+#: app/forms.py:53
+msgid "Please pick the number of teens from 0 to 10"
+msgstr "Пожалуйста, выберите количество подростков от 0 до 10."
+
+#: app/forms.py:57
+msgid "Please pick the number of children from 0 to 10"
+msgstr "Пожалуйста, выберите количество детей от 0 до 10."
+
+#: app/forms.py:61
+msgid "Please pick the number of infants from 0 to 10"
+msgstr "Пожалуйста, выберите количество младенцев от 0 до 10."
+
+#: app/forms.py:65
+msgid "Please pick the number of seniors from 0 to 10"
+msgstr "Пожалуйста, выберите количество пенсионеров от 0 до 10."
+
+#: app/routes.py:45
+msgid "Error occured. Please try again."
+msgstr "Случилась ошибка..Повторите!"
+
+#: app/routes.py:64 app/routes.py:205
+msgid "Unable to add user to db"
+msgstr "Невозможно добавить пользователя в базу данных."
+
+#: app/routes.py:76
+msgid ""
+"<p>welcome to whatafly!</p><p>we hope you'll find the best deal with our "
+"help</p><img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-"
+"Right-Now-Funny-Plane-Meme.jpg'>"
+msgstr "<p>добро пожаловать в  whatafly!</p><p>мы надеемся, что вы найдете лучший рейс с нашей помощью!</p><img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-"
+"Right-Now-Funny-Plane-Meme.jpg'>"
+
+#: app/routes.py:214
+msgid "Some error accured"
+msgstr "Случилась ошибка"
+
+#: app/templates/404.html:5
+msgid "BOOM!"
+msgstr "БУУУМ!"
+
+#: app/templates/404.html:6
+msgid "What you were looking for is just not here."
+msgstr "Ой, этого здесь нет.."
+
+#: app/templates/airlines.html:3
+msgid "our airlines"
+msgstr "наши авиалинии"
+
+#: app/templates/airlines.html:11
+msgid "READ NEWS"
+msgstr "ЧИТАТЬ НОВОСТИ"
+
+#: app/templates/airlines.html:25
+msgid "Callsign"
+msgstr "Позывной"
+
+#: app/templates/airlines.html:30
+msgid "Founded"
+msgstr "Основана"
+
+#: app/templates/airlines.html:35
+msgid "Website"
+msgstr "Сайт"
+
+#: app/templates/base.html:21 app/templates/search.html:121
+msgid "Search"
+msgstr "Поиск"
+
+#: app/templates/base.html:24
+msgid "Airlines Info"
+msgstr "Авиалинии"
+
+#: app/templates/base.html:27
+msgid "Contacts"
+msgstr "Контакты"
+
+#: app/templates/base.html:32
+msgid ""
+"Sign\n"
+"                        in"
+msgstr "Вход"
+
+#: app/templates/base.html:36
+msgid ""
+"Sign\n"
+"                        up"
+msgstr "Регистрация"
+
+#: app/templates/base.html:43
+msgid "Account"
+msgstr "Профиль"
+
+#: app/templates/base.html:47
+msgid "Logout"
+msgstr "Выйти"
+
+#: app/templates/contacts.html:3
+msgid "contact our team"
+msgstr "свяжитесь с нами"
+
+#: app/templates/contacts.html:11
+msgid "Stacy Cherneha"
+msgstr "Стася Чернега"
+
+#: app/templates/contacts.html:19
+msgid "Dima Branitskyi"
+msgstr "Дима Браницкий"
+
+#: app/templates/contacts.html:27
+msgid "Lena Gzlitska"
+msgstr "Лена Галицкая"
+
+#: app/templates/history.html:21
+msgid "route history"
+msgstr "история поисков"
+
+#: app/templates/history.html:28
+msgid "view results"
+msgstr "показать результаты"
+
+#: app/templates/history.html:29
+msgid "remove"
+msgstr "удалить"
+
+#: app/templates/login.html:13
+msgid "SIGN IN"
+msgstr "ВХОД"
+
+#: app/templates/login.html:20 app/templates/signup.html:54
+msgid "USERNAME"
+msgstr "ИМЯ ПОЛЬЗОАВТЕЛЯ"
+
+#: app/templates/login.html:29 app/templates/signup.html:66
+msgid "PASSWORD"
+msgstr "ПАРОЛЬ"
+
+#: app/templates/profile.html:8 app/templates/saved.html:3
+msgid "saved flights"
+msgstr "сохраненные полеты"
+
+#: app/templates/profile.html:11 app/templates/profile.html:18
+msgid "view"
+msgstr "показать"
+
+#: app/templates/profile.html:15
+msgid "search history"
+msgstr "история поисков"
+
+#: app/templates/results.html:19
+msgid "results"
+msgstr "результаты"
+
+#: app/templates/results.html:64
+msgid "buy this ticket"
+msgstr "купить этот билет"
+
+#: app/templates/results.html:66
+msgid "save"
+msgstr "сохранить"
+
+#: app/templates/saved.html:29
+msgid "price stats"
+msgstr "статистика цен"
+
+#: app/templates/search.html:8
+msgid "give a try to whatafly"
+msgstr "попробуй whatafly"
+
+#: app/templates/search.html:19
+msgid "City A"
+msgstr "Город А"
+
+#: app/templates/search.html:31
+msgid "City B"
+msgstr "Город Б"
+
+#: app/templates/search.html:55
+msgid "FLEXIBLE"
+msgstr "ГИБКИЕ ДАТЫ"
+
+#: app/templates/search.html:68
+msgid "Adult"
+msgstr "Взрослый"
+
+#: app/templates/search.html:75
+msgid "Child"
+msgstr "Ребенок"
+
+#: app/templates/search.html:82
+msgid "Teen"
+msgstr "Подросток"
+
+#: app/templates/search.html:89
+msgid "Infant"
+msgstr "Младенец"
+
+#: app/templates/search.html:96
+msgid "Senior"
+msgstr "Пенсионер"
+
+#: app/templates/signup.html:13
+msgid "Sign up"
+msgstr "Регистрация"
+
+#: app/templates/signup.html:19
+msgid "FIRST NAME"
+msgstr "ИМЯ"
+
+#: app/templates/signup.html:31
+msgid "LAST NAME"
+msgstr "ФАМИЛИЯ"
+
+#: app/templates/signup.html:43
+msgid "EMAIL"
+msgstr "EMAIL"
+
+#: app/templates/signup.html:71
+msgid "REPEAT PASSWORD"
+msgstr "ПОВТОРИТЕ ПАРОЛЬ"

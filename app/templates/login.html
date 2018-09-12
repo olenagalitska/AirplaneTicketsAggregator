@@ -10,14 +10,14 @@
         {% endif %}
     {% endwith %}
     <div class="justify-content-center">
-        <p class="heading">SIGN IN</p>
+        <p class="heading">{{_("SIGN IN")}}</p>
     </div>
     <div class="justify-content-center">
         <form method="post" >
             {{ form.hidden_tag() }}
             <div class="d-flex justify-content-center m-3">
                 <div class="col-sm-3">
-                    {{ form.username(size=32, placeholder="USERNAME") }}
+                    {{ form.username(size=32, placeholder=_("USERNAME")) }}
                     {% for error in form.username.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
@@ -26,7 +26,7 @@
 
             <div class="d-flex justify-content-center m-3">
                 <div class="col-sm-3">
-                    {{ form.password(size=32, placeholder="PASSWORD") }}
+                    {{ form.password(size=32, placeholder=_("PASSWORD")) }}
                 </div>
             </div>
             <div class="d-flex justify-content-center m-3">

@@ -19,15 +19,15 @@
 
         }
     </script>
-    <p class="heading"> — route history — </p>
+    <p class="heading"> — {{ _("route history") }} — </p>
 
     <div class="card-columns">
         {% for route in routes %}
             <div class="card">
                 <p>{{ route.departure }} -----> {{ route.arrival }}</p>
                 <p>{{ route.date }}</p>
-                <button class="btn btn-outline-dark gold-button" name="history">view results</button>
-                <button class="btn btn-outline-dark red-button" id="{{route._key}}" name="history" onclick='remove("{{ route._key }}")'>remove</button>
+                <button class="btn btn-outline-dark gold-button" name="history">{{ _("view results") }}</button>
+                <button class="btn btn-outline-dark red-button" id="{{route._key}}" name="history" onclick='remove("{{ route._key }}")'>{{ _("remove") }}</button>
             </div>
         {% endfor %}
     </div>

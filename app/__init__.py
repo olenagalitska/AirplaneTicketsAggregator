@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_babel import Babel
 
 from arango import ArangoClient
 
@@ -17,6 +18,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 mail = Mail(app)
+babel = Babel(app)
 
 # Initialize PostgreSql database
 psqldb = SQLAlchemy(app)

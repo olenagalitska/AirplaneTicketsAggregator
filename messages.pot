@@ -1,0 +1,262 @@
+# Translations template for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-09-10 19:36+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: app/forms.py:12
+msgid "Sign In"
+msgstr ""
+
+#: app/forms.py:17
+msgid "Please use a different username."
+msgstr ""
+
+#: app/forms.py:22
+msgid "Such email is already in use."
+msgstr ""
+
+#: app/forms.py:30
+msgid "Passwords must match"
+msgstr ""
+
+#: app/forms.py:31
+msgid "Sign Up"
+msgstr ""
+
+#: app/forms.py:49
+msgid "Please pick the number of adults from 0 to 10"
+msgstr ""
+
+#: app/forms.py:53
+msgid "Please pick the number of teens from 0 to 10"
+msgstr ""
+
+#: app/forms.py:57
+msgid "Please pick the number of children from 0 to 10"
+msgstr ""
+
+#: app/forms.py:61
+msgid "Please pick the number of infants from 0 to 10"
+msgstr ""
+
+#: app/forms.py:65
+msgid "Please pick the number of seniors from 0 to 10"
+msgstr ""
+
+#: app/routes.py:45
+msgid "Error occured. Please try again."
+msgstr ""
+
+#: app/routes.py:64 app/routes.py:205
+msgid "Unable to add user to db"
+msgstr ""
+
+#: app/routes.py:76
+msgid ""
+"<p>welcome to whatafly!</p><p>we hope you'll find the best deal with our "
+"help</p><img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-"
+"Right-Now-Funny-Plane-Meme.jpg'>"
+msgstr ""
+
+#: app/routes.py:214
+msgid "Some error accured"
+msgstr ""
+
+#: app/templates/404.html:5
+msgid "BOOM!"
+msgstr ""
+
+#: app/templates/404.html:6
+msgid "What you were looking for is just not here."
+msgstr ""
+
+#: app/templates/airlines.html:3
+msgid "our airlines"
+msgstr ""
+
+#: app/templates/airlines.html:11
+msgid "READ NEWS"
+msgstr ""
+
+#: app/templates/airlines.html:25
+msgid "Callsign"
+msgstr ""
+
+#: app/templates/airlines.html:30
+msgid "Founded"
+msgstr ""
+
+#: app/templates/airlines.html:35
+msgid "Website"
+msgstr ""
+
+#: app/templates/base.html:21 app/templates/search.html:121
+msgid "Search"
+msgstr ""
+
+#: app/templates/base.html:24
+msgid "Airlines Info"
+msgstr ""
+
+#: app/templates/base.html:27
+msgid "Contacts"
+msgstr ""
+
+#: app/templates/base.html:32
+msgid ""
+"Sign\n"
+"                        in"
+msgstr ""
+
+#: app/templates/base.html:36
+msgid ""
+"Sign\n"
+"                        up"
+msgstr ""
+
+#: app/templates/base.html:43
+msgid "Account"
+msgstr ""
+
+#: app/templates/base.html:47
+msgid "Logout"
+msgstr ""
+
+#: app/templates/contacts.html:3
+msgid "contact our team"
+msgstr ""
+
+#: app/templates/contacts.html:11
+msgid "Stacy Cherneha"
+msgstr ""
+
+#: app/templates/contacts.html:19
+msgid "Dima Branitskyi"
+msgstr ""
+
+#: app/templates/contacts.html:27
+msgid "Lena Gzlitska"
+msgstr ""
+
+#: app/templates/history.html:21
+msgid "route history"
+msgstr ""
+
+#: app/templates/history.html:28
+msgid "view results"
+msgstr ""
+
+#: app/templates/history.html:29
+msgid "remove"
+msgstr ""
+
+#: app/templates/login.html:13
+msgid "SIGN IN"
+msgstr ""
+
+#: app/templates/login.html:20 app/templates/signup.html:54
+msgid "USERNAME"
+msgstr ""
+
+#: app/templates/login.html:29 app/templates/signup.html:66
+msgid "PASSWORD"
+msgstr ""
+
+#: app/templates/profile.html:8 app/templates/saved.html:3
+msgid "saved flights"
+msgstr ""
+
+#: app/templates/profile.html:11 app/templates/profile.html:18
+msgid "view"
+msgstr ""
+
+#: app/templates/profile.html:15
+msgid "search history"
+msgstr ""
+
+#: app/templates/results.html:19
+msgid "results"
+msgstr ""
+
+#: app/templates/results.html:64
+msgid "buy this ticket"
+msgstr ""
+
+#: app/templates/results.html:66
+msgid "save"
+msgstr ""
+
+#: app/templates/saved.html:29
+msgid "price stats"
+msgstr ""
+
+#: app/templates/search.html:8
+msgid "give a try to whatafly"
+msgstr ""
+
+#: app/templates/search.html:19
+msgid "City A"
+msgstr ""
+
+#: app/templates/search.html:31
+msgid "City B"
+msgstr ""
+
+#: app/templates/search.html:55
+msgid "FLEXIBLE"
+msgstr ""
+
+#: app/templates/search.html:68
+msgid "Adult"
+msgstr ""
+
+#: app/templates/search.html:75
+msgid "Child"
+msgstr ""
+
+#: app/templates/search.html:82
+msgid "Teen"
+msgstr ""
+
+#: app/templates/search.html:89
+msgid "Infant"
+msgstr ""
+
+#: app/templates/search.html:96
+msgid "Senior"
+msgstr ""
+
+#: app/templates/signup.html:13
+msgid "Sign up"
+msgstr ""
+
+#: app/templates/signup.html:19
+msgid "FIRST NAME"
+msgstr ""
+
+#: app/templates/signup.html:31
+msgid "LAST NAME"
+msgstr ""
+
+#: app/templates/signup.html:43
+msgid "EMAIL"
+msgstr ""
+
+#: app/templates/signup.html:71
+msgid "REPEAT PASSWORD"
+msgstr ""
+

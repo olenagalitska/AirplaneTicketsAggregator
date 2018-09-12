@@ -1,22 +1,27 @@
-import subprocess
-import json
-
 from flask import render_template, request, url_for, redirect, flash
 from flask_mail import Message
+
 from flask_login import current_user, login_user, logout_user, login_required
 
 from werkzeug.urls import url_parse
 
-from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail
+from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail, babel
 from app.models import User, Flight, Airport
 from app.forms import LoginForm, RegistrationForm, SearchForm
-from app.search_req import SearchRequest
 from app.dbmanager.saved_flights_manager import SavedFlightsManager
 from app.dbmanager.user_activity_manager import UserActivityManager
 from app.dbmanager.history_manager import HistoryManager
 from app.dbmanager.airlines_manager import AirlinesManager
 from app.dbmanager.destinations_stats_manager import DestinationsStatsManager
+import subprocess
+import json
 
+from flask_babel import _
+
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(['ru', 'en', 'de'])
 
 @app.route('/logout')
 def logout():
@@ -40,7 +45,7 @@ def login():
 
         print(usr)
         if usr is None or not usr.check_password(form.password.data):
-            flash("Error occured. Please try again.")
+            flash(_("Error occured. Please try again."))
             return redirect(url_for('login'))
         login_user(usr)
         next_page = request.args.get('next')
@@ -59,21 +64,21 @@ def signup():
         try:
             psqldb.session.add(usr)
         except:
-            flash("Unable to add user to db")
+            flash(_("Unable to add user to db"))
 
         try:
             psqldb.session.commit()
 
         except Exception as e:
-            flash("Some error accured")
+            flash("_(Some error accured)")
             print(e)
             return redirect(url_for('signup'))
 
-        msg_subj = "Hello, " + str(form.first_name.data) + "!"
+        msg_subj = "_(Hello), " + str(form.first_name.data) + "!"
         msg = Message(msg_subj, recipients=[form.email.data])
-        msg.html = "<p>welcome to whatafly!</p>" \
-                   "<p>we hope you'll find the best deal with our help</p>" \
-                   "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>"
+        msg.html = _("<p>welcome to whatafly!</p>" \
+                     "<p>we hope you'll find the best deal with our help</p>" \
+                     "<img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>")
 
         mail.send(msg)
 
@@ -105,62 +110,12 @@ def search():
     form = SearchForm()
     print('search')
 
-    airports = [
-        {
-            "country": "Germany",
-            "city": "Frankfurt",
-            "airport": "FRA"
-        },
-        {
-            "country": "Switzerland",
-            "city": "Zurich",
-            "airport": "ZRH"
-        },
-        {
-            "country": "France",
-            "city": "Paris",
-            "airport": "DDG"
-        },
-        {
-            "country": "Sweden",
-            "city": "Stockholm",
-            "airport": "NYO"
-        },
-        {
-            "country": "Ireland",
-            "city": "Dublin",
-            "airport": "DUB"
-        },
-        {
-            "country": "Norway",
-            "city": "Oslo",
-            "airport": "OSL"
-        }, {
-            "country": "Ukraine",
-            "city": "Kyiv",
-            "airport": "KBP"
-        }, {
-            "country": "Austria",
-            "city": "Vienna",
-            "airport": "VIE"
-        }, {
-            "country": "Germany",
-            "city": "Berlin (Schonefeld)",
-            "airport": "SXF"
-        },
-        {
-            "country": "Cyprus",
-            "city": "Larnaca",
-            "airport": "LCA"
-        },
-        {
-            "country": "Ukraine",
-            "city": "Kyiv",
-            "airport": "IEV"
-        }
-    ]
-    form.departure.choices = [(airport['airport'], airport['city'] + ", " + airport['airport']) for airport in airports]
-    form.arrival.choices = [(airport['airport'], airport['city'] + ", " + airport['airport']) for airport in airports]
+    airports = Airport.query.order_by("country").all()
+    print(airports)
+    form.departure.choices = [(airport.code, airport.city + " - " + airport.code + " (" + airport.country + ")") for
+                              airport in airports]
+    form.arrival.choices = [(airport.code, airport.city + " - " + airport.code + " (" + airport.country + ")") for
+                            airport in airports]
 
     return render_template('search.html', airports=airports, form=form)
 
@@ -249,7 +204,7 @@ def save():
             try:
                 psqldb.session.add(flight)
             except:
-                flash("Unable to add user to db")
+                flash(_("Unable to add user to db"))
                 return "fail"
             try:
                 psqldb.session.commit()
@@ -262,14 +217,13 @@ def save():
                 saved_flight_manager.init_flight(flight_check.id, current_user.id)
 
             except Exception as e:
-                flash("Some error accured")
+                flash(_("Some error accured"))
                 print(e)
                 return "fail"
 
         # add flight id to user saved flights
         userActivityManager = UserActivityManager()
         userActivityManager.insert_flight(flight_check.id, current_user.id)
-
 
     else:
         return redirect(url_for('login'))
@@ -282,6 +236,7 @@ def save():
 def saved():
     userActivityManager = UserActivityManager()
     list_of_flights = userActivityManager.get_saved_flights(current_user.id)
+
     return render_template('saved.html', saved_flights=list_of_flights)
 
 
@@ -312,28 +267,11 @@ def news_airline(airline):
 
         print('data from db:')
         print(news)
-
-        # filename = 'json/' + airline + '_news.json'
-        #
-        # with open(filename) as data_file:
-        #     json_data = data_file.read()
-        #
-        # arr = json.loads(json_data)
-        #
-        # print('json:')
-        # print(arr)
-
         return render_template("news.html", news=news, airline=airline)
 
 
 @app.route('/updateairlinesnews')
 def update_airlines_news():
-    # for airline in airlines:
-    #     filename = 'json/' + airline + '_news.json'
-    #
-    #     if os.path.exists(filename):
-    #         os.remove(filename)
-
     subprocess.check_output(['scrapy', 'crawl', 'airlines_news_spider'])
 
     return redirect(url_for('airlinesinfo'))
@@ -351,7 +289,6 @@ def remove_history():
     historyManager = HistoryManager()
     historyManager.remove_history(key, current_user.id)
     return "ok"
-
 
 # ---------------------------------------------------------------------------------
 
