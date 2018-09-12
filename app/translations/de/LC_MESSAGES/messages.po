@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-09-10 19:36+0300\n"
+"POT-Creation-Date: 2018-09-13 00:17+0300\n"
 "PO-Revision-Date: 2018-09-10 19:49+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -22,61 +22,69 @@ msgstr ""
 msgid "Sign In"
 msgstr "Anmelden"
 
-#: app/forms.py:17
+#: app/forms.py:18
 msgid "Please use a different username."
 msgstr "Bitte verwenden Sie einen anderen Benutzernamen."
 
-#: app/forms.py:22
+#: app/forms.py:24
 msgid "Such email is already in use."
 msgstr "Eine solche E-Mail wird bereits verwendet."
 
-#: app/forms.py:30
+#: app/forms.py:33
 msgid "Passwords must match"
 msgstr "Die Passwörter müssen übereinstimmen."
 
-#: app/forms.py:31
+#: app/forms.py:34
 msgid "Sign Up"
 msgstr "Einschreiben"
 
-#: app/forms.py:49
+#: app/forms.py:52
 msgid "Please pick the number of adults from 0 to 10"
 msgstr "Bitte wählen Sie die Anzahl der Erwachsenen von 0 bis 10"
 
-#: app/forms.py:53
+#: app/forms.py:56
 msgid "Please pick the number of teens from 0 to 10"
 msgstr "Bitte wählen Sie die Anzahl der Jugendlichen von 0 bis 10"
 
-#: app/forms.py:57
+#: app/forms.py:60
 msgid "Please pick the number of children from 0 to 10"
 msgstr "Bitte wählen Sie die Anzahl der Kinder von 0 bis 10"
 
-#: app/forms.py:61
+#: app/forms.py:64
 msgid "Please pick the number of infants from 0 to 10"
 msgstr "Bitte wählen Sie die Anzahl der Babys von 0 bis 10"
 
-#: app/forms.py:65
+#: app/forms.py:68
 msgid "Please pick the number of seniors from 0 to 10"
 msgstr "Bitte wählen Sie die Anzahl der Senioren von 0 bis 10"
 
-#: app/routes.py:45
+#: app/mail_sender.py:24
+msgid "Price for your flight has changed!"
+msgstr "Preis für Ihr Flug hat sich verändert!"
+
+#: app/mail_sender.py:31
+msgid "<p> Current fares:"
+msgstr "<p> Aktuelle Preise:"
+
+#: app/routes.py:53
 msgid "Error occured. Please try again."
 msgstr "Fehler aufgetreten. Bitte versuche es erneut."
 
-#: app/routes.py:64 app/routes.py:205
+#: app/routes.py:72 app/routes.py:212
 msgid "Unable to add user to db"
 msgstr "Der Benutzer konnte der Datenbank nicht hinzugefügt werden"
 
-#: app/routes.py:76
+#: app/routes.py:84
 msgid ""
 "<p>welcome to whatafly!</p><p>we hope you'll find the best deal with our "
 "help</p><img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-"
 "Right-Now-Funny-Plane-Meme.jpg'>"
 msgstr ""
-"<p>willkommen zu whatafly!</p><p>Wir hoffen, Sie finden das beste Angebot mit unseren "
-"Hilfe</p><img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-"
-"Right-Now-Funny-Plane-Meme.jpg'>"
+"<p>willkommen zu whatafly!</p><p>Wir hoffen, Sie finden das beste Angebot"
+" mit unseren Hilfe</p><img src='https://www.askideas.com/media/06/Dude-I"
+"-Am-So-High-Right-Now-Funny-Plane-Meme.jpg'>"
 
-#: app/routes.py:214
+#: app/routes.py:225
 msgid "Some error accured"
 msgstr "Fehler aufgetreten"
 
@@ -120,23 +128,23 @@ msgstr "Fluggesellschaften"
 msgid "Contacts"
 msgstr "Kontakte"
 
-#: app/templates/base.html:32
+#: app/templates/base.html:39
 msgid ""
 "Sign\n"
 "                        in"
 msgstr "Anmelden"
 
-#: app/templates/base.html:36
+#: app/templates/base.html:43
 msgid ""
 "Sign\n"
 "                        up"
 msgstr "Einschreiben"
 
-#: app/templates/base.html:43
+#: app/templates/base.html:50
 msgid "Account"
 msgstr "Konto"
 
-#: app/templates/base.html:47
+#: app/templates/base.html:55
 msgid "Logout"
 msgstr "Ausloggen"
 
@@ -153,18 +161,18 @@ msgid "Dima Branitskyi"
 msgstr "Dima Branitskyi"
 
 #: app/templates/contacts.html:27
-msgid "Lena Gzlitska"
+msgid "Lena Galitska"
 msgstr "Lena Galitska"
 
-#: app/templates/history.html:21
+#: app/templates/history.html:34
 msgid "route history"
 msgstr "Routenverlauf"
 
-#: app/templates/history.html:28
+#: app/templates/history.html:42
 msgid "view results"
 msgstr "Ergebnisse anzeigen"
 
-#: app/templates/history.html:29
+#: app/templates/history.html:44
 msgid "remove"
 msgstr "entfernen"
 
@@ -192,19 +200,23 @@ msgstr "anzeigen"
 msgid "search history"
 msgstr "Routenverlauf"
 
-#: app/templates/results.html:19
+#: app/templates/results.html:13
+msgid "saved"
+msgstr "gespeichert"
+
+#: app/templates/results.html:23
 msgid "results"
 msgstr "Ergebnisse"
 
-#: app/templates/results.html:64
+#: app/templates/results.html:68
 msgid "buy this ticket"
 msgstr "dieses Ticket kaufen"
 
-#: app/templates/results.html:66
+#: app/templates/results.html:72
 msgid "save"
 msgstr "speichern"
 
-#: app/templates/saved.html:29
+#: app/templates/saved.html:30
 msgid "price stats"
 msgstr "Preisstatistiken"
 
@@ -212,35 +224,31 @@ msgstr "Preisstatistiken"
 msgid "give a try to whatafly"
 msgstr "versuchen Sie es mit whatafly"
 
-#: app/templates/search.html:19
-msgid "City A"
-msgstr "Stadt A"
-
-#: app/templates/search.html:31
+#: app/templates/search.html:32
 msgid "City B"
 msgstr "Stadt B"
 
-#: app/templates/search.html:55
+#: app/templates/search.html:56
 msgid "FLEXIBLE"
 msgstr "FLEXIBEL"
 
-#: app/templates/search.html:68
+#: app/templates/search.html:69
 msgid "Adult"
 msgstr "Erwachsene"
 
-#: app/templates/search.html:75
+#: app/templates/search.html:76
 msgid "Child"
 msgstr "Kind"
 
-#: app/templates/search.html:82
+#: app/templates/search.html:83
 msgid "Teen"
 msgstr "Jugendliche"
 
-#: app/templates/search.html:89
+#: app/templates/search.html:90
 msgid "Infant"
 msgstr "Säugling"
 
-#: app/templates/search.html:96
+#: app/templates/search.html:97
 msgid "Senior"
 msgstr "Senior"
 
@@ -263,4 +271,8 @@ msgstr "EMAIL"
 #: app/templates/signup.html:71
 msgid "REPEAT PASSWORD"
 msgstr "PASSWORT WIEDERHOLEN"
+
+#: app/templates/search.html:19
+msgid "City A"
+msgstr "Stadt A"
 

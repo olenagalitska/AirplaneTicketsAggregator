@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-09-10 19:36+0300\n"
+"POT-Creation-Date: 2018-09-13 00:17+0300\n"
 "PO-Revision-Date: 2018-09-09 18:29+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -23,59 +23,70 @@ msgstr ""
 msgid "Sign In"
 msgstr "Войти"
 
-#: app/forms.py:17
+#: app/forms.py:18
 msgid "Please use a different username."
 msgstr "Пожалуйста, используйте другое имя пользователя."
 
-#: app/forms.py:22
+#: app/forms.py:24
 msgid "Such email is already in use."
 msgstr "Этот почтовый ящик уже используется."
 
-#: app/forms.py:30
+#: app/forms.py:33
 msgid "Passwords must match"
 msgstr "Пароли должны совпадать."
 
-#: app/forms.py:31
+#: app/forms.py:34
 msgid "Sign Up"
 msgstr "Зарегистрироваться"
 
-#: app/forms.py:49
+#: app/forms.py:52
 msgid "Please pick the number of adults from 0 to 10"
 msgstr "Пожалуйста, выберите количество взрослых от 0 до 10."
 
-#: app/forms.py:53
+#: app/forms.py:56
 msgid "Please pick the number of teens from 0 to 10"
 msgstr "Пожалуйста, выберите количество подростков от 0 до 10."
 
-#: app/forms.py:57
+#: app/forms.py:60
 msgid "Please pick the number of children from 0 to 10"
 msgstr "Пожалуйста, выберите количество детей от 0 до 10."
 
-#: app/forms.py:61
+#: app/forms.py:64
 msgid "Please pick the number of infants from 0 to 10"
 msgstr "Пожалуйста, выберите количество младенцев от 0 до 10."
 
-#: app/forms.py:65
+#: app/forms.py:68
 msgid "Please pick the number of seniors from 0 to 10"
 msgstr "Пожалуйста, выберите количество пенсионеров от 0 до 10."
 
-#: app/routes.py:45
+#: app/mail_sender.py:24
+msgid "Price for your flight has changed!"
+msgstr "Цена на Ваш полет изменилась!"
+
+#: app/mail_sender.py:31
+msgid "<p> Current fares:"
+msgstr "<p> Текущие цены:"
+
+#: app/routes.py:53
 msgid "Error occured. Please try again."
 msgstr "Случилась ошибка..Повторите!"
 
-#: app/routes.py:64 app/routes.py:205
+#: app/routes.py:72 app/routes.py:212
 msgid "Unable to add user to db"
 msgstr "Невозможно добавить пользователя в базу данных."
 
-#: app/routes.py:76
+#: app/routes.py:84
 msgid ""
 "<p>welcome to whatafly!</p><p>we hope you'll find the best deal with our "
 "help</p><img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-"
 "Right-Now-Funny-Plane-Meme.jpg'>"
-msgstr "<p>добро пожаловать в  whatafly!</p><p>мы надеемся, что вы найдете лучший рейс с нашей помощью!</p><img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-"
-"Right-Now-Funny-Plane-Meme.jpg'>"
+msgstr ""
+"<p>добро пожаловать в  whatafly!</p><p>мы надеемся, что вы найдете лучший"
+" рейс с нашей помощью!</p><img "
+"src='https://www.askideas.com/media/06/Dude-I-Am-So-High-Right-Now-Funny-"
+"Plane-Meme.jpg'>"
 
-#: app/routes.py:214
+#: app/routes.py:225
 msgid "Some error accured"
 msgstr "Случилась ошибка"
 
@@ -119,23 +130,23 @@ msgstr "Авиалинии"
 msgid "Contacts"
 msgstr "Контакты"
 
-#: app/templates/base.html:32
+#: app/templates/base.html:39
 msgid ""
 "Sign\n"
 "                        in"
 msgstr "Вход"
 
-#: app/templates/base.html:36
+#: app/templates/base.html:43
 msgid ""
 "Sign\n"
 "                        up"
 msgstr "Регистрация"
 
-#: app/templates/base.html:43
+#: app/templates/base.html:50
 msgid "Account"
 msgstr "Профиль"
 
-#: app/templates/base.html:47
+#: app/templates/base.html:55
 msgid "Logout"
 msgstr "Выйти"
 
@@ -152,18 +163,18 @@ msgid "Dima Branitskyi"
 msgstr "Дима Браницкий"
 
 #: app/templates/contacts.html:27
-msgid "Lena Gzlitska"
+msgid "Lena Galitska"
 msgstr "Лена Галицкая"
 
-#: app/templates/history.html:21
+#: app/templates/history.html:34
 msgid "route history"
 msgstr "история поисков"
 
-#: app/templates/history.html:28
+#: app/templates/history.html:42
 msgid "view results"
 msgstr "показать результаты"
 
-#: app/templates/history.html:29
+#: app/templates/history.html:44
 msgid "remove"
 msgstr "удалить"
 
@@ -191,19 +202,23 @@ msgstr "показать"
 msgid "search history"
 msgstr "история поисков"
 
-#: app/templates/results.html:19
+#: app/templates/results.html:13
+msgid "saved"
+msgstr "сохранен"
+
+#: app/templates/results.html:23
 msgid "results"
 msgstr "результаты"
 
-#: app/templates/results.html:64
+#: app/templates/results.html:68
 msgid "buy this ticket"
 msgstr "купить этот билет"
 
-#: app/templates/results.html:66
+#: app/templates/results.html:72
 msgid "save"
 msgstr "сохранить"
 
-#: app/templates/saved.html:29
+#: app/templates/saved.html:30
 msgid "price stats"
 msgstr "статистика цен"
 
@@ -211,35 +226,31 @@ msgstr "статистика цен"
 msgid "give a try to whatafly"
 msgstr "попробуй whatafly"
 
-#: app/templates/search.html:19
-msgid "City A"
-msgstr "Город А"
-
-#: app/templates/search.html:31
+#: app/templates/search.html:32
 msgid "City B"
 msgstr "Город Б"
 
-#: app/templates/search.html:55
+#: app/templates/search.html:56
 msgid "FLEXIBLE"
 msgstr "ГИБКИЕ ДАТЫ"
 
-#: app/templates/search.html:68
+#: app/templates/search.html:69
 msgid "Adult"
 msgstr "Взрослый"
 
-#: app/templates/search.html:75
+#: app/templates/search.html:76
 msgid "Child"
 msgstr "Ребенок"
 
-#: app/templates/search.html:82
+#: app/templates/search.html:83
 msgid "Teen"
 msgstr "Подросток"
 
-#: app/templates/search.html:89
+#: app/templates/search.html:90
 msgid "Infant"
 msgstr "Младенец"
 
-#: app/templates/search.html:96
+#: app/templates/search.html:97
 msgid "Senior"
 msgstr "Пенсионер"
 
@@ -262,3 +273,8 @@ msgstr "EMAIL"
 #: app/templates/signup.html:71
 msgid "REPEAT PASSWORD"
 msgstr "ПОВТОРИТЕ ПАРОЛЬ"
+
+#: app/templates/search.html:19
+msgid "City A"
+msgstr "Город А"
+
