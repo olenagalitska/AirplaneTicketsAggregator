@@ -1,25 +1,21 @@
-from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail
-from flask import render_template, request, url_for, redirect, flash
-from flask_mail import Message
-
-from app.dbmanager.destinations_stats_manager import DestinationsStatsManager
-from app.forms import LoginForm, RegistrationForm, SearchForm
-import datetime
-from app.models import User, Flight, Airport
-from flask_login import current_user, login_user, logout_user, login_required
-from werkzeug.urls import url_parse
 import subprocess
 import json
 
+from flask import render_template, request, url_for, redirect, flash
+from flask_mail import Message
+from flask_login import current_user, login_user, logout_user, login_required
+
+from werkzeug.urls import url_parse
+
+from app import app, psqldb, search_handler, arangodb, airlines_data_collection, list_of_airlines, mail
+from app.models import User, Flight, Airport
+from app.forms import LoginForm, RegistrationForm, SearchForm
 from app.search_req import SearchRequest
 from app.dbmanager.saved_flights_manager import SavedFlightsManager
 from app.dbmanager.user_activity_manager import UserActivityManager
 from app.dbmanager.history_manager import HistoryManager
 from app.dbmanager.airlines_manager import AirlinesManager
-
-import threading
-import time
-from app.mail_sender import MailSender
+from app.dbmanager.destinations_stats_manager import DestinationsStatsManager
 
 
 @app.route('/logout')
@@ -186,6 +182,7 @@ def results():
               "_key": key
               }
 
+    # TODO: fix this
     airports = Airport.query.order_by("code").all()
 
     dest_airport_code = form.get('arrival')
@@ -194,16 +191,15 @@ def results():
     print(dest_airport_code)
     print(date)
 
-
     for airport in airports:
         if airport.code == dest_airport_code:
             dest_airport = airport
             break
 
-
-    print(dest_airport.city)
-    destination_stats_manager = DestinationsStatsManager()
-    destination_stats_manager.increase_counter(dest_airport, date)
+    if dest_airport is not None:
+        print(dest_airport.city)
+        destination_stats_manager = DestinationsStatsManager()
+        destination_stats_manager.increase_counter(dest_airport, date)
 
     airlines = []
     if not form.get('wizzair') is None:
@@ -262,8 +258,8 @@ def save():
                                                       arrivalTime=flight.arrivalTime,
                                                       number=flight.number, airline=flight.airline).first()
                 # init saved_flights table for newly added flight
-                savedFlightManager = SavedFlightsManager()
-                savedFlightManager.init_flight(flight_check.id, current_user.id)
+                saved_flight_manager = SavedFlightsManager()
+                saved_flight_manager.init_flight(flight_check.id, current_user.id)
 
             except Exception as e:
                 flash("Some error accured")
@@ -273,6 +269,7 @@ def save():
         # add flight id to user saved flights
         userActivityManager = UserActivityManager()
         userActivityManager.insert_flight(flight_check.id, current_user.id)
+
 
     else:
         return redirect(url_for('login'))
@@ -362,61 +359,5 @@ def remove_history():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
-
-class FlightsUpdater(threading.Thread):
-
-    def __init__(self, name):
-        threading.Thread.__init__(self)
-
-        self.name = name
-        self.isWorking = True
-
-    def run(self):
-        time.sleep(30)
-        print('Flights Updater started')
-        while self.isWorking:
-            saved_flights = arangodb.collection('saved_flights')
-            flights = []
-            print(saved_flights)
-
-            for saved_flight in saved_flights:
-                flight = Flight.query.get(saved_flight["flight_id"])
-                flights.append(flight)
-
-            for flight in flights:
-
-                with app.test_request_context():
-                    search_data = SearchRequest(flight.departure, flight.arrival, str(flight.departureTime.date()),
-                                                1, 0, 0, 0, 0, False, False, False)
-
-                    if flight.airline == 'ryanair':
-                        search_data.ryanair = True
-                    else:
-                        if flight.airline == 'wizzair':
-                            search_data.wizzair = True
-                        if flight.airline == 'uia':
-                            search_data.uia = True
-
-                    # print("r: " + search_data.get('ryanair'))
-                    search_results = search_handler.handle(search_data)
-                    if len(search_results) > 0:
-                        result = search_results[0]
-                        result.get("fares")[0].get("amount")
-
-                        print(flight.price)
-                        if result.get("fares")[0].get("amount") != flight.price:
-                            print("Update Found!")
-                            old_price = flight.price
-                            flight.price = result.get("fares")[0].get("amount")
-                            psqldb.session.commit()
-
-                            mail_sender = MailSender()
-                            mail_sender.send_update(flight_id=flight.id, old_price=old_price)
-
-            time.sleep(60 * 60)
-
-    def stop(self):
-        self.isWorking = False
 
     # TODO remove from history if everyone removes ?

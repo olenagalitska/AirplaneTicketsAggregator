@@ -1,21 +1,17 @@
 from flask import Flask
-from app.updaters.airlines_news_updater import AirlinesNewsUpdater
-from app.updaters.airlines_info_updater import AirlinesInfoUpdater
-from app.conf.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from arango import ArangoClient
-from app.airlines.handler import Handler
-
-
-
 from flask_mail import Mail
 
-# from app.flights_updater import FlightsUpdater
+from arango import ArangoClient
 
 import logging.config
 import yaml
+
+from app.conf.config import Config
+from app.airlines.handler import Handler
+from app.threads.updaters_starter import ThreadsStarter
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -53,7 +49,6 @@ cursor_list_of_airlines = airlines_data_collection.keys()
 for airline in cursor_list_of_airlines:
     list_of_airlines.append(airline)
 
-
 # logging initialization (should be after psqldb init, because it used by logger
 with open('app/conf/logging.yml', 'r') as stream:
     logging_config = yaml.load(stream)
@@ -68,6 +63,8 @@ logger = logging.getLogger('logger')
 # logger.warn('warn message')
 # logger.error('error message')
 # logger.critical('critical message')
+
+
 start_urls = []
 
 print('list of airlines: ')
@@ -85,24 +82,14 @@ print('urls:')
 for url in start_urls:
     print(url)
 
-
 search_handler = Handler()
 
-# airlines_news_updater = AirlinesNewsUpdater("Airlines News Updater")
-# airlines_news_updater.start()
-#
-# airlines_info_updater = AirlinesInfoUpdater("Airlines Info Updater")
-# airlines_info_updater.start()
-
+# DO NOT REMOVE IT!
 from app import routes
-# flights_updater = routes.FlightsUpdater("Flights Updater")
-# flights_updater.start()
-
-# from app.stats_fields_creater import StatsFieldsCreater
-# stats_field_creater = StatsFieldsCreater("Stats Fields Creater")
-# stats_field_creater.start()
 
 
+# updaters_starter = ThreadsStarter("Updater Starter")
+# updaters_starter.start()
 
 if __name__ == '__main__':
     app.run(debug=True)

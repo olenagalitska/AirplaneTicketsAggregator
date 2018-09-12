@@ -24,7 +24,7 @@ class WizzairInfoRobber:
                     "dateArrival": flight['arrivalDateTime'].split('T')[0],
                     "timeDeparture": flight['departureDateTime'].split('T')[1],
                     "timeArrival": flight['arrivalDateTime'].split('T')[1],
-                    "number" : flight['flightNumber']
+                    "number": flight['flightNumber']
                 }
                 fares = flight['fares']
                 json_fares = []

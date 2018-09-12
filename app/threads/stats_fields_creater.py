@@ -16,8 +16,7 @@ class StatsFieldsCreater(threading.Thread):
         self.destinations_stats_manager = DestinationsStatsManager()
 
     def run(self):
-        time.sleep(10)
-        # print('Airlines Stats Fields Creater started')
+        print('Airlines Stats Fields Creater started')
         while self.isWorking:
             self.airlines_manager.create_stats_fields()
             self.destinations_stats_manager.create_stats_fields()
