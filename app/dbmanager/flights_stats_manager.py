@@ -1,8 +1,7 @@
 from app import arangodb
-import datetime
 
 
-class SavedFlightsManager:
+class FlightsStatsManager:
     def init_flight(self, flight_id, user_id):
 
         saved_flights = arangodb.collection('saved_flights')
@@ -11,10 +10,8 @@ class SavedFlightsManager:
         flight = {"_key": str(flight_id), 'flight_id': flight_id, "users": [user_id]}
         saved_flights.insert(flight)
 
-    def add_saved_flight(self, flight_id, user_id, fares):
+    def add_saved_flight(self, flight_id, user_id):
         saved_flights = arangodb.collection('saved_flights')
-        flights_stats = arangodb.collection('flights_stats')
-
         if not saved_flights.has(str(flight_id)):
             self.init_flight(flight_id, user_id)
         else:
@@ -26,8 +23,3 @@ class SavedFlightsManager:
                 users.append(user_id)
                 saved_flight['users'] = users
                 saved_flights.update(saved_flight)
-
-        if not flights_stats.has(str(flight_id)):
-            stats = {"_key": str(flight_id), 'prices': [{'date': str(datetime.date.today()), 'fares': fares}], }
-            flights_stats.insert(stats)
-        # по идее, если уже есть полет, то цены будет обновлять flights updater

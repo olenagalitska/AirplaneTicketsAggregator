@@ -196,8 +196,7 @@ def save():
         flight = Flight(departure=flight_json['airportA'], arrival=flight_json['airportB'],
                         departureTime=flight_json['dateDeparture'] + 'T' + flight_json['timeDeparture'],
                         arrivalTime=flight_json['dateArrival'] + 'T' + flight_json['timeArrival'],
-                        airline=flight_json['airline'], number=flight_json['number'],
-                        price=((flight_json['fares'])[0])['amount'])
+                        airline=flight_json['airline'], number=flight_json['number'])
         flight_check = Flight.query.filter_by(departureTime=flight.departureTime, arrivalTime=flight.arrivalTime,
                                               number=flight.number, airline=flight.airline).first()
 
@@ -226,10 +225,10 @@ def save():
 
         # add flight id to user saved flights
         user_activity_manager = UserActivityManager()
-        user_activity_manager.insert_flight(flight_check.id, current_user.id)
+        user_activity_manager.insert_flight(flight_check.id, current_user.id, flight_json['fares'])
 
         saved_flight_manager = SavedFlightsManager()
-        saved_flight_manager.add_saved_flight(flight_check.id, current_user.id)
+        saved_flight_manager.add_saved_flight(flight_check.id, current_user.id, flight_json['fares'])
 
     else:
         return redirect(url_for('login'))

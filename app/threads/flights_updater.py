@@ -44,7 +44,9 @@ class FlightsUpdater(threading.Thread):
                     search_results = search_handler.handle(search_data)
                     if len(search_results) > 0:
                         result = search_results[0]
-                        result.get("fares")[0].get("amount")
+                        fares = result.get("fares")
+
+
 
                         print(flight.price)
                         if result.get("fares")[0].get("amount") != flight.price:

@@ -9,7 +9,7 @@ class UserActivityManager:
         activity = {'_key': str(user_id), 'saved_flights': [], 'searches': []}
         user_activity_collection.insert(activity)
 
-    def insert_flight(self, flight_id, user_id):
+    def insert_flight(self, flight_id, user_id, fares):
         user_activity_collection = arangodb.collection('user_activity')
         activity = user_activity_collection.get(str(user_id))
         list_of_flights = activity['saved_flights']
@@ -24,7 +24,7 @@ class UserActivityManager:
             activity['saved_flights'] = list_of_flights
             user_activity_collection.update(activity)
             savedFlightsManager = SavedFlightsManager()
-            savedFlightsManager.add_saved_flight(flight_id, user_id)
+            savedFlightsManager.add_saved_flight(flight_id, user_id, fares)
 
     def insert_search(self, key, user_id):
         user_activity_collection = arangodb.collection('user_activity')

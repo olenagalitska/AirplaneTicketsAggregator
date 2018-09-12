@@ -74,16 +74,14 @@ class Flight(psqldb.Model):
     departureTime = psqldb.Column(psqldb.TIMESTAMP)
     arrivalTime = psqldb.Column(psqldb.TIMESTAMP)
     airline = psqldb.Column(psqldb.String(256))
-    price = psqldb.Column(psqldb.Float)
 
-    def __init__(self, number, departure, arrival, departureTime, arrivalTime, airline, price):
+    def __init__(self, number, departure, arrival, departureTime, arrivalTime, airline):
         self.number = number
         self.departure = departure
         self.arrival = arrival
         self.departureTime = departureTime
         self.arrivalTime = arrivalTime
         self.airline = airline
-        self.price = price
 
 
 class Airport(psqldb.Model):
