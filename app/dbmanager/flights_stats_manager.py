@@ -7,9 +7,8 @@ class FlightsStatsManager:
     def get_stats_for(flight_id):
         flights_stats_collection = arangodb.collection('flights_stats')
         document = flights_stats_collection.get(str(flight_id))
-        n = len(document.prices)
-        return document.prices[n-1]
-
+        n = len(document['prices'])
+        return (document['prices'])[n-1]
 
     @staticmethod
     def update_stats(flight_id, updated_fares):
