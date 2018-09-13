@@ -1,3 +1,4 @@
+from app import logger
 from app.airlines.wizzair import WizzairInfoRobber
 from app.airlines.ryanair import RyanairInfoRobber
 
@@ -5,66 +6,32 @@ from app.airlines.ryanair import RyanairInfoRobber
 class Handler:
 
     def __init__(self):
+        logger.info('try to init WizzairInfoRobber()')
         self.wizzair_info_robber = WizzairInfoRobber()
+        logger.info('succeeded')
+
+        logger.info('try to init RyanairInfoRobber()')
         self.ryanair_info_robber = RyanairInfoRobber()
-
-    # def handle(self, search_data):
-    #
-    #     results = []
-    #
-    #     airlines_icao = search_data.get('airlines')
-    #     for airline_icao in airlines_icao:
-    #         if airline_icao == "WZZ":
-    #             self.wizzair_info_robber.getFlights(
-    #                 results=results,
-    #                 depart=search_data.get('departure'),
-    #                 arrive=search_data.get('arrival'),
-    #                 date=search_data.get('date')
-    #             )
-    #         elif airline_icao == "AUI":
-    #             pass
-    #         elif airline_icao == "RYR":
-    #             pass
-    #     return results
-
-    def handle_form(self, search_data, airlines):
-        results = []
-
-        for airline in airlines:
-
-            if airline == 'wizzair':
-                print("coming for wizz")
-                self.wizzair_info_robber.get_flights(
-                    results=results,
-                    depart=search_data['departure'],
-                    arrive=search_data['arrival'],
-                    date=search_data['date'],
-                    adults=str(int(search_data['adults']) + int(search_data['seniors']) + int(search_data['teens'])),
-                    children=str(search_data['children']),
-                    infants=str(search_data['infants'])
-                )
-
-            if airline == 'ryanair':
-                print("coming for ryan")
-                self.ryanair_info_robber.get_flights(
-                    results=results,
-                    depart=search_data['departure'],
-                    arrive=search_data['arrival'],
-                    date=search_data['date'],
-                    adults=str(int(search_data['adults']) + int(search_data['seniors'])),
-                    children=str(search_data['children']),
-                    infants=str(search_data['infants']),
-                    teens=str(search_data['teens'])
-                )
-
-        print(results)
-        return results
+        logger.info('succeeded')
 
     def handle(self, search_data, airlines):
         results = []
 
+        logger.info('search_data: ' +
+                    str(search_data.departure) +
+                    str(search_data.arrival) +
+                    str(search_data.date) +
+                    str(search_data.adults) +
+                    str(search_data.seniors) +
+                    str(search_data.teens) +
+                    str(search_data.children) +
+                    str(search_data.infants))
+
+        logger.info('airlines: ' + str(airlines))
+
         if "wizzair" in airlines:
-            print("coming for wizz")
+            logger.info('try to get flights from wizzair')
+
             self.wizzair_info_robber.get_flights(
                 results=results,
                 depart=search_data.departure,
@@ -76,8 +43,7 @@ class Handler:
                 infants=str(search_data.infants)
             )
         if "ryanair" in airlines:
-            print("coming for ryan")
-            print(search_data)
+            logger.info('try to get flights from ryanair')
 
             self.ryanair_info_robber.get_flights(
                 results=results,
@@ -90,5 +56,5 @@ class Handler:
                 teens=str(search_data.teens)
             )
 
-        print(results)
+        logger.info('results:' + str(results))
         return results
