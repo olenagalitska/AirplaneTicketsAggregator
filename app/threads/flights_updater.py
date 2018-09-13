@@ -23,6 +23,7 @@ class FlightsUpdater(threading.Thread):
         for i in range(0, len(current_fares)):
             if current_fares[i]['amount'] != fares_in_db[i]['amount']:
                 result = True
+                break
 
         return result
 

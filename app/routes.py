@@ -143,24 +143,11 @@ def results():
               "_key": key
               }
 
-    # TODO: fix this
-    airports = Airport.query.order_by("code").all()
-
-    dest_airport_code = form.get('arrival')
-    date = form.get('date')
-
-    print(dest_airport_code)
-    print(date)
-
-    for airport in airports:
-        if airport.code == dest_airport_code:
-            dest_airport = airport
-            break
-
+    dest_airport = Airport.query.filter_by(code=form.get('arrival')).first()
     if dest_airport is not None:
         print(dest_airport.city)
         destination_stats_manager = DestinationsStatsManager()
-        destination_stats_manager.increase_counter(dest_airport, date)
+        destination_stats_manager.increase_counter(dest_airport, form.get('date'))
 
     airlines = []
     if not form.get('wizzair') is None:
