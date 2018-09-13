@@ -12,28 +12,55 @@ import yaml
 
 from app.conf.config import Config
 
-app = Flask(__name__)
-app.config.from_object(Config)
+flask_logger = logging.getLogger('werkzeug')
 
-# Initialize PostgreSql database
-psqldb = SQLAlchemy(app)
+flask_logger.info('try to load logger configs')
 
-login = LoginManager(app)
-login.login_view = 'login'
-
-# logging initialization (should be after psqldb init and login init, because they are used by logger)
 with open('app/conf/logging.yml', 'r') as stream:
     logging_config = yaml.load(stream)
-logging.config.dictConfig(logging_config)
 
+logging.config.dictConfig(logging_config)
+flask_logger.info('succeeded')
+
+flask_logger.info('try to add file and console log handlers to flask_default_logger')
+flask_logger.addHandler(logging._handlers['file'])
+flask_logger.addHandler(logging._handlers['console'])
+flask_logger.info('succeeded')
+
+flask_logger.info('try to start logger')
 # create logger
 logger = logging.getLogger('logger')
 
+flask_logger.info('succeeded. next logs will be through custom logger (not flask_default_logger)')
+
 logger.info('logger started')
-logger.info('psqldb has already started (before logger)')
-logger.info('login_manager has already started (before logger)')
 
 try:
+    app = Flask(__name__)
+    logger.info('try to config app from Config')
+    app.config.from_object(Config)
+    logger.info('succeeded')
+
+    logger.info('try to init psqldb')
+    # Initialize PostgreSql database
+    psqldb = SQLAlchemy(app)
+    logger.info('succeeded')
+
+    logger.info('try to init LoginManager')
+    login = LoginManager(app)
+    login.login_view = 'login'
+    logger.info('succeeded')
+
+    logger.info('try to import and init psql log handler')
+    from app.PsqlLogHandler import PsqlLogHandler
+    psql_log_handler = PsqlLogHandler()
+    logger.info('succeeded')
+
+    logger.info('try to add psql log handler to loggers (logger, flask_default_logger')
+    flask_logger.addHandler(psql_log_handler)
+    logger.addHandler(psql_log_handler)
+    logger.info('psql log handler was added to logger')
+
     logger.info('try to init Migrate(app, psql)')
     migrate = Migrate(app, psqldb)
     logger.info('succeeded')
@@ -114,6 +141,7 @@ try:
     logger.info('succeeded')
 
     logger.info('starting app...')
+
     if __name__ == '__main__':
         app.run(debug=True)
 
