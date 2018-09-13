@@ -310,10 +310,7 @@ def airlines_stats(stat_year):
     results = airlineManager.get_airline_stats()
     x = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
     for result in results:
-        print(result)
-        print("-------------------------")
         data1 = []
-
         if result['year'] == int(stat_year):
             sums = []
             airlines = result['airlines']
@@ -340,4 +337,4 @@ def airlines_stats(stat_year):
 def page_not_found(e):
     return render_template('404.html'), 404
 
-    # TODO remove from history if everyone removes ?
+
