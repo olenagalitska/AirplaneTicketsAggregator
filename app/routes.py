@@ -309,6 +309,9 @@ def airlines_stats(stat_year):
     airlineManager = AirlinesManager()
     results = airlineManager.get_airline_stats()
     x = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    all_years = []
+    for i in range(2018, datetime.datetime.now().year + 2):
+        all_years.append(i)
     for result in results:
         data1 = []
         if result['year'] == int(stat_year):
@@ -326,12 +329,13 @@ def airlines_stats(stat_year):
 
             return render_template('airlines_stats.html',
                                    stats_div=Markup(month_plot_div),
-                                   whole_year_stats=Markup(year_plot_div)
+                                   whole_year_stats=Markup(year_plot_div),
+                                   years=all_years, current_year=stat_year
                                    )
-    return render_template('airlines_stats.html', stats_div="No data available", whole_year_stats="No data available")
+    return render_template('airlines_stats.html', stats_div="No data available", whole_year_stats="No data available",
+                           years=all_years)
 
 # ---------------------------------------------------------------------------------
-
 
 @app.errorhandler(404)
 def page_not_found(e):
