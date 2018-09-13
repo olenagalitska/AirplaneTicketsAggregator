@@ -322,3 +322,9 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
     # TODO remove from history if everyone removes ?
+
+
+@app.errorhandler(Exception)
+def all_exception_handler(e):
+   return render_template('error.html'), 500
+
