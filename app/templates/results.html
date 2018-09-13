@@ -12,7 +12,7 @@
                     button = document.getElementById(flight_obj.number);
                     console.log(flight_obj);
                     console.log(flight_obj.number);
-                    button.innerText = {{ _("saved") }};
+                    button.innerText = "{{ _('saved') }}";
                     button.disabled = true;
                 }
             ).fail(function () {
