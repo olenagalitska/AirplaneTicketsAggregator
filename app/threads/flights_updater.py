@@ -59,7 +59,7 @@ class FlightsUpdater(threading.Thread):
                     result = search_results[0]
                     current_fares = result.get("fares")
 
-                    in_db = FlightsStatsManager.get_stats_for(flight.id)
+                    in_db = FlightsStatsManager.get_current_stats_for(flight.id)
 
                     print(in_db['fares'])
                     print(current_fares)

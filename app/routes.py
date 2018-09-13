@@ -24,8 +24,9 @@ from flask_babel import _
 
 @babel.localeselector
 def get_locale():
-    # return request.accept_languages.best_match(['ru', 'en', 'de'])
-    return 'ru'
+
+    return request.accept_languages.best_match(['ru', 'en', 'de'])
+    # return 'ru'
 
 
 @app.route('/logout')
@@ -312,6 +313,23 @@ def show_results():
 
     results = search_handler.handle(search_data, list_of_airlines)
     return 'ok'
+
+
+@app.route('/price_graph/<flight_id>', methods=["POST", "GET"])
+def price_graph(flight_id):
+    prices = FlightsStatsManager.get_all_stats_for(flight_id)
+    flight = Flight.query.filter_by(id=flight_id).first()
+
+    dates=[]
+    fares=[]
+
+    for price in prices:
+        dates.append(price['date'])
+        fares.append(price['fares'])
+
+    print(dates)
+    print(fares)
+    return render_template('price_graph.html', prices=prices, flight=flight)
 
 
 # ---------------------------------------------------------------------------------
