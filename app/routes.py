@@ -331,7 +331,7 @@ def airlines_stats(stat_year):
                                    stats_div=Markup(month_plot_div),
                                    whole_year_stats=Markup(year_plot_div)
                                    )
-    return render_template('airlines_stats.html')
+    return render_template('airlines_stats.html', stats_div="No data available", whole_year_stats="No data available")
 
 # ---------------------------------------------------------------------------------
 
