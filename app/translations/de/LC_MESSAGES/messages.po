@@ -276,3 +276,8 @@ msgstr "PASSWORT WIEDERHOLEN"
 msgid "City A"
 msgstr "Stadt A"
 
+#: app/templates/history.html:13
+msgid "removed"
+msgstr "gelöscht"
+
+

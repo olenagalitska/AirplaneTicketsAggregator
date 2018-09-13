@@ -280,5 +280,5 @@ msgstr "Город А"
 
 #: app/templates/history.html:13
 msgid "removed"
-msgstr "удален"
+msgstr "удалено"
 
