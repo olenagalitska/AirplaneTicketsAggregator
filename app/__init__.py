@@ -60,11 +60,11 @@ logging.config.dictConfig(logging_config)
 logger = logging.getLogger('logger')
 
 # example of using logger
-# logger.debug('debug message')
-# logger.info('info message')
-# logger.warn('warn message')
-# logger.error('error message')
-# logger.critical('critical message')
+logger.debug('debug message')
+logger.info('info message')
+logger.warn('warn message')
+logger.error('error message')
+logger.critical('critical message')
 
 
 start_urls = []

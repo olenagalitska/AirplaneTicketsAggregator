@@ -1,7 +1,8 @@
 version: 1
 formatters:
   simple:
-    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format: '%(asctime)s :  %(filename)35s: %(levelname)8s: %(funcName)35s(): %(lineno)4d:     %(message)s'
+
 handlers:
   console:
     class: logging.StreamHandler
