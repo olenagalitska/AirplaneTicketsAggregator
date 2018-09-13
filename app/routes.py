@@ -3,6 +3,7 @@ from flask import render_template, request, url_for, redirect, flash
 from flask_mail import Message
 
 from flask_login import current_user, login_user, logout_user, login_required
+from markupsafe import Markup
 
 from werkzeug.urls import url_parse
 
@@ -16,6 +17,7 @@ from app.dbmanager.airlines_manager import AirlinesManager
 from app.dbmanager.destinations_stats_manager import DestinationsStatsManager
 from app.dbmanager.flights_stats_manager import FlightsStatsManager
 from app.search_req import SearchRequest
+from app.graph_maker import GraphMaker
 import subprocess
 import json
 
@@ -24,7 +26,6 @@ from flask_babel import _
 
 @babel.localeselector
 def get_locale():
-
     return request.accept_languages.best_match(['ru', 'en', 'de'])
     # return 'ru'
 
@@ -320,16 +321,17 @@ def price_graph(flight_id):
     prices = FlightsStatsManager.get_all_stats_for(flight_id)
     flight = Flight.query.filter_by(id=flight_id).first()
 
-    dates=[]
-    fares=[]
+    dates = []
+    fares = []
 
     for price in prices:
         dates.append(price['date'])
         fares.append(price['fares'])
 
-    print(dates)
+    # print(dates)
     print(fares)
-    return render_template('price_graph.html', prices=prices, flight=flight)
+    my_plot_div = GraphMaker.get_price_graph(dates, fares)
+    return render_template('price_graph.html', prices=prices, flight=flight, div_placeholder=Markup(my_plot_div))
 
 
 # ---------------------------------------------------------------------------------

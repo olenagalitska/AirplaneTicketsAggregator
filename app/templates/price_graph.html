@@ -26,17 +26,19 @@
     <br><br>
 
 
-        {% for price in prices %}
-            <div class="row">
-                <div class="col-sm-2 col-xs-2 text-center">{{ price['date'] }}</div>
-                <div class="col-sm-2 col-xs-2 text-center">
-                    {% for fare in price['fares'] %}
-                        <p>{{ fare.amount }} {{ fare.currencyCode }}</p>
-                    {% endfor %}
-                </div>
-            </div>
-            <hr>
-        {% endfor %}
+{#        {% for price in prices %}#}
+{#            <div class="row">#}
+{#                <div class="col-sm-2 col-xs-2 text-center">{{ price['date'] }}</div>#}
+{#                <div class="col-sm-2 col-xs-2 text-center">#}
+{#                    {% for fare in price['fares'] %}#}
+{#                        <p>{{ fare.amount }} {{ fare.currencyCode }}</p>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#            <hr>#}
+{#        {% endfor %}#}
+
+    {{ div_placeholder }}
 
     </div>
 {% endblock %}
