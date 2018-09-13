@@ -1,5 +1,5 @@
 import requests
-from flask import render_template, request, url_for, redirect, flash
+from flask import render_template, request, url_for, redirect, flash, Markup
 from flask_mail import Message
 
 from flask_login import current_user, login_user, logout_user, login_required
@@ -18,8 +18,12 @@ from app.dbmanager.flights_stats_manager import FlightsStatsManager
 from app.search_req import SearchRequest
 import subprocess
 import json
+import datetime
 
 from flask_babel import _
+from plotly.offline import plot
+from plotly.graph_objs import Scatter, Histogram, Figure, Layout, Pie
+
 
 
 @babel.localeselector
@@ -300,6 +304,34 @@ def show_results():
     results = search_handler.handle(search_data, list_of_airlines)
     return 'ok'
 
+@app.route('/airlines_stats/<stat_year>', methods=['GET'])
+def airlines_stats(stat_year):
+    airlineManager = AirlinesManager()
+    results = airlineManager.get_airline_stats()
+    x = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    for result in results:
+        print(result)
+        print("-------------------------")
+        data1 = []
+
+        if result['year'] == int(stat_year):
+            sums = []
+            airlines = result['airlines']
+            for i in range (0, len(result['counters'])):
+                trace = Scatter(y=(result['counters'])[i], x=x, name=result['airlines'][i])
+                sums.append(sum(result['counters'][i]))
+                data1.append(trace)
+
+            month_plot_div = plot(data1, output_type='div')
+            print(airlines)
+            print(sums)
+            year_plot_div=plot([Pie(labels=airlines, values=sums)], output_type='div')
+
+            return render_template('airlines_stats.html',
+                                   stats_div=Markup(month_plot_div),
+                                   whole_year_stats=Markup(year_plot_div)
+                                   )
+    return render_template('airlines_stats.html')
 
 # ---------------------------------------------------------------------------------
 
