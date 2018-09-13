@@ -1,7 +1,7 @@
 version: 1
 formatters:
   simple:
-    format: '%(asctime)s :  %(filename)35s: %(levelname)8s: %(funcName)35s(): %(lineno)4d:     %(message)s'
+    format: '%(asctime)s :  %(pathname)100s: %(levelname)8s: %(funcName)35s(): %(lineno)4d:     %(message)s'
 
 handlers:
   console:

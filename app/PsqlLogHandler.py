@@ -12,9 +12,16 @@ class PsqlLogHandler(logging.Handler):
 
     # A very basic logger that commits a LogRecord to the PSQL Db
     def emit(self, record):
+        msg = str(record.__dict__['msg'])
+        if record.__dict__['exc_info'] is not None:
+            msg += str(record.__dict__['exc_info']) + str(record.__dict__['exc_text']) + str(record.__dict__['stack_info'])
+
         log = Log(
-            logger=record.__dict__['name'],
+            pathname=record.__dict__['pathname'],
             level=record.__dict__['levelname'],
-            msg=record.__dict__['msg'], )
+            func_name=record.__dict__['funcName'],
+            line_no=record.__dict__['lineno'],
+            msg=msg
+        )
         psqldb.session.add(log)
         psqldb.session.commit()
