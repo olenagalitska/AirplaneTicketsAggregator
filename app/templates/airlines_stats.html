@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+    {% for year in years %}
+        <a href="/airlines_stats/{{ year }}">{{ year }}</a>
+    {% endfor %}
+<h3>Statistics By Monthes in {{ current_year }}</h3>
+    <div>
+    {{ stats_div }}
+    </div>
+    <h3>Whole {{ current_year }} Year Statistics</h3>
+    <div>
+    {{ whole_year_stats }}
+    </div>
+{% endblock %}

@@ -10,7 +10,9 @@
                     console.log(response);
                     flight_obj = JSON.parse(flight);
                     button = document.getElementById(flight_obj.number);
-                    button.innerText = {{ _("saved") }};
+                    console.log(flight_obj);
+                    console.log(flight_obj.number);
+                    button.innerText = "{{ _('saved') }}";
                     button.disabled = true;
                 }
             ).fail(function () {

@@ -202,7 +202,7 @@ msgstr "показать"
 msgid "search history"
 msgstr "история поисков"
 
-#: app/templates/results.html:13
+#: app/templates/results.html:14
 msgid "saved"
 msgstr "сохранен"
 
@@ -277,4 +277,8 @@ msgstr "ПОВТОРИТЕ ПАРОЛЬ"
 #: app/templates/search.html:19
 msgid "City A"
 msgstr "Город А"
+
+#: app/templates/history.html:13
+msgid "removed"
+msgstr "удалено"
 
