@@ -282,3 +282,18 @@ msgstr "Город А"
 msgid "removed"
 msgstr "удалено"
 
+#: app/templates/airlines_stats.html:7
+msgid "Statistics By Monthes in"
+msgstr "Статистика по месяцам в"
+
+#: app/templates/airlines_stats.html:11
+msgid "Whole Year Statistics"
+msgstr "Статистика по всему году"
+
+#: app/templates/base.html:26
+msgid "Info"
+msgstr "Инфо"
+
+#: app/templates/base.html:27
+msgid "Statistics"
+msgstr "Статистика"

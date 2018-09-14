@@ -30,9 +30,9 @@ from plotly.graph_objs import Scatter, Histogram, Figure, Layout, Pie
 
 @babel.localeselector
 def get_locale():
-    with app.test_request_context():
-        return request.accept_languages.best_match(['ru', 'en', 'de'])
-    # return 'ru'
+    # with app.test_request_context():
+    #     return request.accept_languages.best_match(['ru', 'en', 'de'])
+    return 'ru'
 
 
 @app.route('/logout')
