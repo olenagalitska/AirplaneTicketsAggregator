@@ -1,11 +1,12 @@
 import requests
 import json
-
+from app import logger
 
 class RyanairInfoRobber:
     @staticmethod
     def get_flights(results, depart, arrive, date, adults, children, infants, teens):
-        print(date)
+        logger.info('in method')
+        logger.debug('depart: ' + str(depart) + '; arrive: ' + str(arrive) + '; date: ' + str(date) + '; adults: ' + str(adults) + '; children: ' + str(children) + '; infants: ' + str(infants) + '; teens: ' + str(teens))
         data = {
             'ADT': adults,
             'TEEN': teens,
@@ -20,11 +21,10 @@ class RyanairInfoRobber:
             'ToUs': 'AGREED',
             'exists': 'false'
         }
-        print(data.get("DateOut"))
         r = requests.get(url="https://desktopapps.ryanair.com/v4/en-ie/availability",
                          params=data,
                          headers={"content-type": "application/json;charset=UTF-8"})
-        print("ryanair status code = ", r.status_code)
+        logger.info("ryanair status code = " + str(r.status_code))
         if r.status_code == 200:
             json_response = json.loads(r.text)
             trips = json_response['trips']

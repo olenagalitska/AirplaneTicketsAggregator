@@ -47,14 +47,18 @@ class User(psqldb.Model, UserMixin):
 class Log(psqldb.Model):
     __tablename__ = 'Logs'
     id = psqldb.Column(Integer, primary_key=True)  # auto incrementing
-    logger = psqldb.Column(String)  # the name of the logger
-    level = psqldb.Column(String)  # info, debug, or error?
-    msg = psqldb.Column(String)  # any custom log you may have included
     created_at = psqldb.Column(DateTime, default=func.now())  # the current timestamp
+    pathname = psqldb.Column(String)  # path and name of file, where log were created
+    level = psqldb.Column(String)  # info, debug, warn or error
+    func_name = psqldb.Column(String)  # name of the function
+    line_no = psqldb.Column(String)  # line number, where log were created
+    msg = psqldb.Column(String)  # log msg (with exc_info, exc_text, exc_stack if there are)
 
-    def __init__(self, logger=None, level=None, msg=None):
-        self.logger = logger
+    def __init__(self, pathname=None, level=None, func_name=None, line_no=None, msg=None):
+        self.pathname = pathname
         self.level = level
+        self.func_name = func_name
+        self.line_no = line_no
         self.msg = msg
 
     def __unicode__(self):

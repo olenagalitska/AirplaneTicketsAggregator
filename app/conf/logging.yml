@@ -1,7 +1,8 @@
 version: 1
 formatters:
   simple:
-    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format: '%(asctime)s :  %(pathname)100s: %(levelname)8s: %(funcName)35s(): %(lineno)4d:     %(message)s'
+
 handlers:
   console:
     class: logging.StreamHandler
@@ -15,12 +16,10 @@ handlers:
     level: DEBUG
     maxBytes: 4294967296
     backupCount: 3
-  db:
-    class: app.PsqlLogHandler.PsqlLogHandler
-    formatter: simple
-    level: DEBUG
 loggers:
   logger:
     level: DEBUG
-    handlers: [file, console, db] # (? remove console)
+    handlers: [file, console]
     propagate: no
+
+#    DB Log handler added in __init__.py to make file handler able to start work before psqldb works

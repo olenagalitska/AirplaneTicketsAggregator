@@ -172,7 +172,17 @@ def results():
         userActivityManager = UserActivityManager()
         userActivityManager.insert_search(key, current_user.id)
 
-    results = search_handler.handle_form(search, airlines)
+    results = search_handler.handle(
+        SearchRequest(
+            search['departure'],
+            search['arrival'],
+            search['date'],
+            int(search['adults']),
+            int(search['seniors']),
+            int(search['teens']),
+            int(search['children']),
+            int(search['infants'])
+        ), airlines)
 
     # if request.method == 'POST': ''
     return render_template('results.html', results=results)
@@ -301,10 +311,12 @@ def show_results():
 
     search_data = SearchRequest(str(document['departure']), str(document['arrival']), str(document['date']),
                                 int(document['adults']), int(document['seniors']), int(document['teens']),
-                                int(document['children']), int(document['infants']), True, True, True)
+                                int(document['children']), int(document['infants']))
 
     results = search_handler.handle(search_data, list_of_airlines)
-    return 'ok'
+    # return 'ok'
+    return render_template('results.html', results=results)
+
 
 @app.route('/airlines_stats/<stat_year>', methods=['GET'])
 def airlines_stats(stat_year):
@@ -361,4 +373,9 @@ def price_graph(flight_id):
 def page_not_found(e):
     return render_template('404.html'), 404
 
+    # TODO remove from history if everyone removes ?
 
+
+@app.errorhandler(Exception)
+def all_exception_handler(e):
+   return render_template('error.html'), 500
