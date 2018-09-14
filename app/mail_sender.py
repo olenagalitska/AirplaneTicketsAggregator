@@ -3,6 +3,8 @@ from flask_mail import Message
 from app import app, mail, arangodb
 from app.models import User, Flight
 
+from flask_babel import _
+
 
 class MailSender:
 

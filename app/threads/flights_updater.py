@@ -48,10 +48,10 @@ class FlightsUpdater(threading.Thread):
 
                 airlines = []
                 if flight.airline == 'Ryanair':
-                    airlines.append = 'ryanair'
+                    airlines.append('ryanair')
                 else:
                     if flight.airline == 'Wizzair':
-                        airlines.append = 'wizzair'
+                        airlines.append('wizzair')
                     # if flight.airline == 'UIA':
                     #     airlines.append = 'uia'
 
