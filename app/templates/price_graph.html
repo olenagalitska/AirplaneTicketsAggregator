@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-    <p class="heading"> — {{ _("saved flights") }} — </p>
-
+    <p class="heading"> — {{ _("price stats") }} — </p>
     <div class="container">
-        {% for flight in saved_flights %}
+
+        <div class="centered text-center">
             <div class="row">
                 <div class="col-sm-2 col-xs-2 text-center">{{ flight.departure }}</div>
                 <div class="col-sm-2 col-xs-2 text-center">
@@ -21,18 +21,24 @@
                     <img class="mr-2" src="/static/img/airplane.png">
                     {{ flight.airline }}
                 </div>
-                {#                TODO: display all fares#}
-                {#                <div class="col-4">#}
-                {#                    {{ flight.price }} ‎​€​#}
-                {#                </div>#}
             </div>
-            <div class="row my-2">
-                <button class="btn btn-outline-dark"
-                        onclick="window.location.href = '{{ url_for('price_graph', flight_id=flight.id) }}'">{{ _("price stats") }}</button>
-            </div>
-            <hr>
+        </div>
+    <br><br>
 
 
-        {% endfor %}
+{#        {% for price in prices %}#}
+{#            <div class="row">#}
+{#                <div class="col-sm-2 col-xs-2 text-center">{{ price['date'] }}</div>#}
+{#                <div class="col-sm-2 col-xs-2 text-center">#}
+{#                    {% for fare in price['fares'] %}#}
+{#                        <p>{{ fare.amount }} {{ fare.currencyCode }}</p>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#            <hr>#}
+{#        {% endfor %}#}
+
+    {{ div_placeholder }}
+
     </div>
 {% endblock %}

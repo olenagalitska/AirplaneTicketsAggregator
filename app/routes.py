@@ -1,8 +1,9 @@
 import requests
-from flask import render_template, request, url_for, redirect, flash
+from flask import render_template, request, url_for, redirect, flash, Markup
 from flask_mail import Message
 
 from flask_login import current_user, login_user, logout_user, login_required
+from markupsafe import Markup
 
 from werkzeug.urls import url_parse
 
@@ -16,16 +17,21 @@ from app.dbmanager.airlines_manager import AirlinesManager
 from app.dbmanager.destinations_stats_manager import DestinationsStatsManager
 from app.dbmanager.flights_stats_manager import FlightsStatsManager
 from app.search_req import SearchRequest
+from app.graph_maker import GraphMaker
 import subprocess
 import json
+import datetime
 
 from flask_babel import _
+from plotly.offline import plot
+from plotly.graph_objs import Scatter, Histogram, Figure, Layout, Pie
+
 
 
 @babel.localeselector
 def get_locale():
-    # return request.accept_languages.best_match(['ru', 'en', 'de'])
-    return 'ru'
+    return request.accept_languages.best_match(['ru', 'en', 'de'])
+    # return 'ru'
 
 
 @app.route('/logout')
@@ -143,24 +149,11 @@ def results():
               "_key": key
               }
 
-    # TODO: fix this
-    airports = Airport.query.order_by("code").all()
-
-    dest_airport_code = form.get('arrival')
-    date = form.get('date')
-
-    print(dest_airport_code)
-    print(date)
-
-    for airport in airports:
-        if airport.code == dest_airport_code:
-            dest_airport = airport
-            break
-
+    dest_airport = Airport.query.filter_by(code=form.get('arrival')).first()
     if dest_airport is not None:
         print(dest_airport.city)
         destination_stats_manager = DestinationsStatsManager()
-        destination_stats_manager.increase_counter(dest_airport, date)
+        destination_stats_manager.increase_counter(dest_airport, form.get('date'))
 
     airlines = []
     if not form.get('wizzair') is None:
@@ -313,12 +306,59 @@ def show_results():
     results = search_handler.handle(search_data, list_of_airlines)
     return 'ok'
 
+@app.route('/airlines_stats/<stat_year>', methods=['GET'])
+def airlines_stats(stat_year):
+    airlineManager = AirlinesManager()
+    results = airlineManager.get_airline_stats()
+    x = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    all_years = []
+    for i in range(2018, datetime.datetime.now().year + 2):
+        all_years.append(i)
+    for result in results:
+        data1 = []
+        if result['year'] == int(stat_year):
+            sums = []
+            airlines = result['airlines']
+            for i in range (0, len(result['counters'])):
+                trace = Scatter(y=(result['counters'])[i], x=x, name=result['airlines'][i])
+                sums.append(sum(result['counters'][i]))
+                data1.append(trace)
+
+            month_plot_div = plot(data1, output_type='div')
+            print(airlines)
+            print(sums)
+            year_plot_div=plot([Pie(labels=airlines, values=sums)], output_type='div')
+
+            return render_template('airlines_stats.html',
+                                   stats_div=Markup(month_plot_div),
+                                   whole_year_stats=Markup(year_plot_div),
+                                   years=all_years, current_year=stat_year
+                                   )
+    return render_template('airlines_stats.html', stats_div="No data available", whole_year_stats="No data available",
+                           years=all_years)
+
+@app.route('/price_graph/<flight_id>', methods=["POST", "GET"])
+def price_graph(flight_id):
+    prices = FlightsStatsManager.get_all_stats_for(flight_id)
+    flight = Flight.query.filter_by(id=flight_id).first()
+
+    dates = []
+    fares = []
+
+    for price in prices:
+        dates.append(price['date'])
+        fares.append(price['fares'])
+
+    # print(dates)
+    print(fares)
+    my_plot_div = GraphMaker.get_price_graph(dates, fares)
+    return render_template('price_graph.html', prices=prices, flight=flight, div_placeholder=Markup(my_plot_div))
+
 
 # ---------------------------------------------------------------------------------
-
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
-    # TODO remove from history if everyone removes ?
+

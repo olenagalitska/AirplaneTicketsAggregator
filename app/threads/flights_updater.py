@@ -23,6 +23,7 @@ class FlightsUpdater(threading.Thread):
         for i in range(0, len(current_fares)):
             if current_fares[i]['amount'] != fares_in_db[i]['amount']:
                 result = True
+                break
 
         return result
 
@@ -59,7 +60,7 @@ class FlightsUpdater(threading.Thread):
                     result = search_results[0]
                     current_fares = result.get("fares")
 
-                    in_db = FlightsStatsManager.get_stats_for(flight.id)
+                    in_db = FlightsStatsManager.get_current_stats_for(flight.id)
 
                     print(in_db['fares'])
                     print(current_fares)

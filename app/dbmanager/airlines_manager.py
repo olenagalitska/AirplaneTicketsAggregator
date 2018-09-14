@@ -48,3 +48,27 @@ class AirlinesManager:
                 months[month - 1] = months[month - 1] + 1
                 year_object['counters'] = months
                 airlines.update(airline_data)
+
+    def get_airline_stats(self):
+        cursor = arangodb.aql.execute('FOR doc IN airlines_data RETURN doc', batch_size=1)
+        results = [doc for doc in cursor]
+        airline_stats = []
+        next_year = datetime.datetime.now().year + 1
+        start_year = 2018
+
+        for i in range(start_year, next_year + 1):
+            year = "year_" + str(i)
+            year_stats = {'year' : i,
+                          'airlines' : [],
+                          'counters' : []}
+            for result in results:
+                stats = result['stats']
+                if year in stats:
+                    year_stats['airlines'].append(result['_key'])
+                    year_stats['counters'].append((stats[year])['counters'])
+            airline_stats.append(year_stats)
+
+        return airline_stats
+
+
+

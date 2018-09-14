@@ -20,8 +20,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('search') }}">{{ _("Search") }}</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('airlinesinfo') }}">{{ _("Airlines Info") }}</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle "  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ _("Airlines Info") }}</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="{{ url_for('airlinesinfo') }}">Info</a>
+                      <a class="dropdown-item" href="/airlines_stats/{{2019}}">Statistics</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('contacts') }}">{{ _("Contacts") }}</a>
@@ -64,12 +68,13 @@
 </div>
 
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
 <script
         src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
 </body>
 </html>

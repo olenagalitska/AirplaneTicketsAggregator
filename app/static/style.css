@@ -202,3 +202,7 @@ input:focus {
 #error-page a {
     color: #FFCB57;
 }
+
+.centered{
+    margin: 0 auto;
+}
