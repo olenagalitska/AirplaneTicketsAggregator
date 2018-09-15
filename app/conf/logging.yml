@@ -1,7 +1,8 @@
 version: 1
+disable_existing_loggers: False
 formatters:
   simple:
-    format: '%(asctime)s :  %(pathname)100s: %(levelname)8s: %(funcName)35s(): %(lineno)4d:     %(message)s'
+    format: '%(asctime)s :  %(pathname)150s: %(levelname)8s: %(funcName)35s(): %(lineno)4d:     %(message)s'
 
 handlers:
   console:
@@ -12,7 +13,7 @@ handlers:
   file:
     class: logging.handlers.RotatingFileHandler
     formatter: simple
-    filename: app/logs/logs.log
+    filename: logs/logs.log
     level: DEBUG
     maxBytes: 4294967296
     backupCount: 3
@@ -21,5 +22,7 @@ loggers:
     level: DEBUG
     handlers: [file, console]
     propagate: no
-
+root:
+  level: DEBUG
+  handlers: [console,file]
 #    DB Log handler added in __init__.py to make file handler able to start work before psqldb works

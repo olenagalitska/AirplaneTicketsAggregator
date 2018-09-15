@@ -14,20 +14,15 @@ from app.conf.config import Config
 
 flask_logger = logging.getLogger('werkzeug')
 
-flask_logger.info('try to load logger configs')
+flask_logger.warning('try to load logger configs')
 
 with open('app/conf/logging.yml', 'r') as stream:
     logging_config = yaml.load(stream)
-
 logging.config.dictConfig(logging_config)
-flask_logger.info('succeeded')
 
-flask_logger.info('try to add file and console log handlers to flask_default_logger')
-flask_logger.addHandler(logging._handlers['file'])
-flask_logger.addHandler(logging._handlers['console'])
-flask_logger.info('succeeded')
+flask_logger.info('successfully loaded logger configs')
 
-flask_logger.info('try to start logger')
+flask_logger.info('try to start custom logger')
 # create logger
 logger = logging.getLogger('logger')
 
@@ -68,7 +63,7 @@ try:
     # example of using logger
     # logger.debug('debug message')
     # logger.info('info message')
-    # logger.warn('warn message')
+    # logger.warning('warning message')
     # logger.error('error message')
     # logger.critical('critical message')
 
