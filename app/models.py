@@ -46,13 +46,13 @@ class User(psqldb.Model, UserMixin):
 
 class Log(psqldb.Model):
     __tablename__ = 'Logs'
-    id = psqldb.Column(Integer, primary_key=True)  # auto incrementing
-    created_at = psqldb.Column(DateTime, default=func.now())  # the current timestamp
-    pathname = psqldb.Column(String)  # path and name of file, where log were created
-    level = psqldb.Column(String)  # info, debug, warn or error
-    func_name = psqldb.Column(String)  # name of the function
-    line_no = psqldb.Column(String)  # line number, where log were created
-    msg = psqldb.Column(String)  # log msg (with exc_info, exc_text, exc_stack if there are)
+    id = psqldb.Column(Integer, primary_key=True, nullable=False, autoincrement=True, unique=True)  # auto incrementing
+    created_at = psqldb.Column(DateTime, default=func.now(), nullable=False)  # the current timestamp
+    pathname = psqldb.Column(String, nullable=False)  # path and name of file, where log were created
+    level = psqldb.Column(String, nullable=False)  # info, debug, warn or error
+    func_name = psqldb.Column(String, nullable=False)  # name of the function
+    line_no = psqldb.Column(String, nullable=False)  # line number, where log were created
+    msg = psqldb.Column(String, nullable=False)  # log msg (with exc_info, exc_text, exc_stack if there are)
 
     def __init__(self, pathname=None, level=None, func_name=None, line_no=None, msg=None):
         self.pathname = pathname
