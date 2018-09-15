@@ -14,8 +14,7 @@ class AirlinesNewsUpdater(threading.Thread):
     def run(self):
         print('Airlines News Updater started')
         while self.isWorking:
-            subprocess.check_output(['scrapy', 'crawl', 'airlines_news_spider'])
-
+            subprocess.run(['scrapy', 'crawl', 'airlines_news_spider'], cwd='scraping')
             time.sleep(60 * 60 * 3)
 
     def stop(self):
