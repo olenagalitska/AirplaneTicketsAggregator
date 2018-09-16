@@ -56,5 +56,7 @@ class Handler:
                 teens=str(search_data.teens)
             )
 
+
+
         logger.info('results:' + str(results))
         return results

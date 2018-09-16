@@ -1,7 +1,9 @@
 import scrapy
 import json
 
+
 class AirBalticSpider(scrapy.Spider):
+
     def __init__(self, depart, arrival, adults, children, infants, date):
         self.arrival = arrival
         self.depart = depart
@@ -23,7 +25,10 @@ class AirBalticSpider(scrapy.Spider):
     def parse(self, response):
         classes = ['EC', 'ER', 'BR']
         times = response.css('div.time')
-        flights = []
+        flights = {
+            "size" : len(times),
+            "flights" : []
+        }
         counter = 0
         for time in times:
             flight_time = time.css('::text').extract_first()
@@ -48,9 +53,11 @@ class AirBalticSpider(scrapy.Spider):
                 "fares" : fares,
                 "url" : "https://www.airbaltic.com/en-ZZ/index"
             }
-            flights.append(json_flight)
+            (flights["flights"]).append(json_flight)
             counter =+ 1
         print(flights)
+        with open(self.depart + self.arrival + self.date + self.adults + self.children + self.infants + '.json', 'w') as outfile:
+            outfile.write(json.dumps(flights))
 
 
         # for i in range(0)
