@@ -38,8 +38,8 @@
             <div class="card">
                 <p>{{ route.departure }} -----> {{ route.arrival }}</p>
                 <p>{{ route.date }}</p>
-                <button class="btn btn-outline-dark gold-button" name="history"
-                        onclick='show_results("{{ route._key }}")'>{{ _("view results") }}</button>
+{#                <button class="btn btn-outline-dark gold-button" name="history"#}
+{#                        onclick='show_results("{{ route._key }}")'>{{ _("view results") }}</button>#}
                 <button class="btn btn-outline-dark red-button" id="{{ route._key }}" name="history"
                         onclick='remove("{{ route._key }}")'>{{ _("remove") }}</button>
             </div>

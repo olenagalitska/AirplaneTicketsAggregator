@@ -1,17 +1,19 @@
-# Translations template for PROJECT.
+# Ukrainian (Ukraine) translations for PROJECT.
 # Copyright (C) 2018 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-09-17 14:07+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2018-09-17 14:07+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: uk_UA\n"
+"Language-Team: uk_UA <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,59 +21,59 @@ msgstr ""
 
 #: app/forms.py:12
 msgid "Sign In"
-msgstr ""
+msgstr "Вхід"
 
 #: app/forms.py:18
 msgid "Please use a different username."
-msgstr ""
+msgstr "Будь ласка, використайте інше ім'я користувача."
 
 #: app/forms.py:24
 msgid "Such email is already in use."
-msgstr ""
+msgstr "Ця пошта вже використовується."
 
 #: app/forms.py:33
 msgid "Passwords must match"
-msgstr ""
+msgstr "Паролі повинні співпадати."
 
 #: app/forms.py:34
 msgid "Sign Up"
-msgstr ""
+msgstr "Реєстрація"
 
 #: app/forms.py:52
 msgid "Please pick the number of adults from 0 to 10"
-msgstr ""
+msgstr "Будь ласка, оберіть кількість дорослих від 0 до 10."
 
 #: app/forms.py:56
 msgid "Please pick the number of teens from 0 to 10"
-msgstr ""
+msgstr "Будь ласка, оберіть кількість підлітків від 0 до 10."
 
 #: app/forms.py:60
 msgid "Please pick the number of children from 0 to 10"
-msgstr ""
+msgstr "Будь ласка, оберіть кількість дітей від 0 до 10."
 
 #: app/forms.py:64
 msgid "Please pick the number of infants from 0 to 10"
-msgstr ""
+msgstr "Будь ласка, оберіть кількість немовлят від 0 до 10."
 
 #: app/forms.py:68
 msgid "Please pick the number of seniors from 0 to 10"
-msgstr ""
+msgstr "Будь ласка, оберіть кількість літніх людей від 0 до 10."
 
 #: app/mail_sender.py:26
 msgid "Price for your flight has changed!"
-msgstr ""
+msgstr "Ціна на один з ваших польотів змінилась!"
 
 #: app/mail_sender.py:33
 msgid "<p> Current fares:"
-msgstr ""
+msgstr "<p> Поточні ціни:"
 
 #: app/routes.py:60
 msgid "Error occured. Please try again."
-msgstr ""
+msgstr "Сталася помилка. Будь ласка спробуйте ще раз."
 
 #: app/routes.py:79 app/routes.py:216
 msgid "Unable to add user to db"
-msgstr ""
+msgstr "Неможливо додати користувача в базу."
 
 #: app/routes.py:91
 msgid ""
@@ -79,102 +81,105 @@ msgid ""
 "help</p><img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-"
 "Right-Now-Funny-Plane-Meme.jpg'>"
 msgstr ""
+"<p>вітаємо у whatafly!</p><p>ми сводіваємось, що з нашою допомогою ви знайдете омріяний політ "
+"</p><img src='https://www.askideas.com/media/06/Dude-I-Am-So-High-"
+"Right-Now-Funny-Plane-Meme.jpg'>"
 
 #: app/routes.py:229
 msgid "Some error accured"
-msgstr ""
+msgstr "Сталась помилка."
 
 #: app/templates/404.html:5
 msgid "BOOM!"
-msgstr ""
+msgstr "БУУМ!"
 
 #: app/templates/404.html:6
 msgid "What you were looking for is just not here."
-msgstr ""
+msgstr "Те, що ви шукаєте не тут."
 
 #: app/templates/airlines.html:3
 msgid "our airlines"
-msgstr ""
+msgstr "наші авіалінії"
 
 #: app/templates/airlines.html:12
 msgid "READ NEWS"
-msgstr ""
+msgstr "ПРОЧИТАТИ НОВИНИ"
 
 #: app/templates/airlines.html:26
 msgid "Callsign"
-msgstr ""
+msgstr "Найменування"
 
 #: app/templates/airlines.html:31
 msgid "Founded"
-msgstr ""
+msgstr "Засновано"
 
 #: app/templates/airlines.html:36
 msgid "Website"
-msgstr ""
+msgstr "Вебсайт"
 
 #: app/templates/airlines_stats.html:7
 msgid "Statistics By Monthes in"
-msgstr ""
+msgstr "Статистика за місяцями у"
 
 #: app/templates/airlines_stats.html:11
 msgid "Whole Year Statistics"
-msgstr ""
+msgstr "Річна статистика"
 
 #: app/templates/base.html:21 app/templates/search.html:120
 msgid "Search"
-msgstr ""
+msgstr "Пошук"
 
 #: app/templates/base.html:24
 msgid "Airlines Info"
-msgstr ""
+msgstr "Інформація про авіалінії"
 
 #: app/templates/base.html:26
 msgid "Info"
-msgstr ""
+msgstr "Інформація"
 
 #: app/templates/base.html:27
 msgid "Statistics"
-msgstr ""
+msgstr "Статистика"
 
 #: app/templates/base.html:31
 msgid "Contacts"
-msgstr ""
+msgstr "Контакти"
 
 #: app/templates/base.html:43
 msgid ""
 "Sign\n"
 "                        in"
-msgstr ""
+msgstr "Вхід"
 
 #: app/templates/base.html:47
 msgid ""
 "Sign\n"
 "                        up"
-msgstr ""
+msgstr "Реєстрація"
 
 #: app/templates/base.html:54
 msgid "Account"
-msgstr ""
+msgstr "Профіль"
 
 #: app/templates/base.html:59
 msgid "Logout"
-msgstr ""
+msgstr "Вийти"
 
 #: app/templates/contacts.html:3
 msgid "contact our team"
-msgstr ""
+msgstr "зв'яжіться з нами"
 
 #: app/templates/contacts.html:11
 msgid "Stacy Cherneha"
-msgstr ""
+msgstr "Стася Чернега"
 
 #: app/templates/contacts.html:19
 msgid "Dima Branitskyi"
-msgstr ""
+msgstr "Діма Браніцький"
 
 #: app/templates/contacts.html:27
 msgid "Lena Galitska"
-msgstr ""
+msgstr "Лєна Галіцька"
 
 #: app/templates/error.html:5 app/templates/error.html:6
 msgid "   "
@@ -182,109 +187,109 @@ msgstr ""
 
 #: app/templates/history.html:13
 msgid "removed"
-msgstr ""
+msgstr "видалено"
 
 #: app/templates/history.html:34
 msgid "route history"
-msgstr ""
+msgstr "історія пошукіи"
 
 #: app/templates/history.html:44
 msgid "remove"
-msgstr ""
+msgstr "видалити"
 
 #: app/templates/login.html:13
 msgid "SIGN IN"
-msgstr ""
+msgstr "ВХІД"
 
 #: app/templates/login.html:20 app/templates/signup.html:54
 msgid "USERNAME"
-msgstr ""
+msgstr "ІМ'Я КОРИСТУВАЧА"
 
 #: app/templates/login.html:29 app/templates/signup.html:66
 msgid "PASSWORD"
-msgstr ""
+msgstr "ПАРОЛЬ"
 
 #: app/templates/price_graph.html:3 app/templates/saved.html:31
 msgid "price stats"
-msgstr ""
+msgstr "статистика цін"
 
 #: app/templates/profile.html:8 app/templates/saved.html:3
 msgid "saved flights"
-msgstr ""
+msgstr "збережені польоти"
 
 #: app/templates/profile.html:11 app/templates/profile.html:18
 msgid "view"
-msgstr ""
+msgstr "показати"
 
 #: app/templates/profile.html:15
 msgid "search history"
-msgstr ""
+msgstr "історія пошуків"
 
 #: app/templates/results.html:15
 msgid "saved"
-msgstr ""
+msgstr "збережено"
 
 #: app/templates/results.html:25
 msgid "results"
-msgstr ""
+msgstr "результати"
 
 #: app/templates/results.html:70
 msgid "buy this ticket"
-msgstr ""
+msgstr "купити цей квиток"
 
 #: app/templates/results.html:74
 msgid "save"
-msgstr ""
+msgstr "зберегти"
 
 #: app/templates/search.html:8
 msgid "give a try to whatafly"
-msgstr ""
+msgstr "політай із whatafly"
 
 #: app/templates/search.html:19
 msgid "City A"
-msgstr ""
+msgstr "Місто А"
 
 #: app/templates/search.html:31
 msgid "City B"
-msgstr ""
+msgstr "Місто Б"
 
 #: app/templates/search.html:68
 msgid "Adult"
-msgstr ""
+msgstr "Дорослий"
 
 #: app/templates/search.html:75
 msgid "Child"
-msgstr ""
+msgstr "Дитина"
 
 #: app/templates/search.html:82
 msgid "Teen"
-msgstr ""
+msgstr "Підліток"
 
 #: app/templates/search.html:89
 msgid "Infant"
-msgstr ""
+msgstr "Немовля"
 
 #: app/templates/search.html:96
 msgid "Senior"
-msgstr ""
+msgstr "Пенсіонер"
 
 #: app/templates/signup.html:13
 msgid "Sign up"
-msgstr ""
+msgstr "Реєстрація"
 
 #: app/templates/signup.html:19
 msgid "FIRST NAME"
-msgstr ""
+msgstr "ІМ'Я"
 
 #: app/templates/signup.html:31
 msgid "LAST NAME"
-msgstr ""
+msgstr "ПРІЗВИЩЕ"
 
 #: app/templates/signup.html:43
 msgid "EMAIL"
-msgstr ""
+msgstr "EMAIL"
 
 #: app/templates/signup.html:71
 msgid "REPEAT PASSWORD"
-msgstr ""
+msgstr "ПОВТОРІТЬ ПАРОЛЬ"
 

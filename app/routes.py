@@ -22,17 +22,19 @@ import subprocess
 import json
 import datetime
 
-from flask_babel import _
+from flask_babel import _, get_translations
 from plotly.offline import plot
 from plotly.graph_objs import Scatter, Histogram, Figure, Layout, Pie
-
 
 
 @babel.localeselector
 def get_locale():
     # with app.test_request_context():
-    #     return request.accept_languages.best_match(['ru', 'en', 'de'])
-    return 'ru'
+    print("\n\n\n")
+    for dd in request.accept_languages.values():
+        print(dd)
+    # print(request.accept_languages.values())
+    return request.accept_languages.best_match(['en', 'ru', 'de', 'uk'])
 
 
 @app.route('/logout')
@@ -323,7 +325,7 @@ def show_results():
 def airlines_stats(stat_year):
     airlineManager = AirlinesManager()
     results = airlineManager.get_airline_stats()
-    x = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    x = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     all_years = []
     for i in range(2018, datetime.datetime.now().year + 2):
         all_years.append(i)
@@ -332,7 +334,7 @@ def airlines_stats(stat_year):
         if result['year'] == int(stat_year):
             sums = []
             airlines = result['airlines']
-            for i in range (0, len(result['counters'])):
+            for i in range(0, len(result['counters'])):
                 trace = Scatter(y=(result['counters'])[i], x=x, name=result['airlines'][i])
                 sums.append(sum(result['counters'][i]))
                 data1.append(trace)
@@ -340,7 +342,7 @@ def airlines_stats(stat_year):
             month_plot_div = plot(data1, output_type='div')
             print(airlines)
             print(sums)
-            year_plot_div=plot([Pie(labels=airlines, values=sums)], output_type='div')
+            year_plot_div = plot([Pie(labels=airlines, values=sums)], output_type='div')
 
             return render_template('airlines_stats.html',
                                    stats_div=Markup(month_plot_div),
@@ -349,6 +351,7 @@ def airlines_stats(stat_year):
                                    )
     return render_template('airlines_stats.html', stats_div="No data available", whole_year_stats="No data available",
                            years=all_years)
+
 
 @app.route('/price_graph/<flight_id>', methods=["POST", "GET"])
 def price_graph(flight_id):
@@ -379,4 +382,4 @@ def page_not_found(e):
 
 @app.errorhandler(Exception)
 def all_exception_handler(e):
-   return render_template('error.html'), 500
+    return render_template('error.html'), 500
