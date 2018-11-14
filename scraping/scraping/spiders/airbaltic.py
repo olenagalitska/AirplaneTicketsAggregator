@@ -12,11 +12,13 @@ class AirBalticSpider(scrapy.Spider):
         self.infants = infants
         self.date = date
 
+    name = "airBaltic"
+
     def start_requests(self):
         urls = ["https://tickets.airbaltic.com/en/book/avail"]
         data = {"action2": "avail", "width": '1301', "heights": "672", "p": "bti", "pos": "ZZ", "l": "en",
                 "traveltype": "bti", "origin": self.depart, "origin_type": "A", "destin": self.arrival,
-                "destin_type": self.depart, "numadt": self.adults, "numchd": self.children, "numinf": self.infants,
+                "destin_type": "A", "numadt": self.adults, "numchd": self.children, "numinf": self.infants,
                 "bbv": '0', "sref": '', "legs": '1',
                 "flt_leaving_on": self.date}
         for url in urls:
@@ -25,9 +27,11 @@ class AirBalticSpider(scrapy.Spider):
     def parse(self, response):
         classes = ['EC', 'ER', 'BR']
         times = response.css('div.time')
+        print("----------in parse")
+        print(response.body)
         flights = {
-            "size" : len(times),
-            "flights" : []
+            "size": len(times),
+            "flights": []
         }
         counter = 0
         for time in times:
@@ -50,17 +54,14 @@ class AirBalticSpider(scrapy.Spider):
                 "timeArrival": (flight_time.split(' - ')[1]).replace(" ", ""),
                 "number": 'airbaltic' + self.date + self.depart + self.arrival + str(counter),
                 "types": ['Basic', 'Premium', 'Business'],
-                "fares" : fares,
-                "url" : "https://www.airbaltic.com/en-ZZ/index"
+                "fares": fares,
+                "url": "https://www.airbaltic.com/en-ZZ/index"
             }
             (flights["flights"]).append(json_flight)
-            counter =+ 1
+            counter = + 1
         print(flights)
-        with open(self.depart + self.arrival + self.date + self.adults + self.children + self.infants + '.json', 'w') as outfile:
+        with open(self.depart + self.arrival + self.date + self.adults + self.children + self.infants + '.json',
+                  'w') as outfile:
             outfile.write(json.dumps(flights))
 
-
         # for i in range(0)
-
-
-

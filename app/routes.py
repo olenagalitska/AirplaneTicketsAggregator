@@ -29,11 +29,6 @@ from plotly.graph_objs import Scatter, Histogram, Figure, Layout, Pie
 
 @babel.localeselector
 def get_locale():
-    # with app.test_request_context():
-    print("\n\n\n")
-    for dd in request.accept_languages.values():
-        print(dd)
-    # print(request.accept_languages.values())
     return request.accept_languages.best_match(['en', 'ru', 'de', 'uk'])
 
 

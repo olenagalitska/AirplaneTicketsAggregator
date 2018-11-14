@@ -71,6 +71,7 @@ class AirlinesInfoSpider(scrapy.Spider):
     name = "airlines_info_spider"
 
     def parse(self, response):
+        print("\n\n\ntest\n\n\n")
 
         self.custom_logger.info('scraping url: ' + str(response.url))
 

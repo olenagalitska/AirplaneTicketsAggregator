@@ -15,7 +15,7 @@
     <form method="post">
         {{ form.hidden_tag() }}
         <div class="d-flex justify-content-center m-3">
-            <div class="col-sm-3">
+            <div>
                 {{ form.first_name(size=32, placeholder=_("FIRST NAME")) }}
             </div>
         </div>
@@ -27,7 +27,7 @@
         </div>
 
         <div class="d-flex justify-content-center m-3">
-            <div class="col-sm-3">
+            <div>
                 {{ form.last_name(size=32, placeholder=_("LAST NAME")) }}
             </div>
         </div>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="d-flex justify-content-center m-3">
-            <div class="col-sm-3">
+            <div>
                 {{ form.email(size=32, placeholder=_("EMAIL")) }}
             </div>
         </div>
@@ -50,7 +50,7 @@
         </div>
         <br>
         <div class="d-flex justify-content-center m-3">
-            <div class="col-sm-3">
+            <div>
                 {{ form.username(size=32, placeholder=_("USERNAME")) }}
             </div>
         </div>
@@ -62,12 +62,12 @@
         </div>
 
         <div class="d-flex justify-content-center m-3">
-            <div class="col-sm-3">
+            <div>
                 {{ form.password(size=32, placeholder=_("PASSWORD")) }}
             </div>
         </div>
         <div class="d-flex justify-content-center m-3">
-            <div class="col-sm-3">
+            <div>
                 {{ form.password_repeat(size=32, placeholder=_("REPEAT PASSWORD")) }}
             </div>
         </div>
