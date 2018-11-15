@@ -2,7 +2,7 @@ version: 1
 disable_existing_loggers: False
 formatters:
   simple:
-    format: '%(asctime)s :  %(pathname)150s: %(levelname)8s: %(funcName)35s(): %(lineno)4d:     %(message)s'
+    format: '%(asctime)s :  %(filename)30s: %(levelname)8s: %(funcName)35s(): %(lineno)4d:     %(message)s'
 
 handlers:
   console:

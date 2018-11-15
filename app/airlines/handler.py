@@ -1,6 +1,7 @@
 from app import logger
 from app.airlines.wizzair import WizzairInfoRobber
 from app.airlines.ryanair import RyanairInfoRobber
+from app.airlines.british_airways import BritishAirwaysInfoRobber
 
 
 class Handler:
@@ -13,6 +14,8 @@ class Handler:
         logger.info('try to init RyanairInfoRobber()')
         self.ryanair_info_robber = RyanairInfoRobber()
         logger.info('succeeded')
+
+        self.british_airways_info_robber = BritishAirwaysInfoRobber()
 
     def handle(self, search_data, airlines):
         results = []
@@ -27,36 +30,49 @@ class Handler:
                     str(search_data.children) +
                     str(search_data.infants))
 
-        logger.info('airlines: ' + str(airlines))
+        # logger.info('airlines: ' + str(airlines))
 
-        if "wizzair" in airlines:
-            logger.info('try to get flights from wizzair')
+        # if "wizzair" in airlines:
+        #     logger.info('try to get flights from wizzair')
+        #
+        #     self.wizzair_info_robber.get_flights(
+        #         results=results,
+        #         depart=search_data.departure,
+        #         arrive=search_data.arrival,
+        #         date=search_data.date,
+        #         adults=str(
+        #             int(search_data.adults) + int(search_data.seniors) + int(search_data.teens)),
+        #         children=str(search_data.children),
+        #         infants=str(search_data.infants)
+        #     )
 
-            self.wizzair_info_robber.get_flights(
-                results=results,
-                depart=search_data.departure,
-                arrive=search_data.arrival,
-                date=search_data.date,
-                adults=str(
-                    int(search_data.adults) + int(search_data.seniors) + int(search_data.teens)),
-                children=str(search_data.children),
-                infants=str(search_data.infants)
-            )
-        if "ryanair" in airlines:
-            logger.info('try to get flights from ryanair')
+        # if "ryanair" in airlines:
+        #     logger.info('try to get flights from ryanair')
+        #
+        #     self.ryanair_info_robber.get_flights(
+        #         results=results,
+        #         depart=search_data.departure,
+        #         arrive=search_data.arrival,
+        #         date=search_data.date,
+        #         adults=str(int(search_data.adults) + int(search_data.seniors)),
+        #         children=str(search_data.children),
+        #         infants=str(search_data.infants),
+        #         teens=str(search_data.teens)
+        #     )
 
-            self.ryanair_info_robber.get_flights(
-                results=results,
-                depart=search_data.departure,
-                arrive=search_data.arrival,
-                date=search_data.date,
-                adults=str(int(search_data.adults) + int(search_data.seniors)),
-                children=str(search_data.children),
-                infants=str(search_data.infants),
-                teens=str(search_data.teens)
-            )
+        # if "british_airways" in airlines:
+        logger.info('try to get flights from british airways')
 
-
+        self.british_airways_info_robber.get_flights(
+            results=results,
+            depart=search_data.departure,
+            arrive=search_data.arrival,
+            date=search_data.date,
+            adults=str(int(search_data.adults) + int(search_data.seniors)),
+            children=str(search_data.children),
+            infants=str(search_data.infants),
+            teens=str(search_data.teens)
+        )
 
         logger.info('results:' + str(results))
         return results
