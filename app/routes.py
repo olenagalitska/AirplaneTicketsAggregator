@@ -161,7 +161,7 @@ def results():
         airlines.append('ryanair')
 
     if not form.get('uia') is None:
-        airlines.append('uia')
+        airlines.append('easyjet')
 
     if not current_user.is_anonymous:
         historyManager = HistoryManager()
@@ -181,8 +181,8 @@ def results():
             int(search['children']),
             int(search['infants'])
         ), airlines)
+    print(results)
 
-    # if request.method == 'POST': ''
     return render_template('results.html', results=results)
 
 
@@ -377,4 +377,5 @@ def page_not_found(e):
 
 @app.errorhandler(Exception)
 def all_exception_handler(e):
+    print(e)
     return render_template('error.html'), 500

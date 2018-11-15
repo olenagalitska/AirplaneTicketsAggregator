@@ -1,6 +1,7 @@
 from app import logger
 from app.airlines.wizzair import WizzairInfoRobber
 from app.airlines.ryanair import RyanairInfoRobber
+from app.airlines.easyjet import EasyJetInfoRobber
 
 
 class Handler:
@@ -12,6 +13,10 @@ class Handler:
 
         logger.info('try to init RyanairInfoRobber()')
         self.ryanair_info_robber = RyanairInfoRobber()
+        logger.info('succeeded')
+
+        logger.info('try to init EasyJetInfoRobber()')
+        self.easyjet_info_robber = EasyJetInfoRobber()
         logger.info('succeeded')
 
     def handle(self, search_data, airlines):
@@ -56,6 +61,20 @@ class Handler:
                 teens=str(search_data.teens)
             )
 
+        if "easyjet" in airlines:
+            logger.info('try to get flights from easyjet')
+
+            self.easyjet_info_robber.get_flights(
+                results=results,
+                depart=search_data.departure,
+                arrive=search_data.arrival,
+                date=search_data.date,
+                adults=str(int(search_data.adults) + int(search_data.seniors)),
+                children=str(search_data.children),
+                infants=str(search_data.infants),
+                teens=str(search_data.teens)
+            )
+            print(results)
 
 
         logger.info('results:' + str(results))
