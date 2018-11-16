@@ -5,10 +5,11 @@ import json
 class WizzairInfoRobber:
     @staticmethod
     def get_flights(results, depart, arrive, date, adults, children, infants):
+        print("############  wizzair ############")
         data = {"isFlightChange": 'false', "isSeniorOrStudent": 'false',
                 "flightList": [{"departureStation": depart, "arrivalStation": arrive, "departureDate": date}],
                 "adultCount": adults, "childCount": children, "infantCount": infants, "wdc": 'true'}
-        r = requests.post(url="https://be.wizzair.com/8.3.2/Api/search/search",
+        r = requests.post(url="https://be.wizzair.com/8.7.0/Api/search/search",
                           json=data,
                           headers={"content-type": 'application/json;charset=UTF-8'})
         print(" wizzair status code = ", r.status_code)
@@ -41,5 +42,7 @@ class WizzairInfoRobber:
                           '/' + children + '/' + infants + '/0/null'
                 json_flight["url"] = res_url
                 results.append(json_flight)
+            print("!!!! WIZZ !!!!")
             return True
+        print("!!!! WIZZ !!!!")
         return False
