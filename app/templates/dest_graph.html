@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    {% set month = '0' %}
+    <div class="row">
+        <div class="col-lg-2">
+            By countries:
+            {% for year in years %}
+                <a href="/destinations_stats/country/{{ year }}/{{ month }}">{{ year }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-2">
+            By cities:
+            {% for year in years %}
+                <a href="/destinations_stats/city/{{ year }}/{{ month }}">{{ year }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {{ div_placeholder }}
+{% endblock %}

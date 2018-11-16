@@ -366,6 +366,19 @@ def price_graph(flight_id):
     return render_template('price_graph.html', prices=prices, flight=flight, div_placeholder=Markup(my_plot_div))
 
 
+@app.route('/destinations_stats/<type>/<stat_year>/<stat_month>', methods=["GET"])
+def destinations_stats(type, stat_year, stat_month=0):
+    destinations_stats_manager = DestinationsStatsManager()
+    destination_stats = []
+    destination_stats = destinations_stats_manager.get_destinations_stats(stat_year, stat_month)
+    my_plot_div = GraphMaker.get_dest_graph(destination_stats, type)
+    all_years = []
+    for i in range(2018, datetime.datetime.now().year + 2):
+        all_years.append(i)
+    return render_template('dest_graph.html', years=all_years,
+                           stats=destination_stats, div_placeholder=Markup(my_plot_div))
+
+
 # ---------------------------------------------------------------------------------
 
 @app.errorhandler(404)

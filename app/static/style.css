@@ -20,13 +20,13 @@ body {
 }
 
 .gold-button {
-    border-color: #FFCB57;
-    color: #FFCB57;
+    border-color: #7cadf1;
+    color: #7cadf1;
 }
 
 .gold-button:hover {
-    background-color: #FFCB57;
-    border-color: #FFCB57;
+    background-color: #7cadf1;
+    border-color: #7cadf1;
 }
 
 .red-button {
@@ -52,7 +52,7 @@ body {
 
 #route-card {
     width: 500px;
-    color: #FFCB57;
+    color: #7cadf1;
     height: 150px;
     padding-left: 0px;
 }
@@ -172,7 +172,7 @@ input:focus {
 
 .airline-card > a {
     text-align: center;
-    color: #FFCB57;
+    color: #7cadf1;
     font-size: 16pt;
 }
 
@@ -181,7 +181,7 @@ input:focus {
 }
 
 .airline-news-card a {
-    color: #FFCB57;
+    color: #7cadf1;
 }
 
 .airline-news-card > p {
@@ -200,7 +200,7 @@ input:focus {
 }
 
 #error-page a {
-    color: #FFCB57;
+    color: #7cadf1;
 }
 
 .centered{

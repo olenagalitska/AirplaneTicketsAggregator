@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
 
 </head>
 
 <body class="backcol">
 <div class="top">
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ url_for('search') }}"><img id="logo" src="../static/airplane.svg"></a>
+        <a class="navbar-brand" href="{{ url_for('search') }}"><img id="logo" src="/static/airplane.svg"></a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -26,6 +26,9 @@
                       <a class="dropdown-item" href="{{ url_for('airlinesinfo') }}">{{ _("Info") }} </a>
                       <a class="dropdown-item" href="/airlines_stats/{{2019}}">{{ _("Statistics") }} </a>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/destinations_stats/country/{{2018}}/0">{{ _("Destinations") }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('contacts') }}">{{ _("Contacts") }}</a>

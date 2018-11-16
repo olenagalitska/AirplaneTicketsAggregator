@@ -55,3 +55,29 @@ class DestinationsStatsManager:
                         city[year] = year_object
                         country[str(airport.city)] = city
                         destinations_stats_collection.update(country)
+
+    def get_destinations_stats(self, year, month):
+        cursor = arangodb.aql.execute('FOR doc IN destinations_stats RETURN doc', batch_size=1)
+        results = [doc for doc in cursor]
+        destinations_stats = []
+
+        year = "year_" + str(year)
+        month = int(month)
+
+        for result in results:
+            for maybe_city in result.keys():
+                if maybe_city[0] != '_':
+
+                    if month != 0:
+                        print('here')
+                        stats_object = {'country': result['_key'],
+                                        'city': maybe_city,
+                                        'amount': result[maybe_city][year]['counters'][month - 1]}
+                    else:
+                        print(sum(result[maybe_city][year]['counters']))
+                        stats_object = {'country': result['_key'],
+                                        'city': maybe_city,
+                                        'amount': sum(result[maybe_city][year]['counters'])}
+                    destinations_stats.append(stats_object)
+        print('res', destinations_stats)
+        return destinations_stats
