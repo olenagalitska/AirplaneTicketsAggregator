@@ -13,7 +13,7 @@ Web application for searching and tracking airline tickets
 
 ## Authors
 
-* **Helen Galitska** - [HGalitska](https://github.com/HGalitska)
+* **Helen Galitska** - [olenagalitska](https://github.com/olenagalitska)
 
 * **Stacy Cherneha** - [cherneha](https://github.com/cherneha)
 
